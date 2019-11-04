@@ -10,7 +10,5 @@ public class Position
       this.xCoordinate = xCoordinate;
       this.yCoordinate = yCoordinate;
    }
-   
-   
 
 }
