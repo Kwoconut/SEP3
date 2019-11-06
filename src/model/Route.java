@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Route
+public class Route implements Serializable
 {
    private String startLocation;
    private String destination;

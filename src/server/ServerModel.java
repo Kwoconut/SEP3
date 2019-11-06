@@ -5,7 +5,6 @@ import java.util.Date;
 
 import model.Checkpoint;
 import model.FlightPlan;
-import model.GroundKeyLocation;
 import model.Plane;
 import model.Position;
 import model.Route;
@@ -13,14 +12,11 @@ import model.Route;
 public class ServerModel 
 {	
 	private ArrayList<Plane> planes;
-	private ArrayList<GroundKeyLocation> groundKeyLocations;
 	
 	public ServerModel()
 	{
 		planes = new ArrayList<Plane>();
-		groundKeyLocations = new ArrayList<GroundKeyLocation>();
 		loadPlanesFromDatabase();
-		loadGroundKLFromDatabase();
 	}
 	//scoatem din database , tre de modificat la finisarea databasului
 	@SuppressWarnings("deprecation")
@@ -44,25 +40,10 @@ public class ServerModel
 		planes.add(plane1);
 		System.out.println("Server loaded planes from db");
 	}
-
-	public void loadGroundKLFromDatabase() 
-	{
-		Position position1 = new Position(100,200);
-		Checkpoint checkpoint1 = new Checkpoint("checkpoint1",position1,false);
-		GroundKeyLocation grKL1 = new GroundKeyLocation("location1",checkpoint1,"gate");
-		groundKeyLocations.add(grKL1);
-		System.out.println("Server loaded Ground Key Locations from db");
-	}
 	
 	public ArrayList<Plane> getPlanes()
 	{
 		return planes;
-	}
+	}	
 	
-	public ArrayList<GroundKeyLocation> getGroundKeyLocations()
-	{
-		return groundKeyLocations;
-	}
-	
-
 }

@@ -1,6 +1,8 @@
 package model;
 
-public class Checkpoint
+import java.io.Serializable;
+
+public class Checkpoint implements Serializable
 {
    private String name;
    private Position position;

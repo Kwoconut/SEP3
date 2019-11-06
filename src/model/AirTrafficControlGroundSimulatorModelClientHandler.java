@@ -8,5 +8,5 @@ public interface AirTrafficControlGroundSimulatorModelClientHandler
 {	
 	void getPlanesFromServer(ArrayList<Plane> planes);
 	
-	void getGroundKLFromServer(ArrayList<GroundKeyLocation> GKLocations);
+	void setClient(Client client);
 }

@@ -15,7 +15,7 @@ import model.GroundKeyLocation;
 import model.Plane;
 import server.RemoteServer;
 
-public class Client implements RIClient, Serializable 
+public class Client implements RIClient, IClient, Serializable 
 {
 	private static final long serialVersionUID = 1L;
 	private AirTrafficControlGroundSimulatorModelClientHandler model;
@@ -24,7 +24,9 @@ public class Client implements RIClient, Serializable
 	public Client(AirTrafficControlGroundSimulatorModelClientHandler model)
 			throws RemoteException, NotBoundException, MalformedURLException {
 		this.model = model;
+		this.model.setClient(this);
 		server = (RemoteServer) Naming.lookup("rmi://localhost:1099/server");
+		UnicastRemoteObject.exportObject(this, 0);
 		server.addClient(this);
 	}
 
@@ -33,14 +35,10 @@ public class Client implements RIClient, Serializable
 		model.getPlanesFromServer(planes);
 	}
 
-	@Override
-	public void getGrundKLFromServer(ArrayList<GroundKeyLocation> gKLocations) {
-		model.getGroundKLFromServer(gKLocations);
-	}
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException 
 	{
 		AirTrafficControlGroundSimulatorModel model = new AirTrafficControlGroundSimulator();
 		Client client = new Client(model);
-	}
+	}	
 
 }

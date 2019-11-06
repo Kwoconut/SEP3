@@ -1,6 +1,8 @@
 package model;
 
-public class GroundKeyLocation
+import java.io.Serializable;
+
+public class GroundKeyLocation implements Serializable
 {
    private String name;
    
@@ -8,7 +10,7 @@ public class GroundKeyLocation
    
    private String type;
    
-   public GroundKeyLocation(String name,Checkpoint checkpoint,String type)
+   public GroundKeyLocation(String name,Checkpoint checkpoint,String type) 
    {
       this.name = name;
       this.checkpoint = checkpoint;
