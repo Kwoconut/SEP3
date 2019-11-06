@@ -1,6 +1,8 @@
 package model;
 
-public class Position
+import java.io.Serializable;
+
+public class Position implements Serializable
 {
    private int xCoordinate;
    private int yCoordinate;
@@ -10,7 +12,5 @@ public class Position
       this.xCoordinate = xCoordinate;
       this.yCoordinate = yCoordinate;
    }
-   
-   
 
 }

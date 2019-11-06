@@ -1,6 +1,8 @@
 package model;
 
-public class Plane
+import java.io.Serializable;
+
+public class Plane implements Serializable
 {
    private String callSign;
    private String model;
