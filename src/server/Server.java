@@ -15,11 +15,9 @@ public class Server implements RemoteServer
 {
 	private ServerModel model;
 	private ArrayList<RIClient> clients;
-	private ServerSocket welcomeSocket;
 	
-	public Server(ServerModel model,int port) throws IOException
+	public Server(ServerModel model) throws IOException
 	{
-		welcomeSocket = new ServerSocket(port);
 		this.model = model;
 		clients = new ArrayList<RIClient>();
 		UnicastRemoteObject.exportObject(this, 0);
@@ -42,7 +40,7 @@ public class Server implements RemoteServer
 		while(true)
 		{
 			System.out.println("Waiting for clients ...");
-			Socket socket = welcomeSocket.accept();
+			Socket socket = new Socket("10.152.202.140", 200);
 			Thread t = new Thread(new ServerSocketHandler(model,socket));
 			t.start();
 		}
@@ -51,7 +49,7 @@ public class Server implements RemoteServer
 		try {
 			LocateRegistry.createRegistry(1099);
 			ServerModel model = new ServerModel();
-			RemoteServer server = new Server(model, 2910);
+			RemoteServer server = new Server(model);
 			Naming.rebind("server", server);
 			System.out.println("Starting RMI part");
 			server.execute();

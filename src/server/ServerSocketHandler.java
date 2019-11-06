@@ -3,8 +3,13 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import java.net.Socket;
 
+import com.google.gson.Gson;
+import com.sun.corba.se.impl.orbutil.ObjectWriter;
+
+import server.Request;
 import server.ServerModel;
 
 public class ServerSocketHandler implements Runnable {
@@ -27,10 +32,12 @@ public class ServerSocketHandler implements Runnable {
 
 	@Override
 	public void run() {
+		requestPlanes();
 
 		/*while (true) {
 			try {
-				Request req = (Request) in.readObject();
+				Gson gson = (Gson) in.readObject();
+				Request req = new Request(gson.TYPE)  ceva de genu aici tre de vazut
 				if (req.type == Request.TYPE.cevatipdescris) {
 					model.cevametoda();
 				} else if (req.type == Request.TYPE.alttipdescris) {
@@ -41,6 +48,22 @@ public class ServerSocketHandler implements Runnable {
 			}
 		}*/
 
+	}
+
+	private void requestPlanes() {
+		try
+	      {
+	         Request req = new Request(Request.TYPE.PLANESREQUEST);
+	         Gson json = new Gson();
+	         json.toJson(req);
+	         out.writeObject(json);
+	      }
+	      catch (IOException e)
+	      {
+
+	         e.printStackTrace();
+	      }
+		
 	}
 
 }
