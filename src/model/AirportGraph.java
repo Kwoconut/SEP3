@@ -7,10 +7,9 @@ public class AirportGraph
    private ArrayList<GroundNode> nodes;
    private ArrayList<Edge> edges;
 
-   public AirportGraph(ArrayList<GroundNode> nodes, ArrayList<Edge> edges)
+   public AirportGraph()
    {
-      this.nodes = nodes;
-      this.edges = edges;
+      generateAirportGraph();
 
       for (int i = 0; i < edges.size(); i++)
       {
@@ -22,11 +21,25 @@ public class AirportGraph
       }
    }
 
+   public ArrayList<GroundNode> getGroundNodes()
+   {
+      return nodes;
+   }
+
    public ArrayList<GroundNode> calculateShortestDistance(GroundNode startNode,
          GroundNode endNode)
    {
-      nodes.stream().filter(node -> node.equals(startNode)).findFirst().get()
-            .setDistanceFromSource(0);
+      for (int i = 0; i < nodes.size(); i++)
+      {
+         if (nodes.get(i).equals(startNode))
+         {
+            nodes.get(i).setDistanceFromSource(0);
+         }
+         else
+         {
+            nodes.get(i).setDistanceFromSource(Integer.MAX_VALUE);
+         }
+      }
 
       int evaluatedNodeId = startNode.getNodeId();
 
@@ -90,16 +103,83 @@ public class AirportGraph
       }
    }
 
-/*
- * if (!this.nodes[neighbourIndex].isVisited()) { int tentative =
- * this.nodes[nextNode].getDistanceFromSource() +
- * currentNodeEdges.get(joinedEdge).getLength(); if (tentative <
- * nodes[neighbourIndex].getDistanceFromSource()) {
- * nodes[neighbourIndex].setDistanceFromSource(tentative); ArrayList<Node>
- * shortestPath = new ArrayList<>(nodes[nextNode].getShortestPath());
- * shortestPath.add(nodes[nextNode]);
- * nodes[neighbourIndex].setShortestPath(shortestPath); } } }
- * nodes[nextNode].setIsVisited(true); nextNode = getNodeShortestDistance();
- */
+   private void generateAirportGraph()
+   {
+      Edge[] sampleEdges = { new Edge(8, 9, 4), new Edge(0, 4, 2),
+            new Edge(11, 10, 4), new Edge(10, 9, 4), new Edge(13, 12, 8),
+            new Edge(12, 10, 4), new Edge(1, 4, 2), new Edge(2, 4, 2),
+            new Edge(3, 4, 2), new Edge(4, 5, 16), new Edge(5, 6, 4),
+            new Edge(5, 13, 8), new Edge(6, 7, 4), new Edge(6, 11, 4),
+            new Edge(7, 8, 4), new Edge(12, 14, 10), new Edge(14, 16, 4),
+            new Edge(16, 17, 4), new Edge(17, 18, 4), new Edge(18, 19, 4),
+            new Edge(19, 5, 4), new Edge(19, 15, 8), new Edge(15, 14, 8) };
+
+      GroundNode groundNode0 = new GroundNode("Gate A", 0, new Position(0, 0));
+      GroundNode groundNode1 = new GroundNode("Gate B", 1, new Position(0, 0));
+      GroundNode groundNode2 = new GroundNode("Gate C", 2, new Position(0, 0));
+      GroundNode groundNode3 = new GroundNode("Gate D", 3, new Position(0, 0));
+      GroundNode groundNode4 = new GroundNode("Main Taxiway", 4,
+            new Position(0, 0));
+      GroundNode groundNode5 = new GroundNode("Taxiway Chokepoint", 5,
+            new Position(0, 0));
+      GroundNode groundNode6 = new GroundNode("Taxiway A2", 6,
+            new Position(0, 0));
+      GroundNode groundNode7 = new GroundNode("Taxiway A2", 7,
+            new Position(0, 0));
+      GroundNode groundNode8 = new GroundNode("Auxiliary Taxiway C32", 8,
+            new Position(0, 0));
+      GroundNode groundNode9 = new GroundNode("Runway 14", 9,
+            new Position(0, 0));
+      GroundNode groundNode10 = new GroundNode("Runway", 10,
+            new Position(0, 0));
+      GroundNode groundNode11 = new GroundNode("Auxiliary Taxiway C33", 11,
+            new Position(0, 0));
+      GroundNode groundNode12 = new GroundNode("Runway", 12,
+            new Position(0, 0));
+      GroundNode groundNode13 = new GroundNode("Auxiliary Taxiway C34", 13,
+            new Position(0, 0));
+      GroundNode groundNode14 = new GroundNode("Runway", 14,
+            new Position(0, 0));
+      GroundNode groundNode15 = new GroundNode("Auxiliary Taxiway C35", 15,
+            new Position(0, 0));
+      GroundNode groundNode16 = new GroundNode("Runway 25", 16,
+            new Position(0, 0));
+      GroundNode groundNode17 = new GroundNode("Auxiliary Taxiway C36", 17,
+            new Position(0, 0));
+      GroundNode groundNode18 = new GroundNode("Taxiway A2", 18,
+            new Position(0, 0));
+      GroundNode groundNode19 = new GroundNode("Taxiway A2", 19,
+            new Position(0, 0));
+
+      nodes = new ArrayList<GroundNode>();
+
+      nodes.add(groundNode0);
+      nodes.add(groundNode1);
+      nodes.add(groundNode2);
+      nodes.add(groundNode3);
+      nodes.add(groundNode4);
+      nodes.add(groundNode5);
+      nodes.add(groundNode6);
+      nodes.add(groundNode7);
+      nodes.add(groundNode8);
+      nodes.add(groundNode9);
+      nodes.add(groundNode10);
+      nodes.add(groundNode11);
+      nodes.add(groundNode12);
+      nodes.add(groundNode13);
+      nodes.add(groundNode14);
+      nodes.add(groundNode15);
+      nodes.add(groundNode16);
+      nodes.add(groundNode17);
+      nodes.add(groundNode18);
+      nodes.add(groundNode19);
+
+      edges = new ArrayList<Edge>();
+
+      for (int i = 0; i < sampleEdges.length; i++)
+      {
+         edges.add(sampleEdges[i]);
+      }
+   }
 
 }
