@@ -21,5 +21,34 @@ public class Plane implements Serializable
       this.flightPlan = flightPlan;
       this.position = position;
    }
-
+   
+   public String getCallSign()
+   {
+      return callSign;
+   }
+   
+   public String getModel()
+   {
+      return model;
+   }
+   
+   public String getCompany()
+   {
+      return company;
+   }
+   
+   public String getStatus()
+   {
+      return status;
+   }
+   
+   public FlightPlan getFlightPlan()
+   {
+      return flightPlan;
+   }
+   
+   public Position getPosition()
+   {
+      return position;
+   }
 }

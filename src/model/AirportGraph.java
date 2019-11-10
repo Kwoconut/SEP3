@@ -29,17 +29,11 @@ public class AirportGraph
    public ArrayList<GroundNode> calculateShortestDistance(GroundNode startNode,
          GroundNode endNode)
    {
-      for (int i = 0; i < nodes.size(); i++)
-      {
-         if (nodes.get(i).equals(startNode))
-         {
-            nodes.get(i).setDistanceFromSource(0);
-         }
-         else
-         {
-            nodes.get(i).setDistanceFromSource(Integer.MAX_VALUE);
-         }
-      }
+
+      refreshNodes();
+
+      nodes.stream().filter(node -> node.equals(startNode)).findFirst().get()
+            .setDistanceFromSource(0);
 
       int evaluatedNodeId = startNode.getNodeId();
 
@@ -114,42 +108,46 @@ public class AirportGraph
             new Edge(16, 17, 4), new Edge(17, 18, 4), new Edge(18, 19, 4),
             new Edge(19, 5, 4), new Edge(19, 15, 8), new Edge(15, 14, 8) };
 
-      GroundNode groundNode0 = new GroundNode("Gate A", 0, new Position(0, 0));
-      GroundNode groundNode1 = new GroundNode("Gate B", 1, new Position(0, 0));
-      GroundNode groundNode2 = new GroundNode("Gate C", 2, new Position(0, 0));
-      GroundNode groundNode3 = new GroundNode("Gate D", 3, new Position(0, 0));
+      GroundNode groundNode0 = new GroundNode("Gate A", 0,
+            new Position(1095, 770));
+      GroundNode groundNode1 = new GroundNode("Gate B", 1,
+            new Position(1100, 730));
+      GroundNode groundNode2 = new GroundNode("Gate C", 2,
+            new Position(1090, 690));
+      GroundNode groundNode3 = new GroundNode("Gate D", 3,
+            new Position(1070, 660));
       GroundNode groundNode4 = new GroundNode("Main Taxiway", 4,
-            new Position(0, 0));
+            new Position(1020, 700));
       GroundNode groundNode5 = new GroundNode("Taxiway Chokepoint", 5,
-            new Position(0, 0));
+            new Position(845, 238));
       GroundNode groundNode6 = new GroundNode("Taxiway A2", 6,
-            new Position(0, 0));
+            new Position(505, 238));
       GroundNode groundNode7 = new GroundNode("Taxiway A2", 7,
-            new Position(0, 0));
+            new Position(335, 238));
       GroundNode groundNode8 = new GroundNode("Auxiliary Taxiway C32", 8,
-            new Position(0, 0));
+            new Position(323, 185));
       GroundNode groundNode9 = new GroundNode("Runway 14", 9,
-            new Position(0, 0));
+            new Position(330, 114));
       GroundNode groundNode10 = new GroundNode("Runway", 10,
-            new Position(0, 0));
+            new Position(520, 114));
       GroundNode groundNode11 = new GroundNode("Auxiliary Taxiway C33", 11,
-            new Position(0, 0));
+            new Position(500, 185));
       GroundNode groundNode12 = new GroundNode("Runway", 12,
-            new Position(0, 0));
+            new Position(800, 114));
       GroundNode groundNode13 = new GroundNode("Auxiliary Taxiway C34", 13,
-            new Position(0, 0));
+            new Position(828, 185));
       GroundNode groundNode14 = new GroundNode("Runway", 14,
-            new Position(0, 0));
+            new Position(1160, 114));
       GroundNode groundNode15 = new GroundNode("Auxiliary Taxiway C35", 15,
-            new Position(0, 0));
+            new Position(1175, 185));
       GroundNode groundNode16 = new GroundNode("Runway 25", 16,
-            new Position(0, 0));
+            new Position(1300, 114));
       GroundNode groundNode17 = new GroundNode("Auxiliary Taxiway C36", 17,
-            new Position(0, 0));
+            new Position(1327, 185));
       GroundNode groundNode18 = new GroundNode("Taxiway A2", 18,
-            new Position(0, 0));
+            new Position(1315, 238));
       GroundNode groundNode19 = new GroundNode("Taxiway A2", 19,
-            new Position(0, 0));
+            new Position(1170, 238));
 
       nodes = new ArrayList<GroundNode>();
 
@@ -179,6 +177,16 @@ public class AirportGraph
       for (int i = 0; i < sampleEdges.length; i++)
       {
          edges.add(sampleEdges[i]);
+      }
+   }
+
+   private void refreshNodes()
+   {
+      for (GroundNode node : nodes)
+      {
+         node.setDistanceFromSource(Integer.MAX_VALUE);
+         node.setIsVisited(false);
+         node.setShortestPath(new ArrayList<GroundNode>());
       }
    }
 

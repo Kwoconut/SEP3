@@ -16,7 +16,7 @@ public class Test
       AirportGraph graph = new AirportGraph();
 
       System.out.println(graph.calculateShortestDistance(
-            graph.getGroundNodes().get(16), graph.getGroundNodes().get(3)));
+            graph.getGroundNodes().get(0), graph.getGroundNodes().get(16)));
 
    }
 
