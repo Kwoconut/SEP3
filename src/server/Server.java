@@ -37,13 +37,10 @@ public class Server implements RemoteServer
 	public void execute() throws IOException
 	{
 		System.out.println("Starting socket part");
-		while(true)
-		{
-			System.out.println("Waiting for clients ...");
-			Socket socket = new Socket("10.152.202.140", 200);
+		System.out.println("Waiting for clients ...");
+			Socket socket = new Socket("10.152.202.49", 200);
 			Thread t = new Thread(new ServerSocketHandler(model,socket));
 			t.start();
-		}
 	}
 	public static void main(String[] args) throws IOException {
 		try {
