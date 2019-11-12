@@ -31,9 +31,9 @@ public class Client implements RIClient, IClient, Serializable
    }
 
    @Override
-   public void getPlanesFromServer(ArrayList<Plane> planes)
+   public void getPlaneFromServer(Plane plane)
    {
-      model.getPlanesFromServer(planes);
+      model.getPlaneFromServer(plane);
    }
 
    public static void main(String[] args)

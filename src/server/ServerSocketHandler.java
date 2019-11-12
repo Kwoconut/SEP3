@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -51,9 +52,12 @@ public class ServerSocketHandler implements Runnable {
 		        byte[] receivedBytes = new byte[len];
 		        in.read(receivedBytes, 0, len);
 		        String received = new String(receivedBytes, 0, len);
+		        System.out.println("data from server recieved");
 		        Gson gson = new Gson();
 		        Plane[] jsonString = gson.fromJson(received, Plane[].class );
-System.out.println("data from server recieved");
+		        ArrayList<Plane> planes = new ArrayList<Plane>(Arrays.asList(jsonString));
+		        model.loadPlanesFromDatabase(planes);
+		        System.out.println("data from server sent to server model");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

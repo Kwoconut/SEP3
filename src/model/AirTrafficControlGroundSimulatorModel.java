@@ -30,9 +30,14 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public void getPlanesFromServer(ArrayList<Plane> planes)
+   public void getPlaneFromServer(Plane plane)
    {
-      this.planes = planes;
+	   //
+	   //
+	   //
+	   //
+	   //
+      this.planes.add(plane);
    }
 
    @Override

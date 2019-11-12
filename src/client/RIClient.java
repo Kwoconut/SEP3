@@ -7,5 +7,5 @@ import model.Plane;
 
 public interface RIClient extends Remote
 {
-	public void getPlanesFromServer(ArrayList<Plane> planes) throws RemoteException;
+	public void getPlaneFromServer(Plane plane) throws RemoteException;
 }

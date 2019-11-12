@@ -10,6 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import client.RIClient;
+import model.Plane;
 
 public class Server implements RemoteServer
 {
@@ -26,12 +27,18 @@ public class Server implements RemoteServer
 	public void addClient(RIClient client) throws RemoteException
 	{
 		clients.add(client);
-		sendPlanes(client);
+		Thread PlanesSender = new Thread();
+		PlanesSender.start();
 	}
 	
-	public void sendPlanes(RIClient sender) throws RemoteException
+	public void sendPlane(Plane plane) throws RemoteException
 	{
-		sender.getPlanesFromServer(model.getPlanes());
+		int nr =clients.size()-1;
+		clients.get(nr).getPlaneFromServer(plane);
+	}
+	public ServerModel getModel()
+	{
+		return model;
 	}
 	
 	public void execute() throws IOException

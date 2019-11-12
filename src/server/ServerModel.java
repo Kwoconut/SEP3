@@ -15,12 +15,10 @@ public class ServerModel
 	public ServerModel()
 	{
 		planes = new ArrayList<Plane>();
-		loadPlanesFromDatabase();
 	}
-	//scoatem din database , tre de modificat la finisarea databasului
-	public void loadPlanesFromDatabase() 
+	public void loadPlanesFromDatabase(ArrayList<Plane> planes) 
 	{
-		
+		this.planes = planes;
 	}
 	
 	public ArrayList<Plane> getPlanes()
