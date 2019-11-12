@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.AirTrafficControlGroundSimulator;
 import model.AirTrafficControlGroundSimulatorModel;
+import model.Plane;
+import model.Position;
 import test.TestTimerRunnable;
 import view.MainView;
 import viewmodel.MainViewViewModel;
@@ -15,11 +17,14 @@ public class ClientSetUp extends Application
    {
       AirTrafficControlGroundSimulator model = new AirTrafficControlGroundSimulatorModel();
       MainViewViewModel mvvm = new MainViewViewModel(model);
-      MainView view = new MainView(stage, mvvm);
+      MainView mv = new MainView(stage, mvvm);
+      mv.start();
       TestTimerRunnable timer = new TestTimerRunnable(model);
       Thread thread = new Thread(timer);
-      view.start();
       thread.start();
+      
+
+
    }
 
 }

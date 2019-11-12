@@ -1,5 +1,6 @@
 package model;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public interface GroundRadarModel
@@ -8,6 +9,8 @@ public interface GroundRadarModel
 
    ArrayList<GroundNode> getGroundNodes();
 
-   int[] movePlane(int startLocation, int endLocation);
+   void addPropertyChangeListener(PropertyChangeListener listener);
+
+   double[] movePlane(int startLocation, int endLocation);
 
 }

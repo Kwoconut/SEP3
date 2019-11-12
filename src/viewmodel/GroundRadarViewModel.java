@@ -1,84 +1,108 @@
 package viewmodel;
 
-import java.util.ArrayList;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.GroundNode;
+import model.GroundNodeModel;
 import model.GroundRadarModel;
 import model.Plane;
+import model.PlaneModel;
 
-public class GroundRadarViewModel
+public class GroundRadarViewModel implements PropertyChangeListener
 {
-   private GroundRadarModel model;
    private ObservableList<PlaneViewModel> planes;
-   private ObjectProperty<PlaneViewModel> selectedPlane;
    private ObservableList<GroundNodeViewModel> groundNodes;
-   private ObjectProperty<GroundNodeViewModel> selectedNode;
+   private ObjectProperty<GroundNodeViewModel> selectedStartNode;
+   private ObjectProperty<GroundNodeViewModel> selectedEndNode;
+   private ObjectProperty<PlaneViewModel> selectedPlane;
+   private GroundRadarModel model;
+   private GroundNodeModel groundNodeViewModel;
+   private PlaneModel planeViewModel;
 
-   public GroundRadarViewModel(GroundRadarModel model)
+   public GroundRadarViewModel(GroundRadarModel model,
+         GroundNodeModel groundNodeViewModel, PlaneModel planeViewModel)
    {
       this.model = model;
+      this.groundNodeViewModel = groundNodeViewModel;
+      this.planeViewModel = planeViewModel;
       this.planes = FXCollections.observableArrayList();
       this.groundNodes = FXCollections.observableArrayList();
-   }
-
-   public ObservableList<GroundNodeViewModel> getGroundNodes()
-   {
-      ArrayList<GroundNode> modelNodes = model.getGroundNodes();
-
-      for (int i = 0; i < modelNodes.size(); i++)
+      this.selectedStartNode = new SimpleObjectProperty<GroundNodeViewModel>();
+      this.selectedEndNode = new SimpleObjectProperty<GroundNodeViewModel>();
+      this.selectedPlane = new SimpleObjectProperty<PlaneViewModel>();
+      for (int i = 0; i < this.model.getGroundNodes().size(); i++)
       {
-         groundNodes.add(new GroundNodeViewModel(
-               modelNodes.get(i).getPosition().getXCoordinate(),
-               modelNodes.get(i).getPosition().getYCoordinate(),
-               modelNodes.get(i).getNodeId(), modelNodes.get(i).getName()));
+         this.groundNodes.add(new GroundNodeViewModel(this.groundNodeViewModel,
+               this.model.getGroundNodes().get(i)));
       }
-
-      return groundNodes;
+      this.model.addPropertyChangeListener(this);
 
    }
 
    public ObservableList<PlaneViewModel> getPlanes()
    {
-      ArrayList<Plane> modelPlanes = model.getPlanes();
-
-      planes.add(new PlaneViewModel(modelPlanes.get(0).getCallSign(),
-            modelPlanes.get(0).getStatus(),
-            modelPlanes.get(0).getPosition().getXCoordinate(),
-            modelPlanes.get(0).getPosition().getYCoordinate()));
-      for (int i = 0; i < modelPlanes.size(); i++)
-      {
-         if (!planes.get(i).getCallSignProperty().get()
-               .equals(modelPlanes.get(i).getCallSign()) || planes.size() == 0)
-         {
-            planes.add(new PlaneViewModel(modelPlanes.get(i).getCallSign(),
-                  modelPlanes.get(i).getStatus(),
-                  modelPlanes.get(i).getPosition().getXCoordinate(),
-                  modelPlanes.get(i).getPosition().getYCoordinate()));
-         }
-
-      }
       return planes;
    }
 
-   public void setSelectedPlane(PlaneViewModel selectedPlane)
+   public ObservableList<GroundNodeViewModel> getGroundNodes()
    {
-      this.selectedPlane = new SimpleObjectProperty<PlaneViewModel>(
-            selectedPlane);
+      return groundNodes;
    }
 
-   public void setSelectedNode(GroundNodeViewModel selectedNode)
+   public ObjectProperty<GroundNodeViewModel> getSelectedStartNode()
    {
-      this.selectedNode = new SimpleObjectProperty<GroundNodeViewModel>(
-            selectedNode);
+      return selectedStartNode;
    }
 
-   public int[] movePlane(int startLocation, int endLocation)
+   public ObjectProperty<GroundNodeViewModel> getSelectedEndNode()
    {
-      return this.model.movePlane(startLocation, endLocation);
+      return selectedEndNode;
+   }
+
+   public ObjectProperty<PlaneViewModel> getSelectedPlane()
+   {
+      return selectedPlane;
+   }
+
+   public void setSelectedGroundStartNode(GroundNodeViewModel selectedNode)
+   {
+      this.selectedStartNode.setValue(selectedNode);
+
+   }
+
+   public void setSelectedGroundEndNode(GroundNodeViewModel selectedNode)
+   {
+      this.selectedEndNode.setValue(selectedNode);
+   }
+
+   public void setSelectedPlane(PlaneViewModel plane)
+   {
+      this.selectedPlane.setValue(plane);
+   }
+
+   public double[] movePlane()
+   {
+      return this.model.movePlane(
+            this.selectedStartNode.get().getIDProperty().get(),
+            this.selectedEndNode.get().getIDProperty().get());
+   }
+
+   @Override
+   public void propertyChange(PropertyChangeEvent evt)
+   {
+      Platform.runLater(() -> {
+         if (evt.getPropertyName().equals("planeADD"))
+         {
+            planes.add(new PlaneViewModel(this.planeViewModel,
+                  (Plane) evt.getNewValue()));
+         }
+      });
+
    }
 
 }

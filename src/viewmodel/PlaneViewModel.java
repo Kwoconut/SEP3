@@ -1,12 +1,18 @@
 package viewmodel;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.GroundRadarModel;
+import model.Plane;
 import model.PlaneModel;
 import model.Position;
 
@@ -14,24 +20,19 @@ public class PlaneViewModel
 {
    private StringProperty callSignProperty;
    private StringProperty statusProperty;
-   private IntegerProperty xProperty;
-   private IntegerProperty yProperty;
+   private DoubleProperty xProperty;
+   private DoubleProperty yProperty;
+   private PlaneModel model;
 
-   public PlaneViewModel()
+   public PlaneViewModel(PlaneModel model, Plane plane)
    {
-      callSignProperty = new SimpleStringProperty("");
-      statusProperty = new SimpleStringProperty("");
-      xProperty = new SimpleIntegerProperty(0);
-      yProperty = new SimpleIntegerProperty(0);
-   }
-
-   public PlaneViewModel(String callSignProperty, String statusProperty,
-         int xProperty, int yProperty)
-   {
-      this.callSignProperty = new SimpleStringProperty(callSignProperty);
-      this.statusProperty = new SimpleStringProperty(statusProperty);
-      this.xProperty = new SimpleIntegerProperty(xProperty);
-      this.yProperty = new SimpleIntegerProperty(yProperty);
+      this.model = model;
+      callSignProperty = new SimpleStringProperty(plane.getCallSign());
+      statusProperty = new SimpleStringProperty(plane.getStatus());
+      xProperty = new SimpleDoubleProperty(
+            plane.getPosition().getXCoordinate());
+      yProperty = new SimpleDoubleProperty(
+            plane.getPosition().getYCoordinate());
    }
 
    public StringProperty getCallSignProperty()
@@ -44,12 +45,12 @@ public class PlaneViewModel
       return statusProperty;
    }
 
-   public IntegerProperty getXProperty()
+   public DoubleProperty getXProperty()
    {
       return xProperty;
    }
 
-   public IntegerProperty getYProperty()
+   public DoubleProperty getYProperty()
    {
       return yProperty;
    }
@@ -66,4 +67,5 @@ public class PlaneViewModel
             && other.getStatusProperty().get()
                   .equals(this.statusProperty.get());
    }
+
 }

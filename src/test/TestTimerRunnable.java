@@ -18,18 +18,17 @@ public class TestTimerRunnable implements Runnable
 
    private void createDummyData()
    {
-      Plane plane1 = new Plane("WZ2356", "", "", "", null,
-            new Position(80, 70));
-      Plane plane2 = new Plane("LF21Z3", "", "", "", null,
-            new Position(80, 70));
-      Plane plane3 = new Plane("YOLO", "", "", "", null, new Position(80, 70));
-      Plane plane4 = new Plane("AYYYY", "", "", "", null, new Position(80, 70));
+      Plane plane1 = new Plane("WZ2432", "Airbus 700", "WizzAir", "In air",
+            null, new Position(0, 114), 50);
+      Plane plane2 = new Plane("LT2332", "Airbus 700", "WizzAir", "In air",
+            null, new Position(0, 114), 50);
+      Plane plane3 = new Plane("TAROM", "Airbus 700", "WizzAir", "In air",
+            null, new Position(0, 114), 50);
 
       planes = new ArrayList<Plane>();
       planes.add(plane1);
       planes.add(plane2);
       planes.add(plane3);
-      planes.add(plane4);
 
    }
 

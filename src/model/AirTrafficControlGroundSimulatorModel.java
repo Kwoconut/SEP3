@@ -1,10 +1,14 @@
 package model;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import client.Client;
 import client.IClient;
+import javafx.application.Platform;
 
 public class AirTrafficControlGroundSimulatorModel
       implements AirTrafficControlGroundSimulatorModelClientHandler,
@@ -17,12 +21,11 @@ public class AirTrafficControlGroundSimulatorModel
    private ArrayList<Plane> planes;
    private AirportGraph airportGraph;
    private IClient client;
+   private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
    public AirTrafficControlGroundSimulatorModel()
    {
       planes = new ArrayList<Plane>();
-      planes.add(new Plane("WZ2345", "Boeing 747", "WizzAir", "Air", null,
-            new Position(80, 150)));
       airportGraph = new AirportGraph();
    }
 
@@ -30,7 +33,6 @@ public class AirTrafficControlGroundSimulatorModel
    public void getPlanesFromServer(ArrayList<Plane> planes)
    {
       this.planes = planes;
-      System.out.println("Client got plane list from server");
    }
 
    @Override
@@ -54,6 +56,7 @@ public class AirTrafficControlGroundSimulatorModel
    public void addPlane(Plane plane)
    {
       planes.add(plane);
+      support.firePropertyChange("planeADD", " ", plane);
    }
 
    @Override
@@ -62,21 +65,33 @@ public class AirTrafficControlGroundSimulatorModel
       return airportGraph.getGroundNodes();
    }
 
-   public int[] movePlane(int startLocation, int endLocation)
+   public double[] movePlane(int startLocation, int endLocation)
    {
       ArrayList<GroundNode> shortestGroundPath = airportGraph
             .calculateShortestDistance(
                   airportGraph.getGroundNodes().get(startLocation),
                   airportGraph.getGroundNodes().get(endLocation));
 
-      int[] shortestPath = new int[shortestGroundPath.size()];
+      double[] shortestPath = new double[shortestGroundPath.size() * 2];
 
-      for (int i = 0; i < shortestPath.length; i++)
+      int j = 0;
+      for (int i = 0; i < shortestGroundPath.size(); i++)
       {
-         shortestPath[i] = shortestGroundPath.get(i).getNodeId();
+         shortestPath[j] = shortestGroundPath.get(i).getPosition()
+               .getXCoordinate();
+         shortestPath[j + 1] = shortestGroundPath.get(i).getPosition()
+               .getYCoordinate();
+         j = j + 2;
       }
 
       return shortestPath;
+   }
+
+   @Override
+   public void addPropertyChangeListener(PropertyChangeListener listener)
+   {
+      support.addPropertyChangeListener(listener);
+
    }
 
 }

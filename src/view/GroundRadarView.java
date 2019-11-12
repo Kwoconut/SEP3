@@ -1,7 +1,5 @@
 package view;
 
-import java.util.Random;
-
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.collections.FXCollections;
@@ -11,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -18,47 +18,59 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import viewmodel.GroundNodeViewModel;
 import viewmodel.GroundRadarViewModel;
 import viewmodel.PlaneViewModel;
 
 public class GroundRadarView
 {
-
-   private GroundRadarViewModel viewModel;
-
    @FXML
    private Pane mainPane;
 
-   private ObservableList<PlaneViewModel> planes;
-   private ObservableList<Pane> planeObjects;
+   @FXML
+   private TableView<PlaneViewModel> planeListTable;
+
+   @FXML
+   private TableColumn<PlaneViewModel, String> callSignColumn;
+
+   @FXML
+   private TableColumn<PlaneViewModel, String> statusColumn;
+
+   private GroundRadarViewModel viewModel;
+
    private PlaneViewModel lastPlane;
-   private Pane selectedPane;
-   private Circle selectedCircle;
-   private ObservableList<GroundNodeView> groundNodes;
 
-   public void init(GroundRadarViewModel viewModel)
+   private ObservableList<Pane> planePanes;
+   private ObservableList<Circle> groundNodes;
+   private Pane selectedPlane;
+
+   public void init(GroundRadarViewModel groundRadarViewModel)
    {
-      this.viewModel = viewModel;
+      planePanes = FXCollections.observableArrayList();
+      groundNodes = FXCollections.observableArrayList();
       lastPlane = null;
-      planeObjects = FXCollections.observableArrayList();
-      this.groundNodes = FXCollections.observableArrayList();
-      ObservableList<GroundNodeViewModel> groundNodesViewModel = this.viewModel
-            .getGroundNodes();
-
-      for (int i = 0; i < groundNodesViewModel.size(); i++)
+      selectedPlane = null;
+      this.viewModel = groundRadarViewModel;
+      for (int i = 0; i < this.viewModel.getGroundNodes().size(); i++)
       {
-         this.groundNodes.add(new GroundNodeView());
-         this.groundNodes.get(i).getCircle().centerXProperty()
-               .bind(groundNodesViewModel.get(i).getXPositionProperty());
-         this.groundNodes.get(i).getCircle().centerYProperty()
-               .bind(groundNodesViewModel.get(i).getYPositionProperty());
-         this.groundNodes.get(i)
-               .setCircleID(groundNodesViewModel.get(i).getIdProperty().get());
-         this.mainPane.getChildren().add(this.groundNodes.get(i).getCircle());
+         Circle circle = new Circle(10);
+         circle.centerXProperty()
+               .bind(this.viewModel.getGroundNodes().get(i).getXProperty());
+         circle.centerYProperty()
+               .bind(this.viewModel.getGroundNodes().get(i).getYProperty());
+         circle.setFill(Color.YELLOW);
+         circle.setStroke(Color.BLACK);
+         groundNodes.add(circle);
+         mainPane.getChildren().add(circle);
       }
+
+      callSignColumn.setCellValueFactory(
+            cellData -> cellData.getValue().getCallSignProperty());
+      statusColumn.setCellValueFactory(
+            cellData -> cellData.getValue().getStatusProperty());
+      planeListTable.setItems(this.viewModel.getPlanes());
 
       mainPane.addEventFilter(MouseEvent.MOUSE_PRESSED,
             new EventHandler<MouseEvent>()
@@ -66,99 +78,106 @@ public class GroundRadarView
                @Override
                public void handle(MouseEvent e)
                {
-                  if (selectedPane != null)
+                  if (selectedPlane != null)
                   {
-                     int startLocation = 0;
-                     int endLocation = 0;
-                     System.out.println(selectedCircle);
                      for (int i = 0; i < groundNodes.size(); i++)
                      {
-                        if (groundNodes.get(i).getCircle()
-                              .equals((selectedCircle)))
-                        {
-                           startLocation = groundNodes.get(i).getCircleID();
-                        }
-
-                        if (groundNodes.get(i).getCircle().getBoundsInParent()
+                        if (groundNodes.get(i).getBoundsInParent()
                               .contains(e.getSceneX(), e.getSceneY()))
                         {
-                           endLocation = groundNodes.get(i).getCircleID();
+                           viewModel.setSelectedGroundEndNode(
+                                 viewModel.getGroundNodes().get(i));
+                        }
+                     }
+                     double[] points = viewModel.movePlane();
+                     selectedPlane.setEffect(null);
+                     PathTransition pathTransition = new PathTransition();
+                     Polyline polyline = new Polyline();
+                     polyline.getPoints().addAll(selectedPlane.getTranslateX()+10,
+                           selectedPlane.getTranslateY()+10);
+                     for (int i = 0; i < points.length; i++)
+                     {
+                        polyline.getPoints().add(points[i]);
+                     }
+                     pathTransition.setNode(selectedPlane);
+                     pathTransition.setPath(polyline);
+                     pathTransition
+                           .setDuration(Duration.seconds(points.length * 5));
+                     for (int i = 0; i < viewModel.getPlanes().size(); i++)
+                     {
+                        if (viewModel.getPlanes().get(i).getCallSignProperty()
+                              .get().equals(((Text) (selectedPlane.getChildren()
+                                    .get(0))).textProperty().get()))
+                        {
+                           viewModel.getPlanes().get(i).getStatusProperty()
+                                 .setValue("Taxi");
                         }
                      }
 
-                     int shortestPathId[] = viewModel.movePlane(startLocation,
-                           endLocation);
-
-                     Polyline path = new Polyline();
-/*
- * path.getPoints().add(selectedPane.getTranslateX() + 10);
- * path.getPoints().add(selectedPane.getTranslateY() + 10);
- */
-                     for (int i = 0; i < shortestPathId.length; i++)
-                     {
-
-                        path.getPoints().add(groundNodes.get(shortestPathId[i])
-                              .getCircle().centerXProperty().get());
-                        path.getPoints().add(groundNodes.get(shortestPathId[i])
-                              .getCircle().centerYProperty().get());
-                     }
-
-                     System.out.println(path.getPoints());
-
-                     PathTransition pathTransition = new PathTransition();
-                     pathTransition.setNode(selectedPane);
-                     pathTransition.setPath(path);
-                     pathTransition.setDuration(
-                           Duration.seconds(5 * shortestPathId.length));
                      pathTransition.play();
-                     selectedPane.setEffect(null);
-                     selectedPane = null;
-                     selectedCircle = null;
-
+                     selectedPlane = null;
+                     viewModel.setSelectedGroundStartNode(null);
+                     viewModel.setSelectedGroundEndNode(null);
                   }
+
                }
+
             });
 
       AnimationTimer timer = new AnimationTimer()
       {
-         @Override
          public void handle(long now)
          {
-            onUpdate();
+            updatePlanes();
          }
       };
       timer.start();
 
    }
 
-   private void onUpdate()
+   private void updatePlanes()
    {
-      planes = viewModel.getPlanes();
-      if (!(planes.get(planes.size() - 1).equals(lastPlane)))
+      if (this.viewModel.getPlanes().isEmpty())
       {
-         lastPlane = planes.get(planes.size() - 1);
+         return;
+      }
+
+      if (!(this.viewModel.getPlanes()
+            .get(this.viewModel.getPlanes().size() - 1).equals(lastPlane)))
+      {
+         lastPlane = this.viewModel.getPlanes()
+               .get(this.viewModel.getPlanes().size() - 1);
          Pane pane = new Pane();
-         Text text = new Text();
-         planeObjects.add(pane);
-         mainPane.getChildren().add(pane);
-
-         text.textProperty()
-               .bind(planes.get(planes.size() - 1).getCallSignProperty());
-         text.setStroke(Color.GREEN);
-
          pane.setPrefSize(20, 20);
-
-         pane.getChildren().add(text);
-         text.xProperty().set(20);
-         text.setFill(Color.GREEN);
-
          pane.setStyle("-fx-background-color: green");
-
+         Text callSignText = new Text();
+         callSignText.textProperty()
+               .bind(this.viewModel.getPlanes()
+                     .get(this.viewModel.getPlanes().size() - 1)
+                     .getCallSignProperty());
+         callSignText.setFill(Color.GREEN);
+         callSignText.translateYProperty().setValue(-5);
+         callSignText.translateXProperty().setValue(10);
+         pane.translateXProperty().bindBidirectional(lastPlane.getXProperty());
+         pane.translateYProperty().bindBidirectional(lastPlane.getYProperty());
+         pane.getChildren().addAll(callSignText);
+         mainPane.getChildren().add(pane);
          PathTransition transition = new PathTransition();
-
+         Line line = new Line(0, 114, 1300, 114);
          transition.setNode(pane);
-         transition.setDuration(Duration.seconds(20));
-         transition.setPath(new Polyline(80, 114, 1300, 114));
+         transition.setPath(line);
+         transition.setDuration(Duration.seconds(10));
+         transition.setOnFinished(event -> {
+            for (int i = 0; i < this.viewModel.getPlanes().size(); i++)
+            {
+               if (this.viewModel.getPlanes().get(i).getCallSignProperty().get()
+                     .equals(callSignText.textProperty().get()))
+               {
+                  this.viewModel.getPlanes().get(i).getStatusProperty()
+                        .setValue("Landed");
+               }
+            }
+         });
          transition.play();
 
          pane.addEventFilter(MouseEvent.MOUSE_PRESSED,
@@ -167,9 +186,9 @@ public class GroundRadarView
                   @Override
                   public void handle(MouseEvent e)
                   {
-                     if (selectedCircle == null)
+                     if (viewModel.getSelectedStartNode().get() == null)
                      {
-                        selectedPane = pane;
+                        selectedPlane = pane;
                         int depth = 70; // Setting the uniform variable for the
                                         // glow width and height
 
@@ -181,11 +200,19 @@ public class GroundRadarView
                         borderGlow.setHeight(depth);
 
                         pane.setEffect(borderGlow);
-                        selectedCircle = findNearestGroundNode(
+                        Circle circle = findNearestGroundNode(
                               mainPane.getChildren(),
                               pane.translateXProperty().get(),
                               pane.translateYProperty().get());
-                        System.out.println(selectedCircle);
+                        for (int i = 0; i < groundNodes.size(); i++)
+                        {
+                           if (circle.equals(groundNodes.get(i)))
+                           {
+                              viewModel.setSelectedGroundStartNode(
+                                    viewModel.getGroundNodes().get(i));
+                              return;
+                           }
+                        }
                      }
 
                   }
@@ -227,4 +254,5 @@ public class GroundRadarView
 
       return nearestNode;
    }
+
 }

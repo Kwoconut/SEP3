@@ -4,29 +4,19 @@ import model.AirTrafficControlGroundSimulator;
 
 public class MainViewViewModel
 {
-   
-   private GroundRadarViewModel groundRadarViewModel;
-   private PlaneViewModel planeViewModel;
+
    private AirTrafficControlGroundSimulator model;
-   private GroundNodeViewModel groundNodeViewModel;
-   
+   private GroundRadarViewModel groundRadarViewModel;
+
    public MainViewViewModel(AirTrafficControlGroundSimulator model)
    {
       this.model = model;
-      this.groundRadarViewModel = new GroundRadarViewModel(model);
-      this.planeViewModel = new PlaneViewModel();
-      this.groundNodeViewModel = new GroundNodeViewModel(model);
-      
+      this.groundRadarViewModel = new GroundRadarViewModel(model, model, model);
    }
-   
+
    public GroundRadarViewModel getGroundRadarViewModel()
    {
       return groundRadarViewModel;
-   }
-   
-   public PlaneViewModel getPlaneViewModel()
-   {
-      return planeViewModel;
    }
 
 }

@@ -1,55 +1,40 @@
 package viewmodel;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import model.GroundNode;
 import model.GroundNodeModel;
 
 public class GroundNodeViewModel
 {
-
-   private GroundNodeModel model;
-   private IntegerProperty xPositionProperty;
-   private IntegerProperty yPositionProperty;
+   private DoubleProperty xProperty;
+   private DoubleProperty yProperty;
    private IntegerProperty idProperty;
-   private StringProperty nameProperty;
+   private GroundNodeModel model;
 
-   public GroundNodeViewModel(GroundNodeModel model)
+   public GroundNodeViewModel(GroundNodeModel model, GroundNode node)
    {
       this.model = model;
-      this.xPositionProperty = new SimpleIntegerProperty(0);
-      this.yPositionProperty = new SimpleIntegerProperty(0);
-      this.idProperty = new SimpleIntegerProperty(0);
-      this.nameProperty = new SimpleStringProperty("");
+      xProperty = new SimpleDoubleProperty(node.getPosition().getXCoordinate());
+      yProperty = new SimpleDoubleProperty(node.getPosition().getYCoordinate());
+      idProperty = new SimpleIntegerProperty(node.getNodeId());
    }
 
-   public GroundNodeViewModel(int xPosition, int yPosition, int id, String name)
+   public DoubleProperty getXProperty()
    {
-      this.xPositionProperty = new SimpleIntegerProperty(xPosition);
-      this.yPositionProperty = new SimpleIntegerProperty(yPosition);
-      this.idProperty = new SimpleIntegerProperty(id);
-      this.nameProperty = new SimpleStringProperty(name);
+      return xProperty;
    }
 
-   public IntegerProperty getXPositionProperty()
+   public DoubleProperty getYProperty()
    {
-      return xPositionProperty;
+      return yProperty;
    }
 
-   public IntegerProperty getYPositionProperty()
-   {
-      return yPositionProperty;
-   }
-
-   public IntegerProperty getIdProperty()
+   public IntegerProperty getIDProperty()
    {
       return idProperty;
-   }
-
-   public StringProperty getNameProperty()
-   {
-      return nameProperty;
    }
 
    public boolean equals(Object obj)
@@ -59,7 +44,9 @@ public class GroundNodeViewModel
          return false;
       }
       GroundNodeViewModel other = (GroundNodeViewModel) obj;
-      return other.getIdProperty().get() == idProperty.get();
+      return other.getIDProperty().get() == idProperty.get()
+            && other.getYProperty().get() == yProperty.get()
+            && other.getXProperty().get() == xProperty.get();
    }
 
 }

@@ -1,26 +1,29 @@
 package model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
 public class Position implements Serializable
 {
-   private int xCoordinate;
-   private int yCoordinate;
-
-   public Position(int xCoordinate, int yCoordinate)
+   private double xCoordinate;
+   private double yCoordinate;
+   
+   public Position(double xCoordinate, double yCoordinate)
    {
       this.xCoordinate = xCoordinate;
       this.yCoordinate = yCoordinate;
    }
 
-   public int getXCoordinate()
+   public double getXCoordinate()
    {
       return xCoordinate;
    }
 
-   public int getYCoordinate()
+   public double getYCoordinate()
    {
       return yCoordinate;
    }
+
 
 }
