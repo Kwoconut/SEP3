@@ -38,7 +38,7 @@ public class Server implements RemoteServer
 	{
 		System.out.println("Starting socket part");
 		System.out.println("Waiting for clients ...");
-			Socket socket = new Socket("10.152.202.49", 200);
+			Socket socket = new Socket("10.152.194.117", 200);
 			Thread t = new Thread(new ServerSocketHandler(model,socket));
 			t.start();
 	}

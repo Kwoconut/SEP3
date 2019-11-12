@@ -42,8 +42,6 @@ public class ServerSocketHandler implements Runnable {
 	@Override
 	public void run() {
 		requestPlanes();
-		System.out.println("data sent");
-
 		while (true) {
 			try {
 				byte[] lenBytes = new byte[4];
@@ -55,8 +53,7 @@ public class ServerSocketHandler implements Runnable {
 		        String received = new String(receivedBytes, 0, len);
 		        Gson gson = new Gson();
 		        Plane[] jsonString = gson.fromJson(received, Plane[].class );
-		        System.out.println("Array of Planes" + jsonString);
-		        System.out.println("Server received: " + received);
+System.out.println("data from server recieved");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -80,6 +77,7 @@ public class ServerSocketHandler implements Runnable {
 	         toSendLenBytes[3] = (byte)((toSendLen >> 24) & 0xff);
 	         out.write(toSendLenBytes);
 	         out.write(toSendBytes);
+	         System.out.println("A request has been sent");
 	      }
 	      catch (Exception e)
 	      {
