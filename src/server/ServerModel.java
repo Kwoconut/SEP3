@@ -1,20 +1,17 @@
 package server;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import model.Checkpoint;
-import model.FlightPlan;
 import model.Plane;
-import model.Position;
 
 public class ServerModel 
 {	
 	private ArrayList<Plane> planes;
+	private ArrayList<Plane> groundPlanes;
 	
 	public ServerModel()
 	{
 		planes = new ArrayList<Plane>();
+		groundPlanes = new ArrayList<Plane>();
 	}
 	public void loadPlanesFromDatabase(ArrayList<Plane> planes) 
 	{
@@ -25,5 +22,17 @@ public class ServerModel
 	{
 		return planes;
 	}	
+	
+	public ArrayList<Plane> getGroundPlanes()
+	{
+		if (groundPlanes.size() ==-1)
+		{
+		}
+		return groundPlanes;
+	}
+	public void addGroundPlane(Plane plane)
+	{
+		groundPlanes.add(plane);
+	}
 	
 }

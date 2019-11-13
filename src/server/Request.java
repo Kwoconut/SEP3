@@ -5,7 +5,12 @@ import java.io.Serializable;
 public class Request implements Serializable
 {
 
-	   public enum TYPE {
+	   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public enum TYPE {
 	      PLANESREQUEST,
 	   }
 	   

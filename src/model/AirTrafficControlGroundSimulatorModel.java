@@ -49,6 +49,12 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
+   public void getGroundPlanesFromServer(ArrayList<Plane> planes) {
+	   this.planes = planes;
+	   
+   }
+   
+   @Override
    public void addPropertyChangeListener(PropertyChangeListener listener)
    {
       support.addPropertyChangeListener(listener);
@@ -61,5 +67,6 @@ public class AirTrafficControlGroundSimulatorModel
       // TODO Auto-generated method stub
       return null;
    }
+
 
 }
