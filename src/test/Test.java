@@ -17,8 +17,8 @@ public class Test
 
       AirTrafficControlGroundSimulatorModel model = new AirTrafficControlGroundSimulatorModel();
       
-      model.addPlane(new Plane("asd","asd","asd","asd",null,new Position(20,20),60));
-      model.addPlane(new Plane("asd","asd","asd","asd",null,new Position(50,50),60));
+/*      model.addPlane(new Plane("asd","asd","asd","asd",null,new Position(20,20),60));
+      model.addPlane(new Plane("asd","asd","asd","asd",null,new Position(50,50),60));*/
       
 
    }

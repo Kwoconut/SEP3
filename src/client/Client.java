@@ -36,11 +36,4 @@ public class Client implements RIClient, IClient, Serializable
       model.getPlaneFromServer(plane);
    }
 
-   public static void main(String[] args)
-         throws MalformedURLException, RemoteException, NotBoundException
-   {
-      AirTrafficControlGroundSimulatorModelClientHandler model = new AirTrafficControlGroundSimulatorModel();
-      Client client = new Client(model);
-   }
-
 }

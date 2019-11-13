@@ -11,8 +11,7 @@ import client.IClient;
 import javafx.application.Platform;
 
 public class AirTrafficControlGroundSimulatorModel
-      implements AirTrafficControlGroundSimulatorModelClientHandler,
-      AirTrafficControlGroundSimulator, Serializable
+      implements AirTrafficControlGroundSimulator, Serializable
 {
    /**
     * 
@@ -32,12 +31,9 @@ public class AirTrafficControlGroundSimulatorModel
    @Override
    public void getPlaneFromServer(Plane plane)
    {
-	   //
-	   //
-	   //
-	   //
-	   //
-      this.planes.add(plane);
+      planes.add(plane);
+      System.out.println(plane);
+      support.firePropertyChange("planeADD", " ", plane);
    }
 
    @Override

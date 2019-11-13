@@ -9,58 +9,52 @@ import javafx.application.Platform;
 
 public class Plane implements Serializable
 {
-   private String callSign;
-   private String model;
-   private String company;
-   private String status;
-   private FlightPlan flightPlan;
-   private Position position;
-   private double speed;
+   private String CallSign;
+   private String Model;
+   private String Company;
+   private String Status;
+//   private FlightPlan FlightPlan;
+   private Position Position;
+   
    public Plane(String callSign, String model, String company, String status,
-         FlightPlan flightPlan, Position position, double speed)
+          Position position)
    {
-      this.callSign = callSign;
-      this.model = model;
-      this.company = company;
-      this.status = status;
-      this.flightPlan = flightPlan;
-      this.position = position;
-      this.speed = speed;
+      this.CallSign = callSign;
+      this.Model = model;
+      this.Company = company;
+      this.Status = status;
+  //    this.FlightPlan = flightPlan;
+      this.Position = position;
    }
 
    public String getCallSign()
    {
-      return callSign;
+      return CallSign;
    }
 
    public String getModel()
    {
-      return model;
+      return Model;
    }
 
    public String getCompany()
    {
-      return company;
+      return Company;
    }
 
    public String getStatus()
    {
-      return status;
+      return Status;
    }
 
-   public FlightPlan getFlightPlan()
+/*   public FlightPlan getFlightPlan()
    {
-      return flightPlan;
-   }
+      return FlightPlan;
+   }*/
 
    public Position getPosition()
    {
-      return position;
-   }
-
-   public double getSpeed()
-   {
-      return speed;
+      return Position;
    }
 
 }

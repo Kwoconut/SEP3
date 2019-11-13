@@ -6,23 +6,23 @@ import java.io.Serializable;
 
 public class Position implements Serializable
 {
-   private double xCoordinate;
-   private double yCoordinate;
+   private double XCoordinate;
+   private double YCoordinate;
    
    public Position(double xCoordinate, double yCoordinate)
    {
-      this.xCoordinate = xCoordinate;
-      this.yCoordinate = yCoordinate;
+      this.XCoordinate = xCoordinate;
+      this.YCoordinate = yCoordinate;
    }
 
    public double getXCoordinate()
    {
-      return xCoordinate;
+      return XCoordinate;
    }
 
    public double getYCoordinate()
    {
-      return yCoordinate;
+      return YCoordinate;
    }
 
 

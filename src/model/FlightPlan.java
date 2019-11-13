@@ -5,22 +5,22 @@ import java.util.Date;
 
 public class FlightPlan implements Serializable
 {
-   private String id;
-   private Date departureTime;
-   private Date arrivalTime;
-   private Date delay;
-   private String startLocation;
-   private String endLocation;
+   private int Id;
+   private Date DepartureTime;
+   private Date ArrivalTime;
+   private Date Delay;
+   private String StartLocation;
+   private String EndLocation;
 
-   public FlightPlan(String id, Date departureTime, Date arrivalTime,
-         Date delay, String startLocation, String endLocation)
+   public FlightPlan(int id, Date departureTime, Date arrivalTime, Date delay,
+         String startLocation, String endLocation)
    {
-      this.id = id;
-      this.departureTime = departureTime;
-      this.arrivalTime = arrivalTime;
-      this.delay = delay;
-      this.startLocation = startLocation;
-      this.endLocation = endLocation;
+      this.Id = id;
+      this.DepartureTime = departureTime;
+      this.ArrivalTime = arrivalTime;
+      this.Delay = delay;
+      this.StartLocation = startLocation;
+      this.EndLocation = endLocation;
    }
 
 }
