@@ -18,14 +18,14 @@ public class AirTrafficControlGroundSimulatorModel
     */
    private static final long serialVersionUID = 3218559717712719996L;
    private ArrayList<Plane> planes;
-   private AirportGraph airportGraph;
+   private ArrayList<GroundNode> groundNodes;
    private IClient client;
    private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
    public AirTrafficControlGroundSimulatorModel()
    {
       planes = new ArrayList<Plane>();
-      airportGraph = new AirportGraph();
+      groundNodes = new ArrayList<GroundNode>();
    }
 
    @Override
@@ -42,11 +42,6 @@ public class AirTrafficControlGroundSimulatorModel
       this.client = client;
    }
 
-   public AirportGraph getAirportGraph()
-   {
-      return airportGraph;
-   }
-
    @Override
    public ArrayList<Plane> getPlanes()
    {
@@ -54,45 +49,17 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public void addPlane(Plane plane)
+   public void addPropertyChangeListener(PropertyChangeListener listener)
    {
-      planes.add(plane);
-      support.firePropertyChange("planeADD", " ", plane);
+      support.addPropertyChangeListener(listener);
+
    }
 
    @Override
    public ArrayList<GroundNode> getGroundNodes()
    {
-      return airportGraph.getGroundNodes();
-   }
-
-   public double[] movePlane(int startLocation, int endLocation)
-   {
-      ArrayList<GroundNode> shortestGroundPath = airportGraph
-            .calculateShortestDistance(
-                  airportGraph.getGroundNodes().get(startLocation),
-                  airportGraph.getGroundNodes().get(endLocation));
-
-      double[] shortestPath = new double[shortestGroundPath.size() * 2];
-
-      int j = 0;
-      for (int i = 0; i < shortestGroundPath.size(); i++)
-      {
-         shortestPath[j] = shortestGroundPath.get(i).getPosition()
-               .getXCoordinate();
-         shortestPath[j + 1] = shortestGroundPath.get(i).getPosition()
-               .getYCoordinate();
-         j = j + 2;
-      }
-
-      return shortestPath;
-   }
-
-   @Override
-   public void addPropertyChangeListener(PropertyChangeListener listener)
-   {
-      support.addPropertyChangeListener(listener);
-
+      // TODO Auto-generated method stub
+      return null;
    }
 
 }

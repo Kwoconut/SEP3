@@ -6,6 +6,5 @@ public interface AirTrafficControlGroundSimulator
       extends GroundRadarModel, PlaneModel, GroundNodeModel,
       AirTrafficControlGroundSimulatorModelClientHandler
 {
-   void addPlane(Plane plane);
 
 }

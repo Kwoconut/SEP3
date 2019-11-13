@@ -11,6 +11,5 @@ public interface GroundRadarModel
 
    void addPropertyChangeListener(PropertyChangeListener listener);
 
-   double[] movePlane(int startLocation, int endLocation);
 
 }

@@ -85,13 +85,6 @@ public class GroundRadarViewModel implements PropertyChangeListener
       this.selectedPlane.setValue(plane);
    }
 
-   public double[] movePlane()
-   {
-      return this.model.movePlane(
-            this.selectedStartNode.get().getIDProperty().get(),
-            this.selectedEndNode.get().getIDProperty().get());
-   }
-
    @Override
    public void propertyChange(PropertyChangeEvent evt)
    {
