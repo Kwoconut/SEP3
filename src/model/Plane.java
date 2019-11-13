@@ -13,25 +13,25 @@ public class Plane implements Serializable
    private String CallSign;
    private String Model;
    private String Company;
-   private String Status;
 //   private FlightPlan FlightPlan;
+   private PlaneState PlaneState;
    private Position Position;
    private Position Target;
    private ArrayList<Position> Route;
    private double Speed;
+   private boolean ReadyForTakeOff;
 
-   public Plane(String callSign, String model, String company, String status,
-         Position position, double Speed)
+   public Plane(String callSign, String model, String company,
+         Position position)
    {
       this.CallSign = callSign;
       this.Model = model;
       this.Company = company;
-      this.Status = status;
       // this.FlightPlan = flightPlan;
       this.Position = position;
-      this.Speed = Speed;
       this.Target = null;
       this.Route = null;
+      this.PlaneState = new LandedState();
    }
 
    public Position getTarget()
@@ -41,7 +41,8 @@ public class Plane implements Serializable
 
    public synchronized void movePlane()
    {
-      if (!Status.equals("LANDED"))
+      if (PlaneState instanceof LandedState
+            || PlaneState instanceof BoardingState)
       {
          boolean targetReached = Position.movePosition(Target, Speed);
          if (targetReached)
@@ -49,7 +50,8 @@ public class Plane implements Serializable
             Route.remove(0);
             if (Route.isEmpty())
             {
-               Status = "LANDED";
+               setState(new LandedState());
+               this.Speed = 0;
             }
             else
             {
@@ -60,16 +62,32 @@ public class Plane implements Serializable
 
    }
 
-   public void setRoute(ArrayList<Position> Route)
+   public PlaneState getPlaneState()
+   {
+      return PlaneState;
+   }
+
+   public void setState(PlaneState PlaneState)
+   {
+      this.PlaneState = PlaneState;
+   }
+
+   public void setSpeed(double Speed)
+   {
+      this.Speed = Speed;
+   }
+
+   public synchronized void setRoute(ArrayList<Position> Route)
    {
       this.Route = Route;
       this.Target = Route.get(0);
-      this.Status = "TAXI";
+      this.PlaneState = new TaxiState();
    }
 
    public void stopPlane()
    {
-      this.Status = "LANDED";
+      this.PlaneState = new LandedState();
+      this.Speed = 0;
    }
 
    public String getCallSign()
@@ -87,9 +105,14 @@ public class Plane implements Serializable
       return Company;
    }
 
-   public String getStatus()
+   public boolean isReadyForTakeOff()
    {
-      return Status;
+      return ReadyForTakeOff;
+   }
+
+   public void setReadyForTakeOff(boolean ReadyForTakeOff)
+   {
+      this.ReadyForTakeOff = ReadyForTakeOff;
    }
 
 /*
