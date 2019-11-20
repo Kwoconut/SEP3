@@ -114,6 +114,11 @@ public class Plane implements Serializable
    {
       this.ReadyForTakeOff = ReadyForTakeOff;
    }
+   
+   public PlaneDTO convertToDTO()
+   {
+      return new PlaneDTO(this.CallSign,this.PlaneState,this.Position);
+   }
 
 /*
  * public FlightPlan getFlightPlan() { return FlightPlan; }

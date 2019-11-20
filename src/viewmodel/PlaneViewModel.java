@@ -28,7 +28,8 @@ public class PlaneViewModel
    {
       this.model = model;
       callSignProperty = new SimpleStringProperty(plane.getCallSign());
-      statusProperty = new SimpleStringProperty(plane.getStatus());
+      statusProperty = new SimpleStringProperty(
+            plane.getPlaneState().toString());
       xProperty = new SimpleDoubleProperty(
             plane.getPosition().getXCoordinate());
       yProperty = new SimpleDoubleProperty(
