@@ -12,16 +12,16 @@ public class PlaneDispatcher implements Runnable {
 
 	private void sendPlane() {
 
-		for (int i = 0; i < server.getClients().size(); i++) {
-			for (int j = 0; j < server.getModel().getPlanes().size(); j++) {
+		for (int i = 0; i < server.getModel().getPlanes().size(); i++) {
+			for (int j = 0; j < server.getClients().size(); j++) {
 				try {
-					server.sendPlane(server.getModel().getPlanes().get(j));
+					server.sendPlaneDTO(server.getModel().getPlanes().get(i).convertToDTO(),server.getClients().get(j));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				server.getModel().addGroundPlane(server.getModel().getPlanes().get(j));
 			}
+			server.getModel().addGroundPlane(server.getModel().getPlanes().get(i));
 			try {
 				//
 				//
@@ -36,7 +36,6 @@ public class PlaneDispatcher implements Runnable {
 
 	@Override
 	public void run() {
-		while(true)
 		{
 			sendPlane();
 		}

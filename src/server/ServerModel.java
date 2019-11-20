@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 import model.Plane;
+import model.PlaneDTO;
 
 public class ServerModel 
 {	
@@ -29,6 +30,16 @@ public class ServerModel
 		{
 		}
 		return groundPlanes;
+	}
+	
+	public ArrayList<PlaneDTO> getGroundPlanesDTO() {
+		if (groundPlanes.size() == -1) {
+		}
+		ArrayList<PlaneDTO> planesToSend = new ArrayList<PlaneDTO>();
+		for (int i = 0; i < groundPlanes.size(); i++) {
+			planesToSend.add(groundPlanes.get(i).convertToDTO());
+		}
+		return planesToSend;
 	}
 	public void addGroundPlane(Plane plane)
 	{

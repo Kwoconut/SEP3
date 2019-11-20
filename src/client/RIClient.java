@@ -5,12 +5,13 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import model.Plane;
+import model.PlaneDTO;
 
 public interface RIClient extends Remote
 {
-	public void getPlaneFromServer(Plane plane) throws RemoteException;
+	public void getPlaneDTOFromServer(PlaneDTO plane) throws RemoteException;
 	
-	public void getGroundPlanesFromServer(ArrayList<Plane> planes) throws RemoteException;
+	public void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes) throws RemoteException;
 	
 	public void simulationFailed() throws RemoteException;
 }

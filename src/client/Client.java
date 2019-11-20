@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import model.AirTrafficControlGroundSimulatorModelClientHandler;
 import model.Plane;
+import model.PlaneDTO;
 import server.RIServerRead;
 import server.RIServerWrite;
 import server.ServerAccess;
@@ -29,18 +30,18 @@ public class Client implements RIClient, IClient, Serializable {
 		server.addClient(this);
 		access.releaseWrite();
 		RIServerRead serverRead = access.acquireRead();
-		serverRead.getGroundPlanes(this);
+		serverRead.getGroundPlanesDTO(this);
 		access.releaseRead();
 	}
 
 	@Override
-	public void getPlaneFromServer(Plane plane) throws RemoteException {
-		model.getPlaneFromServer(plane);
+	public void getPlaneDTOFromServer(PlaneDTO plane) throws RemoteException {
+		model.getPlaneDTOFromServer(plane);
 	}
 
 	@Override
-	public void getGroundPlanesFromServer(ArrayList<Plane> planes) throws RemoteException {
-		model.getGroundPlanesFromServer(planes);
+	public void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes) throws RemoteException {
+		model.getGroundPlanesDTOFromServer(planes);
 	}
 
 	@Override

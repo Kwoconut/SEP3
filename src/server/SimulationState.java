@@ -20,7 +20,7 @@ public class SimulationState implements Runnable {
 		}
 		for (int i=0;i<server.getClients().size();i++)
 		{
-			server.getGroundPlanes(server.getClients().get(i));
+			server.getGroundPlanesDTO(server.getClients().get(i));
 		}
 	}
 	

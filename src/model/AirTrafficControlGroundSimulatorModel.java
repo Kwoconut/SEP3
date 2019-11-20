@@ -27,11 +27,11 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public void getPlaneFromServer(Plane plane)
+   public void getPlaneDTOFromServer(PlaneDTO plane)
    {
-      planes.add(plane);
-      System.out.println(plane);
-      support.firePropertyChange("planeADD", " ", plane);
+      //planes.add(plane);
+     // System.out.println(plane);
+     // support.firePropertyChange("planeADD", " ", plane);
    }
 
    @Override
@@ -47,8 +47,8 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public void getGroundPlanesFromServer(ArrayList<Plane> planes) {
-	   this.planes = planes;
+   public void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes) {
+	   //this.planes = planes;
 	   
    }
    

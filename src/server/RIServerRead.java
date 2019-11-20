@@ -8,6 +8,6 @@ import client.RIClient;
 public interface RIServerRead extends Remote
 {
 
-	void getGroundPlanes(RIClient client) throws RemoteException;
+	void getGroundPlanesDTO(RIClient client) throws RemoteException;
 
 }

@@ -6,9 +6,9 @@ import client.Client;
 
 public interface AirTrafficControlGroundSimulatorModelClientHandler 
 {	
-	void getPlaneFromServer(Plane plane);
+	void getPlaneDTOFromServer(PlaneDTO plane);
 	
-	void getGroundPlanesFromServer(ArrayList<Plane> planes);
+	void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes);
 	
 	void setClient(Client client);
 

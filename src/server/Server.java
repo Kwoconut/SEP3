@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import client.Client;
 import client.RIClient;
 import model.Plane;
+import model.PlaneDTO;
 
 public class Server implements RIServerWrite
 {
@@ -29,15 +30,14 @@ public class Server implements RIServerWrite
       clients.add(client);
    }
 
-   public void sendPlane(Plane plane) throws RemoteException
+   public void sendPlaneDTO(PlaneDTO plane,RIClient client) throws RemoteException
    {
-      int nr = clients.size() - 1;
-      clients.get(nr).getPlaneFromServer(plane);
+      client.getPlaneDTOFromServer(plane);
    }
    @Override
-   public void getGroundPlanes(RIClient client) throws RemoteException 
+   public void getGroundPlanesDTO(RIClient client) throws RemoteException 
    {
-	   client.getGroundPlanesFromServer(model.getGroundPlanes());
+	   client.getGroundPlanesDTOFromServer(model.getGroundPlanesDTO());
    }
 
    public void simulationFailed(RIClient client) throws RemoteException 
