@@ -3,6 +3,7 @@ package model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import client.Client;
@@ -41,7 +42,12 @@ public class AirTrafficControlGroundSimulatorModel
 
    public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
    {
-
+	   try {
+		client.changePlaneRoute(callSign,startNodeId,endNodeId);
+	} catch (RemoteException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
    }
 
    @Override
