@@ -16,27 +16,32 @@ public class AirTrafficControlGroundSimulatorModel
     */
    private static final long serialVersionUID = 3218559717712719996L;
    private ArrayList<PlaneDTO> planes;
-   private ArrayList<GroundNode> groundNodes;
+   private ArrayList<GroundNodeDTO> groundNodes;
    private IClient client;
    private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
    public AirTrafficControlGroundSimulatorModel()
    {
       planes = new ArrayList<PlaneDTO>();
-      groundNodes = new ArrayList<GroundNode>();
+      groundNodes = new ArrayList<GroundNodeDTO>();
    }
 
    @Override
    public void getPlaneDTOFromServer(PlaneDTO plane)
    {
-       planes.add(plane);
-       support.firePropertyChange("planeADD", " ", plane);
+      planes.add(plane);
+      support.firePropertyChange("planeADD", " ", plane);
    }
 
    @Override
    public void setClient(Client client)
    {
       this.client = client;
+   }
+
+   public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
+   {
+
    }
 
    @Override
@@ -60,7 +65,7 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public ArrayList<GroundNode> getGroundNodes()
+   public ArrayList<GroundNodeDTO> getGroundNodes()
    {
       return groundNodes;
    }

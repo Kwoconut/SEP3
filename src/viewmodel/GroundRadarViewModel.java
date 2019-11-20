@@ -85,6 +85,14 @@ public class GroundRadarViewModel implements PropertyChangeListener
       this.selectedPlane.setValue(plane);
    }
 
+   public void changePlaneRoute()
+   {
+      this.model.changePlaneRoute(
+            selectedPlane.get().getCallSignProperty().get(),
+            selectedStartNode.get().getIDProperty().get(),
+            selectedEndNode.get().getIDProperty().get());
+   }
+
    @Override
    public void propertyChange(PropertyChangeEvent evt)
    {

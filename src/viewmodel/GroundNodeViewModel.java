@@ -4,7 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import model.GroundNode;
+import model.GroundNodeDTO;
 import model.GroundNodeModel;
 
 public class GroundNodeViewModel
@@ -14,7 +14,7 @@ public class GroundNodeViewModel
    private IntegerProperty idProperty;
    private GroundNodeModel model;
 
-   public GroundNodeViewModel(GroundNodeModel model, GroundNode node)
+   public GroundNodeViewModel(GroundNodeModel model, GroundNodeDTO node)
    {
       this.model = model;
       xProperty = new SimpleDoubleProperty(node.getPosition().getXCoordinate());

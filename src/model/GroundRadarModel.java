@@ -7,9 +7,10 @@ public interface GroundRadarModel
 {
    ArrayList<PlaneDTO> getPlanes();
 
-   ArrayList<GroundNode> getGroundNodes();
+   ArrayList<GroundNodeDTO> getGroundNodes();
 
    void addPropertyChangeListener(PropertyChangeListener listener);
 
+   void changePlaneRoute(String callSign, int startNodeId, int endNodeId);
 
 }
