@@ -18,7 +18,7 @@ public class PlaneDTO
       return callSign;
    }
 
-   public PlaneState getState()
+   public PlaneState getPlaneState()
    {
       return state;
    }

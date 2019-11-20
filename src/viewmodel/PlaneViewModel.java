@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.GroundRadarModel;
 import model.Plane;
+import model.PlaneDTO;
 import model.PlaneModel;
 import model.Position;
 
@@ -24,7 +25,7 @@ public class PlaneViewModel
    private DoubleProperty yProperty;
    private PlaneModel model;
 
-   public PlaneViewModel(PlaneModel model, Plane plane)
+   public PlaneViewModel(PlaneModel model, PlaneDTO plane)
    {
       this.model = model;
       callSignProperty = new SimpleStringProperty(plane.getCallSign());
