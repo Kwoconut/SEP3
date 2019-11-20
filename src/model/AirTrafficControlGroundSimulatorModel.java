@@ -69,5 +69,19 @@ public class AirTrafficControlGroundSimulatorModel
    {
       return groundNodes;
    }
+   
+   public void addPlane(PlaneDTO plane)
+   {
+      this.planes.add(plane);
+      support.firePropertyChange("planeADD", " ", plane);
+
+   }
+   
+   public void removePlane(int index)
+   {
+      this.planes.remove(index);
+      System.out.println(index);
+      support.firePropertyChange("planeREMOVE"," ",index);
+   }
 
 }

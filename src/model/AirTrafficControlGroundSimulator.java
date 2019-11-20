@@ -5,4 +5,8 @@ public interface AirTrafficControlGroundSimulator
       AirTrafficControlGroundSimulatorModelClientHandler
 {
 
+   void addPlane(PlaneDTO plane);
+
+   void removePlane(int i);
+
 }

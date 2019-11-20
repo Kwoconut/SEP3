@@ -102,6 +102,11 @@ public class GroundRadarViewModel implements PropertyChangeListener
             planes.add(new PlaneViewModel(this.planeViewModel,
                   (PlaneDTO) evt.getNewValue()));
          }
+         else
+            if (evt.getPropertyName().equals("planeREMOVE"))
+            {
+               planes.remove((int) evt.getNewValue());
+            }
       });
 
    }
