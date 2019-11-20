@@ -12,8 +12,7 @@ public class GroundNode
    private ArrayList<Edge> jointEdges;
    private ArrayList<GroundNode> shortestPath;
 
-   public GroundNode(String name, int nodeId,
-         StaticPosition staticPosition)
+   public GroundNode(String name, int nodeId, StaticPosition staticPosition)
    {
       this.name = name;
       this.nodeId = nodeId;
@@ -80,6 +79,11 @@ public class GroundNode
    public void setShortestPath(ArrayList<GroundNode> shortestPath)
    {
       this.shortestPath = shortestPath;
+   }
+
+   public GroundNodeDTO convertToDTO()
+   {
+      return new GroundNodeDTO(this.nodeId, this.staticPosition);
    }
 
    public String toString()
