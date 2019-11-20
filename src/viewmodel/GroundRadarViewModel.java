@@ -10,7 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.GroundNodeModel;
 import model.GroundRadarModel;
-import model.Plane;
+import model.PlaneDTO;
 import model.PlaneModel;
 
 public class GroundRadarViewModel implements PropertyChangeListener
@@ -92,7 +92,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
          if (evt.getPropertyName().equals("planeADD"))
          {
             planes.add(new PlaneViewModel(this.planeViewModel,
-                  (Plane) evt.getNewValue()));
+                  (PlaneDTO) evt.getNewValue()));
          }
       });
 

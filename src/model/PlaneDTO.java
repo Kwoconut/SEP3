@@ -1,6 +1,8 @@
 package model;
 
-public class PlaneDTO
+import java.io.Serializable;
+
+public class PlaneDTO implements Serializable
 {
    private String callSign;
    private Position position;

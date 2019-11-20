@@ -1,12 +1,7 @@
 package model;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import javafx.application.Platform;
 
 public class Plane implements Serializable
 {

@@ -28,5 +28,10 @@ public class BoardingState implements PlaneState
    {
       time--;
    }
+   
+   public int getTime()
+   {
+      return time;
+   }
 
 }
