@@ -8,16 +8,16 @@ public class GroundNode
    private int distanceFromSource = Integer.MAX_VALUE;
    private int nodeId;
    private boolean isVisited;
-   private Position position;
+   private StaticPosition staticPosition;
    private ArrayList<Edge> jointEdges;
    private ArrayList<GroundNode> shortestPath;
 
    public GroundNode(String name, int nodeId,
-         Position position)
+         StaticPosition staticPosition)
    {
       this.name = name;
       this.nodeId = nodeId;
-      this.position = position;
+      this.staticPosition = staticPosition;
       this.jointEdges = new ArrayList<Edge>();
       this.shortestPath = new ArrayList<GroundNode>();
    }
@@ -32,9 +32,9 @@ public class GroundNode
       return nodeId;
    }
 
-   public Position getPosition()
+   public StaticPosition getPosition()
    {
-      return position;
+      return staticPosition;
    }
 
    public ArrayList<Edge> getJointEdges()

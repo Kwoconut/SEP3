@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class PlaneDTO implements Serializable
 {
    private String callSign;
-   private Position position;
+   private StaticPosition staticPosition;
    private PlaneState state;
 
-   public PlaneDTO(String callSign, PlaneState state, Position position)
+   public PlaneDTO(String callSign, PlaneState state, StaticPosition staticPosition)
    {
       this.callSign = callSign;
       this.state = state;
-      this.position = position;
+      this.staticPosition = staticPosition;
    }
 
    public String getCallSign()
@@ -25,9 +25,9 @@ public class PlaneDTO implements Serializable
       return state;
    }
    
-   public Position getPosition()
+   public StaticPosition getPosition()
    {
-      return position;
+      return staticPosition;
    }
 
 

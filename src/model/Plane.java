@@ -10,26 +10,26 @@ public class Plane implements Serializable
    private String Company;
 //   private FlightPlan FlightPlan;
    private PlaneState PlaneState;
-   private Position Position;
-   private Position Target;
-   private ArrayList<Position> Route;
+   private MovingPosition Position;
+   private StaticPosition Target;
+   private ArrayList<StaticPosition> Route;
    private double Speed;
    private boolean ReadyForTakeOff;
 
    public Plane(String callSign, String model, String company,
-         Position position)
+         MovingPosition position, StaticPosition target)
    {
       this.CallSign = callSign;
       this.Model = model;
       this.Company = company;
       // this.FlightPlan = flightPlan;
       this.Position = position;
-      this.Target = null;
+      this.Target = target;
       this.Route = null;
       this.PlaneState = new LandedState();
    }
 
-   public Position getTarget()
+   public StaticPosition getTarget()
    {
       return Target;
    }
@@ -72,7 +72,7 @@ public class Plane implements Serializable
       this.Speed = Speed;
    }
 
-   public synchronized void setRoute(ArrayList<Position> Route)
+   public synchronized void setRoute(ArrayList<StaticPosition> Route)
    {
       this.Route = Route;
       this.Target = Route.get(0);
@@ -109,19 +109,19 @@ public class Plane implements Serializable
    {
       this.ReadyForTakeOff = ReadyForTakeOff;
    }
-   
+
    public PlaneDTO convertToDTO()
    {
-      return new PlaneDTO(this.CallSign,this.PlaneState,this.Position);
+      return new PlaneDTO(this.CallSign, this.PlaneState, this.Position);
    }
 
 /*
  * public FlightPlan getFlightPlan() { return FlightPlan; }
  */
 
-   public Position getPosition()
+   public StaticPosition getPosition()
    {
-      return Position;
+      return this.Position;
    }
 
 }

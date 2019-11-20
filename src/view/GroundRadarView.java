@@ -54,7 +54,6 @@ public class GroundRadarView
       statusColumn.setCellValueFactory(
             cellData -> cellData.getValue().getStatusProperty());
       planeListTable.setItems(this.viewModel.getPlanes());
-
    }
 
    private Circle findNearestGroundNode(ObservableList<Node> nodes, double x,

@@ -5,8 +5,7 @@ import javafx.stage.Stage;
 import model.AirTrafficControlGroundSimulator;
 import model.AirTrafficControlGroundSimulatorModel;
 import model.Plane;
-import model.Position;
-import test.TestTimerRunnable;
+import model.StaticPosition;
 import view.MainView;
 import viewmodel.MainViewViewModel;
 

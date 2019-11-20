@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public interface GroundRadarModel
 {
-   ArrayList<Plane> getPlanes();
+   ArrayList<PlaneDTO> getPlanes();
 
    ArrayList<GroundNode> getGroundNodes();
 
