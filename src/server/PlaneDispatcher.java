@@ -37,6 +37,7 @@ public class PlaneDispatcher implements Runnable {
 	@Override
 	public void run() {
 		{
+			System.out.println("PlaneDispatcher Started");
 			sendPlane();
 		}
 		

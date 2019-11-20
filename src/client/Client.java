@@ -50,4 +50,12 @@ public class Client implements RIClient, IClient, Serializable {
 		
 	}
 
+	@Override
+	public void changePlaneRoute(String callSign, int startNodeId, int endNodeId) throws RemoteException {
+		RIServerWrite server = access.acquireWrite();
+		server.changePlaneRoute(callSign,startNodeId,endNodeId);
+		access.releaseWrite();
+		
+	}
+
 }

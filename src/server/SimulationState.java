@@ -43,6 +43,7 @@ public class SimulationState implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("SimulationState started");
 		while(true)
 		{
 		if( server.getModel().getGroundPlanes().size()>=1)

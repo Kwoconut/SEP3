@@ -28,11 +28,18 @@ public class Server implements RIServerWrite
    public void addClient(RIClient client) throws RemoteException
    {
       clients.add(client);
+      if(clients.size()==1)
+      {
+      PlaneDispatcher planeDispatcher = new PlaneDispatcher(this);
+      Thread PlaneDispatcher = new Thread(planeDispatcher);
+      PlaneDispatcher.start();
+      }
    }
 
    public void sendPlaneDTO(PlaneDTO plane,RIClient client) throws RemoteException
    {
       client.getPlaneDTOFromServer(plane);
+      System.out.println("plane sent to client");
    }
    @Override
    public void getGroundPlanesDTO(RIClient client) throws RemoteException 
@@ -55,19 +62,22 @@ public class Server implements RIServerWrite
 	   return clients;
    }
 
+   @Override
+   public void changePlaneRoute(String callSign, int startNodeId, int endNodeId) 
+   {
+	   model.changePlaneRoute(callSign,startNodeId,endNodeId);
+   }
+   
    public void execute() throws IOException
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("10.152.194.82", 200);
+      Socket socket = new Socket("10.152.214.86", 200);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
       SimulationState simulationState = new SimulationState(this);
       Thread SimulationState = new Thread(simulationState);
       SimulationState.start();
-      PlaneDispatcher planeDispatcher = new PlaneDispatcher(this);
-      Thread PlaneDispatcher = new Thread(planeDispatcher);
-      PlaneDispatcher.start();
    }
 
    public static void main(String[] args) throws IOException
@@ -88,6 +98,7 @@ public class Server implements RIServerWrite
          e.printStackTrace();
       }
    }
+
 
 
 }
