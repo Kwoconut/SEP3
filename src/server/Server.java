@@ -40,6 +40,11 @@ public class Server implements RIServerWrite
 	   client.getGroundPlanesFromServer(model.getGroundPlanes());
    }
 
+   public void simulationFailed(RIClient client) throws RemoteException 
+   {
+	   client.simulationFailed();
+   }
+   
    public ServerModel getModel()
    {
       return model;
@@ -57,9 +62,12 @@ public class Server implements RIServerWrite
       Socket socket = new Socket("10.152.194.82", 200);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
-      SimulationState planeDispatcher = new SimulationState(this);
-      Thread PlanesSender = new Thread(planeDispatcher);
-      PlanesSender.start();
+      SimulationState simulationState = new SimulationState(this);
+      Thread SimulationState = new Thread(simulationState);
+      SimulationState.start();
+      PlaneDispatcher planeDispatcher = new PlaneDispatcher(this);
+      Thread PlaneDispatcher = new Thread(planeDispatcher);
+      PlaneDispatcher.start();
    }
 
    public static void main(String[] args) throws IOException
@@ -80,5 +88,6 @@ public class Server implements RIServerWrite
          e.printStackTrace();
       }
    }
+
 
 }

@@ -7,32 +7,9 @@ import model.Plane;
 
 public class SimulationState implements Runnable {
 	private Server server;
-	private ArrayList<Plane> sendedPlanes;
 
 	SimulationState(Server server) {
 		this.server = server;
-	}
-	
-	private void sendPlane()
-	{
-		
-		for (int i = 0; i < server.getClients().size(); i++) {
-			for (int j = 0; j < server.getModel().getPlanes().size(); j++) {
-				try {
-					server.sendPlane(server.getModel().getPlanes().get(j));
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				server.getModel().addGroundPlane(server.getModel().getPlanes().get(j));
-			}
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	private void movePlanes() throws RemoteException
@@ -47,16 +24,27 @@ public class SimulationState implements Runnable {
 		}
 	}
 	
-	private void checkCollision()
+	private void checkCollision() throws RemoteException
 	{
-
+		for(int i=0;i<server.getModel().getGroundPlanes().size();i++)
+		{
+			for (int j = i+1; j < server.getModel().getGroundPlanes().size(); j++)
+			{
+				if(server.getModel().getGroundPlanes().get(i).getPosition().equals(server.getModel().getGroundPlanes().get(j).getPosition()))
+				{
+					for(int x=0;x<server.getClients().size();i++)
+					{
+						server.simulationFailed(server.getClients().get(x));
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void run() {
 		while(true)
 		{
-		sendPlane();
 		if( server.getModel().getGroundPlanes().size()>=1)
 		{
 		try {
@@ -68,7 +56,12 @@ public class SimulationState implements Runnable {
 		}
 		if(server.getModel().getGroundPlanes().size()>=2)
 		{
-		checkCollision();
+		try {
+			checkCollision();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		}
 		}
 	}

@@ -43,4 +43,10 @@ public class Client implements RIClient, IClient, Serializable {
 		model.getGroundPlanesFromServer(planes);
 	}
 
+	@Override
+	public void simulationFailed() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

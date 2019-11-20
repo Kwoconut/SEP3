@@ -11,4 +11,6 @@ public interface RIClient extends Remote
 	public void getPlaneFromServer(Plane plane) throws RemoteException;
 	
 	public void getGroundPlanesFromServer(ArrayList<Plane> planes) throws RemoteException;
+	
+	public void simulationFailed() throws RemoteException;
 }
