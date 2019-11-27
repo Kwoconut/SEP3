@@ -5,20 +5,10 @@ import java.util.ArrayList;
 public class AirportGraph
 {
    private ArrayList<GroundNode> nodes;
-   private ArrayList<Edge> edges;
 
-   public AirportGraph()
+   public AirportGraph(ArrayList<GroundNode> nodes)
    {
-      generateAirportGraph();
-
-      for (int i = 0; i < edges.size(); i++)
-      {
-
-         this.nodes.get(edges.get(i).getFromNodeIndex()).getJointEdges()
-               .add(edges.get(i));
-         this.nodes.get(edges.get(i).getToNodeIndex()).getJointEdges()
-               .add(edges.get(i));
-      }
+	 this.nodes=nodes;   
    }
 
    public ArrayList<GroundNode> getGroundNodes()
@@ -97,7 +87,7 @@ public class AirportGraph
       }
    }
 
-   private void generateAirportGraph()
+/*   private void generateAirportGraph()
    {
       Edge[] sampleEdges = { new Edge(8, 9, 4), new Edge(0, 4, 2),
             new Edge(11, 10, 4), new Edge(10, 9, 4), new Edge(13, 12, 8),
@@ -178,7 +168,7 @@ public class AirportGraph
       {
          edges.add(sampleEdges[i]);
       }
-   }
+   }*/
 
    private void refreshNodes()
    {
