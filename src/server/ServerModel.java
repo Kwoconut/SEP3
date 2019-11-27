@@ -26,6 +26,11 @@ public class ServerModel
 		this.planes = planes;
 	}
 	
+	public void loadGroundNodesFromDatabase(ArrayList<GroundNode> groundNodes) {
+		this.groundNodes=groundNodes;
+		
+	}
+	
 	public ArrayList<Plane> getPlanes()
 	{
 		return planes;
@@ -93,5 +98,6 @@ public class ServerModel
 		}
 		groundPlanes.get(plane).setRoute(route);
 	}
+
 	
 }

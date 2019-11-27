@@ -72,9 +72,13 @@ public class Server implements RIServerWrite
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("10.152.214.86", 200);
+      System.out.println("a");
+      Socket socket = new Socket("10.152.194.87", 200);
+      System.out.println("s");
       Thread t = new Thread(new ServerSocketHandler(model, socket));
+      System.out.println("sss");
       t.start();
+      System.out.println("ssss");
       SimulationState simulationState = new SimulationState(this);
       Thread SimulationState = new Thread(simulationState);
       SimulationState.start();
