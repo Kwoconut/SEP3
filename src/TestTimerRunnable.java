@@ -44,6 +44,8 @@ public class TestTimerRunnable implements Runnable
          model.removePlane(1);
          Thread.sleep(2000);
          model.removePlane(0);
+         Thread.sleep(2000);
+         model.simulationFailed();
       }
       catch (InterruptedException e)
       {

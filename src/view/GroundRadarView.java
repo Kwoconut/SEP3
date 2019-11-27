@@ -1,5 +1,7 @@
 package view;
 
+import java.io.IOException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -30,14 +32,19 @@ public class GroundRadarView
 
    @FXML
    private TableColumn<PlaneViewModel, String> statusColumn;
+   
+   @FXML
+   private Pane failPane;
 
    private GroundRadarViewModel viewModel;
 
    private ObservableList<Circle> groundNodes;
 
-   public void init(GroundRadarViewModel groundRadarViewModel)
+   public void init(GroundRadarViewModel groundRadarViewModel, MainView mainView)
    {
       groundNodes = FXCollections.observableArrayList();
+      
+      failPane.setVisible(false);
 
       this.viewModel = groundRadarViewModel;
       for (int i = 0; i < this.viewModel.getGroundNodes().size(); i++)
@@ -58,7 +65,25 @@ public class GroundRadarView
       statusColumn.setCellValueFactory(
             cellData -> cellData.getValue().getStatusProperty());
       planeListTable.setItems(this.viewModel.getPlanes());
+      
+      
+      //LISTENER CHECKING IF SIMULATION FAILED
+      //FAIL PANE BECOMES VISIBLE IF TRUE
+      
+      this.viewModel.getSimulationFailed().addListener((observable, oldValue, newValue) -> 
+      {
+         if (newValue == true)
+         {
+               failPane.setVisible(true);
+         }
+      });
 
+     
+      
+      
+      // LISTENER FOR ADDING OR REMOVING A PLANE FROM THE MAP
+      // WHEN AN PLANE IS ADDED A NEW PANE IS CREATED WITH THE TEXT HAVING THE CALLSIGN BOUND AND THE LOCATION BOUND
+      
       this.viewModel.getPlanes()
             .addListener((ListChangeListener<PlaneViewModel>) change -> {
                while (change.next())
@@ -87,7 +112,7 @@ public class GroundRadarView
                   {
                      for (Node node : mainPane.getChildren())
                      {
-                        if (node instanceof Pane)
+                        if (node instanceof Pane && !node.equals(failPane))
                         {
                            if (((Pane) node).getChildren()
                                  .get(1) instanceof Text)
@@ -107,15 +132,6 @@ public class GroundRadarView
                   }
                }
             });
-
-/*
- * strings.addListener((ListChangeListener<String>) change -> { while
- * (change.next()) { if (change.wasAdded()) {
- * System.out.println(change.getAddedSubList().get(0) +
- * " was added to the list!"); } else if (change.wasRemoved()) {
- * System.out.println(change.getRemoved().get(0) +
- * " was removed from the list!"); } } });
- */
 
    }
 

@@ -42,12 +42,15 @@ public class AirTrafficControlGroundSimulatorModel
 
    public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
    {
-	   try {
-		client.changePlaneRoute(callSign,startNodeId,endNodeId);
-	} catch (RemoteException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+      try
+      {
+         client.changePlaneRoute(callSign, startNodeId, endNodeId);
+      }
+      catch (RemoteException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
    }
 
    @Override
@@ -75,19 +78,26 @@ public class AirTrafficControlGroundSimulatorModel
    {
       return groundNodes;
    }
-   
+
    public void addPlane(PlaneDTO plane)
    {
       this.planes.add(plane);
       support.firePropertyChange("planeADD", " ", plane);
 
    }
-   
+
    public void removePlane(int index)
    {
       this.planes.remove(index);
       System.out.println(index);
-      support.firePropertyChange("planeREMOVE"," ",index);
+      support.firePropertyChange("planeREMOVE", " ", index);
+   }
+
+   @Override
+   public void simulationFailed()
+   {
+      support.firePropertyChange("simulationFAILED", " ", true);
+
    }
 
 }

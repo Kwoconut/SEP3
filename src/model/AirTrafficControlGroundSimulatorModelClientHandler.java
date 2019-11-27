@@ -11,5 +11,7 @@ public interface AirTrafficControlGroundSimulatorModelClientHandler
 	void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes);
 	
 	void setClient(Client client);
+	
+	void simulationFailed();
 
 }

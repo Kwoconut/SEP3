@@ -4,7 +4,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +25,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    private GroundRadarModel model;
    private GroundNodeModel groundNodeViewModel;
    private PlaneModel planeViewModel;
+   private BooleanProperty simulationFailed;
 
    public GroundRadarViewModel(GroundRadarModel model,
          GroundNodeModel groundNodeViewModel, PlaneModel planeViewModel)
@@ -35,6 +38,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
       this.selectedStartNode = new SimpleObjectProperty<GroundNodeViewModel>();
       this.selectedEndNode = new SimpleObjectProperty<GroundNodeViewModel>();
       this.selectedPlane = new SimpleObjectProperty<PlaneViewModel>();
+      this.simulationFailed = new SimpleBooleanProperty(false);
       for (int i = 0; i < this.model.getGroundNodes().size(); i++)
       {
          this.groundNodes.add(new GroundNodeViewModel(this.groundNodeViewModel,
@@ -67,6 +71,11 @@ public class GroundRadarViewModel implements PropertyChangeListener
    public ObjectProperty<PlaneViewModel> getSelectedPlane()
    {
       return selectedPlane;
+   }
+   
+   public BooleanProperty getSimulationFailed()
+   {
+      return simulationFailed;
    }
 
    public void setSelectedGroundStartNode(GroundNodeViewModel selectedNode)
@@ -102,11 +111,14 @@ public class GroundRadarViewModel implements PropertyChangeListener
             planes.add(new PlaneViewModel(this.planeViewModel,
                   (PlaneDTO) evt.getNewValue()));
          }
-         else
-            if (evt.getPropertyName().equals("planeREMOVE"))
-            {
-               planes.remove((int) evt.getNewValue());
-            }
+         else if (evt.getPropertyName().equals("planeREMOVE"))
+         {
+            planes.remove((int) evt.getNewValue());
+         }
+         else if (evt.getPropertyName().equals("simulationFAILED"))
+         {
+            simulationFailed.set((boolean) evt.getNewValue());
+         }
       });
 
    }

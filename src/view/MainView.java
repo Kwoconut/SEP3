@@ -35,9 +35,9 @@ public class MainView
          loader.setLocation(getClass().getResource("GroundRadarView.fxml"));
          root = loader.load();
          GroundRadarView view = loader.getController();
-         view.init(mvViewModel.getGroundRadarViewModel());
-         stage.setTitle("GroundRadar");
+         view.init(mvViewModel.getGroundRadarViewModel(),this);
       }
+      stage.setTitle("GroundRadar");
       
       Stage localStage = new Stage();
 
