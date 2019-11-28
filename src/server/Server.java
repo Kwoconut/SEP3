@@ -39,6 +39,9 @@ public class Server implements RIServerWrite
    public void sendPlaneDTO(PlaneDTO plane,RIClient client) throws RemoteException
    {
       client.getPlaneDTOFromServer(plane);
+      System.out.println("plane sent to client");
+      System.out.println(plane.getCallSign());
+      
    }
    @Override
    public void getGroundPlanesDTO(RIClient client) throws RemoteException 
@@ -72,7 +75,7 @@ public class Server implements RIServerWrite
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
       System.out.println("a");
-      Socket socket = new Socket("10.152.218.86", 6789);
+      Socket socket = new Socket("10.152.214.49", 6789);
       System.out.println("s");
       Thread t = new Thread(new ServerSocketHandler(model,socket));
       System.out.println("sss");

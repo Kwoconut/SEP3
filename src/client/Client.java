@@ -24,7 +24,7 @@ public class Client implements RIClient, IClient, Serializable {
 			throws RemoteException, NotBoundException, MalformedURLException {
 		this.model = model;
 		this.model.setClient(this);
-		access = (ServerAccess) Naming.lookup("rmi://10.152.218.86:1099/server");
+		access = (ServerAccess) Naming.lookup("rmi://localhost:1099/server");
 		UnicastRemoteObject.exportObject(this, 0);
 		RIServerWrite server = access.acquireWrite();
 		server.addClient(this);

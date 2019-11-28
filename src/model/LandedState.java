@@ -1,6 +1,8 @@
 package model;
 
-public class LandedState implements PlaneState
+import java.io.Serializable;
+
+public class LandedState implements PlaneState,Serializable
 {
 
    @Override
