@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.AirportGraph;
 import model.GroundNode;
+import model.InAirState;
 import model.LandedState;
 import model.LandingState;
 import model.Plane;
@@ -24,7 +25,7 @@ public class ServerModel {
 	public void loadPlanesFromDatabase(ArrayList<Plane> planes) {
 		for(int i=0;i<planes.size();i++)
 		{
-			planes.get(i).setState(new LandingState());
+			planes.get(i).setState(new InAirState());
 			
 		}
 		this.planes = planes;

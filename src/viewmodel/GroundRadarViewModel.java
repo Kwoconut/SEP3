@@ -124,10 +124,13 @@ public class GroundRadarViewModel implements PropertyChangeListener
          {
             @SuppressWarnings("unchecked")
             ArrayList<PlaneDTO> planes = (ArrayList<PlaneDTO>) evt.getNewValue();
-            for (int i = 0 ; i < planes.size();i++)
+            if (!this.planes.isEmpty())
+            {
+            for (int i = 0 ; i < this.planes.size();i++)
             {
                this.planes.get(i).getXProperty().setValue(planes.get(i).getPosition().getXCoordinate());
                this.planes.get(i).getYProperty().setValue(planes.get(i).getPosition().getYCoordinate());
+            }
             }
          }
       });
