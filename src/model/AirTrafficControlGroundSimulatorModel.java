@@ -63,6 +63,7 @@ public class AirTrafficControlGroundSimulatorModel
    public void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes)
    {
       this.planes = planes;
+      support.firePropertyChange("positionUPDATE"," ",planes);
 
    }
 

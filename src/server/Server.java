@@ -39,7 +39,6 @@ public class Server implements RIServerWrite
    public void sendPlaneDTO(PlaneDTO plane,RIClient client) throws RemoteException
    {
       client.getPlaneDTOFromServer(plane);
-      System.out.println("plane sent to client");
    }
    @Override
    public void getGroundPlanesDTO(RIClient client) throws RemoteException 

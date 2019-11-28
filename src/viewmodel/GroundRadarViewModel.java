@@ -2,6 +2,7 @@ package viewmodel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -118,6 +119,16 @@ public class GroundRadarViewModel implements PropertyChangeListener
          else if (evt.getPropertyName().equals("simulationFAILED"))
          {
             simulationFailed.set((boolean) evt.getNewValue());
+         }
+         else if (evt.getPropertyName().equals("positionUPDATE"))
+         {
+            @SuppressWarnings("unchecked")
+            ArrayList<PlaneDTO> planes = (ArrayList<PlaneDTO>) evt.getNewValue();
+            for (int i = 0 ; i < planes.size();i++)
+            {
+               this.planes.get(i).getXProperty().setValue(planes.get(i).getPosition().getXCoordinate());
+               this.planes.get(i).getYProperty().setValue(planes.get(i).getPosition().getYCoordinate());
+            }
          }
       });
 

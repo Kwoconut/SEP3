@@ -124,4 +124,12 @@ public class Plane implements Serializable
       return this.Position;
    }
 
+   public void landPlane()
+   {
+      ArrayList<StaticPosition> Route = new ArrayList<StaticPosition>();
+      Route.add(new StaticPosition(1300, 114));
+      Route.add(new StaticPosition(1327, 185));
+      this.Route = Route;
+   }
+
 }
