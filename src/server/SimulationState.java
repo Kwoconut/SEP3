@@ -53,6 +53,15 @@ public class SimulationState implements Runnable {
 					e.printStackTrace();
 				}
 			}
+			try
+         {
+            Thread.sleep(0100);
+         }
+         catch (InterruptedException e)
+         {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
 		}
 		for (int x = 0; x < server.getClients().size(); x++) {
 			try {

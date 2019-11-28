@@ -130,6 +130,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
             {
                this.planes.get(i).getXProperty().setValue(planes.get(i).getPosition().getXCoordinate());
                this.planes.get(i).getYProperty().setValue(planes.get(i).getPosition().getYCoordinate());
+               this.planes.get(i).getStatusProperty().setValue(planes.get(i).getPlaneState().toString());
             }
             }
          }

@@ -38,5 +38,15 @@ public class StaticPosition implements Serializable
       this.XCoordinate = staticPosition.getXCoordinate();
       this.YCoordinate = staticPosition.getYCoordinate();
    }
+   
+   public boolean equals(Object obj)
+   {
+      if (!(obj instanceof StaticPosition))
+      {
+         return false;
+      }
+      StaticPosition other = (StaticPosition) obj;
+      return other.getXCoordinate() == XCoordinate && other.getYCoordinate() == YCoordinate;
+   }
 
 }

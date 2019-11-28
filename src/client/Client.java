@@ -46,7 +46,7 @@ public class Client implements RIClient, IClient, Serializable {
 
 	@Override
 	public void simulationFailed() throws RemoteException {
-		// TODO Auto-generated method stub
+		model.simulationFailed();
 	}
 
 	@Override
