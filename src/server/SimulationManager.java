@@ -5,7 +5,6 @@ public class SimulationManager {
 	private Server server;
 	private Thread planeDispatcher;
 	private Thread simulationState;
-	private Thread clock;
 	private boolean exitPlaneDispatcher = false;
 
 	public SimulationManager(Server server) {
@@ -24,16 +23,19 @@ public class SimulationManager {
 		this.simulationState.start();
 	}
 	
-	public void clockRun()
-	{
-		Clock clock = new Clock(this);
-		this.clock = new Thread(clock);
-		this.clock.start();
-	}
-	
 	public Server getServer()
 	{
 		return server;
+	}
+	
+	public Thread getSimulationState()
+	{
+		return simulationState;
+	}
+	
+	public Thread getPlaneDispatcher()
+	{
+		return planeDispatcher;
 	}
 	
 	public boolean getExitPlaneDispatcher()

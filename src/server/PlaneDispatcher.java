@@ -6,26 +6,26 @@ import model.PlaneDTO;
 
 public class PlaneDispatcher implements Runnable {
 
-	private Server server;
+	private SimulationManager manager;
 
-	PlaneDispatcher(Server server) {
-		this.server = server;
+	PlaneDispatcher(SimulationManager manager) {
+		this.manager = manager;
 	}
 
 	private void sendPlane() {
 
 		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < server.getClients().size(); j++) {
+			for (int j = 0; j < manager.getServer().getClients().size(); j++) {
 				try {
-					server.getModel().getPlanes().get(i).landPlane();
-					server.sendPlaneDTO(server.getModel().getPlanes().get(i).convertToDTO(),server.getClients().get(j));
+					manager.getServer().getModel().getPlanes().get(i).landPlane();
+					manager.getServer().sendPlaneDTO(manager.getServer().getModel().getPlanes().get(i).convertToDTO(),manager.getServer().getClients().get(j));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			
-			server.getModel().addGroundPlane(server.getModel().getPlanes().get(i));
+			manager.getServer().getModel().addGroundPlane(manager.getServer().getModel().getPlanes().get(i));
 			try {
 				//
 				//
