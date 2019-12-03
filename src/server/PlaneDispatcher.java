@@ -6,44 +6,49 @@ import model.PlaneDTO;
 
 public class PlaneDispatcher implements Runnable {
 
-	private Server server;
+	private SimulationManager manager;
 
-	PlaneDispatcher(Server server) {
-		this.server = server;
+	PlaneDispatcher(SimulationManager manager) {
+		this.manager = manager;
 	}
 
-	private void sendPlane() {
+	private void sendPlane() throws InterruptedException {
 
-		for (int i = 0; i < server.getModel().getPlanes().size(); i++) {
-			for (int j = 0; j < server.getClients().size(); j++) {
+		for (int i = 0; i < manager.getServer().getModel().getPlanes().size(); i++) {
+			if(!manager.getExitPlaneDispatcher())
+			{
+			for (int j = 0; j < manager.getServer().getClients().size(); j++) {
 				try {
-					server.getModel().getPlanes().get(i).landPlane();
-					server.sendPlaneDTO(server.getModel().getPlanes().get(i).convertToDTO(),server.getClients().get(j));
+					manager.getServer().getModel().getPlanes().get(i).landPlane();
+					manager.getServer().sendPlaneDTO(manager.getServer().getModel().getPlanes().get(i).convertToDTO(),manager.getServer().getClients().get(j));
 				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			
-			server.getModel().addGroundPlane(server.getModel().getPlanes().get(i));
+			manager.getServer().getModel().addGroundPlane(manager.getServer().getModel().getPlanes().get(i));
+			Thread.sleep(10000);
+		}
+			else
+			{
+			System.out.println("Plane Dispatcher Thread Stopped");
+			break;
+			}
+		}
+	}
+	
+	@Override
+	public void run() {
+		{
+			{
+			System.out.println("PlaneDispatcher Started");
 			try {
-				//
-				//
-				//
-				Thread.sleep(10000);
+				sendPlane();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public void run() {
-		{
-			System.out.println("PlaneDispatcher Started");
-			sendPlane();
 		}
-		
 	}
+	
 }

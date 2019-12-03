@@ -17,22 +17,30 @@ public class Server implements RIServerWrite
 {
    private ServerModel model;
    private ArrayList<RIClient> clients;
+   private SimulationManager manager;
 
    public Server(ServerModel model) throws IOException
    {
       this.model = model;
       clients = new ArrayList<RIClient>();
+      this.manager = new SimulationManager(this);
       UnicastRemoteObject.exportObject(this, 0);
    }
 
    public void addClient(RIClient client) throws RemoteException
    {
+	   if (clients.size()>=1)
+			   {
+	   for(int i=0;i<model.getGroundPlanes().size();i++)
+	   {
+		   sendPlaneDTO(model.getGroundPlanesDTO().get(i),client);
+	   }
+	   System.out.println(model.getGroundPlanesDTO());
+			   }
       clients.add(client);
       if(clients.size()==1)
       {
-      PlaneDispatcher planeDispatcher = new PlaneDispatcher(this);
-      Thread PlaneDispatcher = new Thread(planeDispatcher);
-      PlaneDispatcher.start();
+    	  manager.planeDispatcherRun();
       }
    }
 
@@ -80,15 +88,14 @@ public class Server implements RIServerWrite
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
       System.out.println("a");
-      Socket socket = new Socket("10.152.218.89", 6789);
+      Socket socket = new Socket("10.152.214.8", 6789);
       System.out.println("s");
       Thread t = new Thread(new ServerSocketHandler(model,socket));
       System.out.println("sss");
       t.start();
       System.out.println("ssss");
-      SimulationState simulationState = new SimulationState(this);
-      Thread SimulationState = new Thread(simulationState);
-      SimulationState.start();
+      manager.simulationStateRun();
+      
    }
 
    public static void main(String[] args) throws IOException
