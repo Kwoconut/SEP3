@@ -22,5 +22,15 @@ public class FlightPlan implements Serializable
       this.StartLocation = startLocation;
       this.EndLocation = endLocation;
    }
+   
+   /*public Date getArrivalTime()
+   {
+	   return ArrivalTime;
+   }
+   
+   public Date getDelay()
+   {
+	   return Delay;
+   }*/
 
 }
