@@ -6,5 +6,4 @@ public class ClientStart
    {
      new Thread(() -> Application.launch(ClientSetUp.class)).start();
    }
-
 }

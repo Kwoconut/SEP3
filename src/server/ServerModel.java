@@ -16,7 +16,6 @@ public class ServerModel
 {
    private ArrayList<Plane> planes;
    private ArrayList<Plane> groundPlanes;
-   private ArrayList<GroundNode> groundNodes;
    private AirportGraph airportGraph;
 
    public ServerModel()
@@ -37,9 +36,7 @@ public class ServerModel
 
    public void loadGroundNodesFromDatabase(ArrayList<GroundNode> groundNodes)
    {
-      this.groundNodes = groundNodes;
-      airportGraph = new AirportGraph(groundNodes);
-
+      airportGraph = new AirportGraph();
    }
 
    public ArrayList<Plane> getPlanes()
@@ -58,9 +55,9 @@ public class ServerModel
    public ArrayList<GroundNodeDTO> getGroundNodesDTO()
    {
       ArrayList<GroundNodeDTO> nodes = new ArrayList<GroundNodeDTO>();
-      for (int i = 0; i < this.groundNodes.size(); i++)
+      for (int i = 0; i < airportGraph.getGroundNodes().size(); i++)
       {
-         nodes.add(this.groundNodes.get(i).convertToDTO());
+         nodes.add(airportGraph.getGroundNodes().get(i).convertToDTO());
       }
       return nodes;
    }
@@ -85,24 +82,29 @@ public class ServerModel
 
    public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
    {
+      
       System.out.println(startNodeId);
       System.out.println(endNodeId);
 
       ArrayList<GroundNode> shortestDistance = airportGraph
-            .calculateShortestDistance(groundNodes.get(startNodeId),
-                  groundNodes.get(endNodeId));
+            .calculateShortestDistance(
+                  airportGraph.getGroundNodes().get(startNodeId),
+                  airportGraph.getGroundNodes().get(endNodeId));
 
+      System.out.println(shortestDistance);
+      
       ArrayList<StaticPosition> route = new ArrayList<StaticPosition>();
       for (int i = 0; i < shortestDistance.size(); i++)
       {
          route.add(shortestDistance.get(i).getPosition());
       }
-
+      
       System.out.println(route);
 
       groundPlanes.stream()
             .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
             .get().setRoute(route);
+
    }
 
 }

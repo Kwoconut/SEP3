@@ -14,7 +14,7 @@ public class PlaneDispatcher implements Runnable {
 
 	private void sendPlane() {
 
-		for (int i = 0; i < server.getModel().getPlanes().size(); i++) {
+		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < server.getClients().size(); j++) {
 				try {
 					server.getModel().getPlanes().get(i).landPlane();

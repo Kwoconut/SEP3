@@ -39,7 +39,7 @@ public class Plane implements Serializable
       return Target;
    }
 
-   public synchronized void movePlane()
+   public void movePlane()
    {
       if (!(PlaneState instanceof LandedState
             || PlaneState instanceof BoardingState))
@@ -77,7 +77,12 @@ public class Plane implements Serializable
       this.Speed = Speed;
    }
 
-   public synchronized void setRoute(ArrayList<StaticPosition> Route)
+   public ArrayList<StaticPosition> getRoute()
+   {
+      return Route;
+   }
+
+   public void setRoute(ArrayList<StaticPosition> Route)
    {
       this.Route = Route;
       this.Target = Route.get(0);
@@ -134,7 +139,7 @@ public class Plane implements Serializable
    {
       ArrayList<StaticPosition> Route = new ArrayList<StaticPosition>();
       setState(new LandingState());
-      this.Speed = 6;
+      this.Speed = 30;
       Route.add(new StaticPosition(1300, 114));
       this.Target = Route.get(0);
       this.Route = Route;

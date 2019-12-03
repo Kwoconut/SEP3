@@ -22,7 +22,6 @@ public class ServerSocketHandler implements Runnable
 
    public ServerSocketHandler(ServerModel model, Socket socket)
    {
-      System.out.println("ss");
       this.model = model;
       this.socket = socket;
       try
@@ -51,16 +50,11 @@ public class ServerSocketHandler implements Runnable
             byte[] receivedBytes = new byte[len];
             in.read(receivedBytes, 0, len);
             String received = new String(receivedBytes, 0, len);
-            System.out.println(received);
-            System.out.println("data from server recieved");
             Gson gson = new Gson();
             Plane[] jsonString = gson.fromJson(received, Plane[].class);
             ArrayList<Plane> planes = new ArrayList<Plane>(
                   Arrays.asList(jsonString));
             this.model.loadPlanesFromDatabase(planes);
-            System.out.println(planes.get(0).getCallSign());
-            System.out.println(
-                  "data from server about planes sent to server model");
 
             byte[] lenBytes1 = new byte[4];
             in.read(lenBytes1, 0, 4);
@@ -70,20 +64,11 @@ public class ServerSocketHandler implements Runnable
             byte[] receivedBytes1 = new byte[len1];
             in.read(receivedBytes1, 0, len1);
             String received1 = new String(receivedBytes1, 0, len1);
-            System.out.println(received1);
-            System.out.println("data from server recieved");
             GroundNode[] jsonString1 = gson.fromJson(received1,
                   GroundNode[].class);
             ArrayList<GroundNode> groundNodes = new ArrayList<GroundNode>(
                   Arrays.asList(jsonString1));
             this.model.loadGroundNodesFromDatabase(groundNodes);
-            System.out.println(groundNodes);
-            for (GroundNode groundNode : groundNodes)
-            {
-               System.out.println(groundNode.getJointEdges());
-            }
-            System.out.println(
-                  "data from server about ground nodes sent to server model");
             socket.close();
          }
          catch (Exception e)

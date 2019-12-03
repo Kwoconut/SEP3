@@ -66,7 +66,6 @@ public class ThreadSafeServer implements ServerAccess, Serializable {
 	public synchronized void releaseWrite() throws RemoteException {
 		writers--;
 		notifyAll();
-
 	}
 
 }

@@ -119,6 +119,9 @@ public class GroundRadarView
                               .filter(node -> node instanceof Pane
                                     && node.equals(selectedPlane))
                               .findFirst().get().setEffect(null);
+                        viewModel.setSelectedPlane(null);
+                        viewModel.setSelectedGroundStartNode(null);
+                        viewModel.setSelectedGroundEndNode(null);
                      }
 
                   }
@@ -185,8 +188,8 @@ public class GroundRadarView
                                                                 // JavaFX node
 
                                     Circle circle = findNearestGroundNode(
-                                          mainPane.getChildren(), e.getSceneX(),
-                                          e.getSceneY());
+                                          mainPane.getChildren(), pane.getTranslateX(),
+                                          pane.getTranslateY());
                                     viewModel.setSelectedGroundStartNode(
                                           viewModel.getGroundNodes().stream()
                                                 .filter(node -> node
@@ -199,8 +202,12 @@ public class GroundRadarView
                                                                   .centerYProperty()
                                                                   .get())
                                                 .findFirst().get());
-                                    viewModel.setSelectedPlane(
-                                          change.getAddedSubList().get(0));
+                                    viewModel.setSelectedPlane(viewModel
+                                          .getPlanes().stream()
+                                          .filter(plane -> plane
+                                                .getCallSignProperty().get()
+                                                .equals(callSignText.getText()))
+                                          .findFirst().get());
                                  }
                               }
                            });

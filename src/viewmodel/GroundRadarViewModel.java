@@ -67,7 +67,9 @@ public class GroundRadarViewModel implements PropertyChangeListener
 
    public ObjectProperty<PlaneViewModel> getSelectedPlane()
    {
+
       return selectedPlane;
+
    }
 
    public BooleanProperty getSimulationFailed()
@@ -77,17 +79,29 @@ public class GroundRadarViewModel implements PropertyChangeListener
 
    public void setSelectedGroundStartNode(GroundNodeViewModel selectedNode)
    {
+      if (selectedNode != null)
+      {
+      System.out.println(selectedNode.getIDProperty().get() + " ");
+      }
       this.selectedStartNode.setValue(selectedNode);
 
    }
 
    public void setSelectedGroundEndNode(GroundNodeViewModel selectedNode)
    {
+      if (selectedNode != null)
+      {
+      System.out.println(selectedNode.getIDProperty().get() + " ");
+      }
       this.selectedEndNode.setValue(selectedNode);
    }
 
    public void setSelectedPlane(PlaneViewModel plane)
    {
+      if (plane != null)
+      {
+      System.out.println(plane.getCallSignProperty().get() + " ");
+      }
       this.selectedPlane.setValue(plane);
    }
 
