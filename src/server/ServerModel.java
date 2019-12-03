@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.AirportGraph;
 import model.GroundNode;
+import model.GroundNodeDTO;
 import model.InAirState;
 import model.LandedState;
 import model.LandingState;
@@ -11,89 +12,97 @@ import model.Plane;
 import model.PlaneDTO;
 import model.StaticPosition;
 
-public class ServerModel {
-	private ArrayList<Plane> planes;
-	private ArrayList<Plane> groundPlanes;
-	private ArrayList<GroundNode> groundNodes;
-	private AirportGraph airportGraph;
+public class ServerModel
+{
+   private ArrayList<Plane> planes;
+   private ArrayList<Plane> groundPlanes;
+   private ArrayList<GroundNode> groundNodes;
+   private AirportGraph airportGraph;
 
-	public ServerModel() {
-		planes = new ArrayList<Plane>();
-		groundPlanes = new ArrayList<Plane>();
-	}
+   public ServerModel()
+   {
+      planes = new ArrayList<Plane>();
+      groundPlanes = new ArrayList<Plane>();
+   }
 
-	public void loadPlanesFromDatabase(ArrayList<Plane> planes) {
-		for(int i=0;i<planes.size();i++)
-		{
-			planes.get(i).setState(new InAirState());
-			
-		}
-		this.planes = planes;
-	}
+   public void loadPlanesFromDatabase(ArrayList<Plane> planes)
+   {
+      for (int i = 0; i < planes.size(); i++)
+      {
+         planes.get(i).setState(new InAirState());
 
-	public void loadGroundNodesFromDatabase(ArrayList<GroundNode> groundNodes) {
-		this.groundNodes = groundNodes;
-		airportGraph = new AirportGraph(groundNodes);
+      }
+      this.planes = planes;
+   }
 
-	}
+   public void loadGroundNodesFromDatabase(ArrayList<GroundNode> groundNodes)
+   {
+      this.groundNodes = groundNodes;
+      airportGraph = new AirportGraph(groundNodes);
 
-	public ArrayList<Plane> getPlanes() {
-		return planes;
-	}
+   }
 
-	public ArrayList<Plane> getGroundPlanes() {
-		if (groundPlanes.size() == -1) {
-		}
-		return groundPlanes;
-	}
+   public ArrayList<Plane> getPlanes()
+   {
+      return planes;
+   }
 
-	public ArrayList<PlaneDTO> getGroundPlanesDTO() {
-		if (groundPlanes.size() == -1) {
-		}
-		ArrayList<PlaneDTO> planesToSend = new ArrayList<PlaneDTO>();
-		for (int i = 0; i < groundPlanes.size(); i++) {
-			planesToSend.add(groundPlanes.get(i).convertToDTO());
-		}
-		return planesToSend;
-	}
+   public ArrayList<Plane> getGroundPlanes()
+   {
+      if (groundPlanes.size() == -1)
+      {
+      }
+      return groundPlanes;
+   }
 
-	public void addGroundPlane(Plane plane) {
-		groundPlanes.add(plane);
-	}
+   public ArrayList<GroundNodeDTO> getGroundNodesDTO()
+   {
+      ArrayList<GroundNodeDTO> nodes = new ArrayList<GroundNodeDTO>();
+      for (int i = 0; i < this.groundNodes.size(); i++)
+      {
+         nodes.add(this.groundNodes.get(i).convertToDTO());
+      }
+      return nodes;
+   }
 
-	public void changePlaneRoute(String callSign, int startNodeId, int endNodeId) {
-		int startNode = 0;
-		int endNode = 0;
-		int plane = 0;
+   public ArrayList<PlaneDTO> getGroundPlanesDTO()
+   {
+      if (groundPlanes.size() == -1)
+      {
+      }
+      ArrayList<PlaneDTO> planesToSend = new ArrayList<PlaneDTO>();
+      for (int i = 0; i < groundPlanes.size(); i++)
+      {
+         planesToSend.add(groundPlanes.get(i).convertToDTO());
+      }
+      return planesToSend;
+   }
 
-		for (int i = 0; i < groundNodes.size(); i++) {
-			if (groundNodes.get(i).getNodeId() == startNodeId) {
-				startNode = i;
-				break;
-			}
-		}
+   public void addGroundPlane(Plane plane)
+   {
+      groundPlanes.add(plane);
+   }
 
-		for (int i = 0; i < groundPlanes.size(); i++) {
-			if (groundPlanes.get(i).getCallSign().equals(callSign)) {
-				plane = i;
-				break;
-			}
-		}
+   public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
+   {
+      System.out.println(startNodeId);
+      System.out.println(endNodeId);
 
-		for (int i = 0; i < groundNodes.size(); i++) {
-			if (groundNodes.get(i).getNodeId() == endNodeId) {
-				endNode = i;
-				break;
-			}
-		}
+      ArrayList<GroundNode> shortestDistance = airportGraph
+            .calculateShortestDistance(groundNodes.get(startNodeId),
+                  groundNodes.get(endNodeId));
 
-		ArrayList<GroundNode> shortestDistance = airportGraph.calculateShortestDistance(groundNodes.get(startNode),
-				groundNodes.get(endNode));
-		ArrayList<StaticPosition> route = new ArrayList<StaticPosition>();
-		for (int i = 0; i < shortestDistance.size(); i++) {
-			route.add(shortestDistance.get(i).getPosition());
-		}
-		groundPlanes.get(plane).setRoute(route);
-	}
+      ArrayList<StaticPosition> route = new ArrayList<StaticPosition>();
+      for (int i = 0; i < shortestDistance.size(); i++)
+      {
+         route.add(shortestDistance.get(i).getPosition());
+      }
+
+      System.out.println(route);
+
+      groundPlanes.stream()
+            .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
+            .get().setRoute(route);
+   }
 
 }

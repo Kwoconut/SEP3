@@ -9,5 +9,7 @@ public interface RIServerRead extends Remote
 {
 
 	void getGroundPlanesDTO(RIClient client) throws RemoteException;
+	
+	void getGroundNodesDTO(RIClient client) throws RemoteException;
 
 }

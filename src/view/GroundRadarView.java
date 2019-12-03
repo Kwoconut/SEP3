@@ -1,16 +1,22 @@
 package view;
 
-import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -32,7 +38,7 @@ public class GroundRadarView
 
    @FXML
    private TableColumn<PlaneViewModel, String> statusColumn;
-   
+
    @FXML
    private Pane failPane;
 
@@ -40,10 +46,13 @@ public class GroundRadarView
 
    private ObservableList<Circle> groundNodes;
 
-   public void init(GroundRadarViewModel groundRadarViewModel, MainView mainView)
+   private Pane selectedPlane;
+
+   public void init(GroundRadarViewModel groundRadarViewModel,
+         MainView mainView)
    {
       groundNodes = FXCollections.observableArrayList();
-      
+
       failPane.setVisible(false);
 
       this.viewModel = groundRadarViewModel;
@@ -65,27 +74,69 @@ public class GroundRadarView
       statusColumn.setCellValueFactory(
             cellData -> cellData.getValue().getStatusProperty());
       planeListTable.setItems(this.viewModel.getPlanes());
-      
-      
-      //LISTENER CHECKING IF SIMULATION FAILED
-      //FAIL PANE BECOMES VISIBLE IF TRUE
-      
-      this.viewModel.getSimulationFailed().addListener((observable, oldValue, newValue) -> 
-      {
-         if (newValue == true)
-         {
-               failPane.setVisible(true);
-         }
-      });
 
-     
-      
-      
+      // LISTENER CHECKING IF SIMULATION FAILED
+      // FAIL PANE BECOMES VISIBLE IF TRUE
+
+      this.viewModel.getSimulationFailed()
+            .addListener((observable, oldValue, newValue) -> {
+               if (newValue == true)
+               {
+                  failPane.setVisible(true);
+               }
+            });
+
+      mainPane.addEventFilter(MouseEvent.MOUSE_PRESSED,
+            new EventHandler<MouseEvent>()
+            {
+               public void handle(MouseEvent e)
+               {
+                  if (viewModel.getSelectedPlane().get() != null)
+                  {
+                     try
+                     {
+                        Circle circle = (Circle) mainPane.getChildren().stream()
+                              .filter(node -> node instanceof Circle
+                                    && node.getBoundsInParent().contains(
+                                          e.getSceneX(), e.getSceneY()))
+                              .findFirst().get();
+                        viewModel.setSelectedGroundEndNode(viewModel
+                              .getGroundNodes().stream()
+                              .filter(groundNode -> groundNode.getXProperty()
+                                    .get() == circle.getCenterX()
+                                    && groundNode.getYProperty().get() == circle
+                                          .getCenterY())
+                              .findFirst().get());
+                        viewModel.changePlaneRoute();
+                     }
+                     catch (NoSuchElementException error)
+                     {
+                        Circle circle = null;
+                     }
+                     finally
+                     {
+                        mainPane.getChildren().stream()
+                              .filter(node -> node instanceof Pane
+                                    && node.equals(selectedPlane))
+                              .findFirst().get().setEffect(null);
+                     }
+
+                  }
+                  viewModel.setSelectedPlane(null);
+                  viewModel.setSelectedGroundStartNode(null);
+                  viewModel.setSelectedGroundEndNode(null);
+
+               }
+            });
+
       // LISTENER FOR ADDING OR REMOVING A PLANE FROM THE MAP
-      // WHEN AN PLANE IS ADDED A NEW PANE IS CREATED WITH THE TEXT HAVING THE CALLSIGN BOUND AND THE LOCATION BOUND
-      
+      // WHEN AN PLANE IS ADDED A NEW PANE IS CREATED WITH THE TEXT HAVING THE
+      // CALLSIGN BOUND AND THE LOCATION BOUND
+
       this.viewModel.getPlanes()
-            .addListener((ListChangeListener<PlaneViewModel>) change -> {
+            .addListener((ListChangeListener<PlaneViewModel>) change ->
+
+            {
                while (change.next())
                {
                   if (change.wasAdded())
@@ -106,6 +157,54 @@ public class GroundRadarView
                            change.getAddedSubList().get(0).getXProperty());
                      pane.translateYProperty().bind(
                            change.getAddedSubList().get(0).getYProperty());
+                     pane.addEventFilter(MouseEvent.MOUSE_PRESSED,
+                           new EventHandler<MouseEvent>()
+                           {
+                              public void handle(MouseEvent e)
+                              {
+                                 if (!change.getAddedSubList().get(0)
+                                       .getStatusProperty().get()
+                                       .equals("Landing"))
+                                 {
+                                    selectedPlane = pane;
+                                    int depth = 70; // Setting the uniform
+                                                    // variable
+                                                    // for the glow width and
+                                                    // height
+
+                                    DropShadow borderGlow = new DropShadow();
+                                    borderGlow.setOffsetY(0f);
+                                    borderGlow.setOffsetX(0f);
+                                    borderGlow.setColor(Color.RED);
+                                    borderGlow.setWidth(depth);
+                                    borderGlow.setHeight(depth);
+
+                                    pane.setEffect(borderGlow); // Apply the
+                                                                // borderGlow
+                                                                // effect to the
+                                                                // JavaFX node
+
+                                    Circle circle = findNearestGroundNode(
+                                          mainPane.getChildren(), e.getSceneX(),
+                                          e.getSceneY());
+                                    viewModel.setSelectedGroundStartNode(
+                                          viewModel.getGroundNodes().stream()
+                                                .filter(node -> node
+                                                      .getXProperty()
+                                                      .get() == circle
+                                                            .centerXProperty()
+                                                            .get()
+                                                      && node.getYProperty()
+                                                            .get() == circle
+                                                                  .centerYProperty()
+                                                                  .get())
+                                                .findFirst().get());
+                                    viewModel.setSelectedPlane(
+                                          change.getAddedSubList().get(0));
+                                 }
+                              }
+                           });
+
                      mainPane.getChildren().add(pane);
                   }
                   else if (change.wasRemoved())

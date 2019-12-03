@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.GroundNodeDTO;
 import model.GroundNodeModel;
 import model.GroundRadarModel;
 import model.PlaneDTO;
@@ -40,11 +41,6 @@ public class GroundRadarViewModel implements PropertyChangeListener
       this.selectedEndNode = new SimpleObjectProperty<GroundNodeViewModel>();
       this.selectedPlane = new SimpleObjectProperty<PlaneViewModel>();
       this.simulationFailed = new SimpleBooleanProperty(false);
-      for (int i = 0; i < this.model.getGroundNodes().size(); i++)
-      {
-         this.groundNodes.add(new GroundNodeViewModel(this.groundNodeViewModel,
-               this.model.getGroundNodes().get(i)));
-      }
       this.model.addPropertyChangeListener(this);
 
    }
@@ -73,7 +69,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    {
       return selectedPlane;
    }
-   
+
    public BooleanProperty getSimulationFailed()
    {
       return simulationFailed;
@@ -106,6 +102,17 @@ public class GroundRadarViewModel implements PropertyChangeListener
    @Override
    public void propertyChange(PropertyChangeEvent evt)
    {
+      if (evt.getPropertyName().equals("nodeADD"))
+      {
+         @SuppressWarnings("unchecked")
+         ArrayList<GroundNodeDTO> nodes = (ArrayList<GroundNodeDTO>) evt
+               .getNewValue();
+         for (int i = 0; i < nodes.size(); i++)
+         {
+            this.groundNodes.add(new GroundNodeViewModel(
+                  this.groundNodeViewModel, nodes.get(i)));
+         }
+      }
       Platform.runLater(() -> {
          if (evt.getPropertyName().equals("planeADD"))
          {
@@ -123,15 +130,19 @@ public class GroundRadarViewModel implements PropertyChangeListener
          else if (evt.getPropertyName().equals("positionUPDATE"))
          {
             @SuppressWarnings("unchecked")
-            ArrayList<PlaneDTO> planes = (ArrayList<PlaneDTO>) evt.getNewValue();
+            ArrayList<PlaneDTO> planes = (ArrayList<PlaneDTO>) evt
+                  .getNewValue();
             if (!this.planes.isEmpty())
             {
-            for (int i = 0 ; i < this.planes.size();i++)
-            {
-               this.planes.get(i).getXProperty().setValue(planes.get(i).getPosition().getXCoordinate());
-               this.planes.get(i).getYProperty().setValue(planes.get(i).getPosition().getYCoordinate());
-               this.planes.get(i).getStatusProperty().setValue(planes.get(i).getPlaneState().toString());
-            }
+               for (int i = 0; i < this.planes.size(); i++)
+               {
+                  this.planes.get(i).getXProperty()
+                        .setValue(planes.get(i).getPosition().getXCoordinate());
+                  this.planes.get(i).getYProperty()
+                        .setValue(planes.get(i).getPosition().getYCoordinate());
+                  this.planes.get(i).getStatusProperty()
+                        .setValue(planes.get(i).getPlaneState().toString());
+               }
             }
          }
       });

@@ -9,6 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import model.AirTrafficControlGroundSimulatorModelClientHandler;
+import model.GroundNodeDTO;
 import model.Plane;
 import model.PlaneDTO;
 import server.RIServerRead;
@@ -30,6 +31,7 @@ public class Client implements RIClient, IClient, Serializable {
 		server.addClient(this);
 		access.releaseWrite();
 		RIServerRead serverRead = access.acquireRead();
+		serverRead.getGroundNodesDTO(this);
 		serverRead.getGroundPlanesDTO(this);
 		access.releaseRead();
 	}
@@ -56,5 +58,13 @@ public class Client implements RIClient, IClient, Serializable {
 		access.releaseWrite();
 		
 	}
+
+   @Override
+   public void getGroundNodesDTOFromServer(ArrayList<GroundNodeDTO> nodes)
+         throws RemoteException
+   {
+      model.getGroundNodesDTOFromServer(nodes);
+      
+   }
 
 }

@@ -2,42 +2,47 @@ package model;
 
 public class Edge
 {
-   private int fromNodeIndex;
-   private int toNodeIndex;
-   private int length;
+   private int FromNodeIndex;
+   private int ToNodeIndex;
+   private int Length;
 
    public Edge(int fromNodeIndex, int toNodeIndex, int length)
    {
-      this.fromNodeIndex = fromNodeIndex;
-      this.toNodeIndex = toNodeIndex;
-      this.length = length;
+      this.FromNodeIndex = fromNodeIndex;
+      this.ToNodeIndex = toNodeIndex;
+      this.Length = length;
    }
 
    public int getFromNodeIndex()
    {
-      return fromNodeIndex;
+      return FromNodeIndex;
    }
 
    public int getToNodeIndex()
    {
-      return toNodeIndex;
+      return ToNodeIndex;
    }
 
    public int getLength()
    {
-      return length;
+      return Length;
    }
 
    public int getNeighbourIndex(int nodeIndex)
    {
-      if (this.fromNodeIndex == nodeIndex)
+      if (this.FromNodeIndex == nodeIndex)
       {
-         return this.toNodeIndex;
+         return this.ToNodeIndex;
       }
       else
       {
-         return this.fromNodeIndex;
+         return this.FromNodeIndex;
       }
+   }
+   
+   public String toString()
+   {
+      return FromNodeIndex + " " + ToNodeIndex + " " + Length;
    }
 
 }

@@ -15,8 +15,8 @@ public class ClientSetUp extends Application
    public void start(Stage stage) throws Exception
    {
       AirTrafficControlGroundSimulator model = new AirTrafficControlGroundSimulatorModel();
-      RIClient client = new Client(model);
       MainViewViewModel mvvm = new MainViewViewModel(model);
+      RIClient client = new Client(model);
       MainView mv = new MainView(stage, mvvm);
       mv.start();
 /*      TestTimerRunnable timer = new TestTimerRunnable(model);

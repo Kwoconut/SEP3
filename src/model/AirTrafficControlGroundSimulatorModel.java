@@ -90,7 +90,6 @@ public class AirTrafficControlGroundSimulatorModel
    public void removePlane(int index)
    {
       this.planes.remove(index);
-      System.out.println(index);
       support.firePropertyChange("planeREMOVE", " ", index);
    }
 
@@ -99,6 +98,13 @@ public class AirTrafficControlGroundSimulatorModel
    {
       support.firePropertyChange("simulationFAILED", " ", true);
 
+   }
+
+   @Override
+   public void getGroundNodesDTOFromServer(ArrayList<GroundNodeDTO> nodes)
+   {
+      this.groundNodes = nodes;
+      support.firePropertyChange("nodeADD"," ",nodes);
    }
 
 }

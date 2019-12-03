@@ -1,6 +1,8 @@
 package model;
 
-public class TaxiState implements PlaneState
+import java.io.Serializable;
+
+public class TaxiState implements PlaneState,Serializable
 {
 
    @Override

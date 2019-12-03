@@ -28,7 +28,7 @@ public class Plane implements Serializable
       this.Route = null;
       this.PlaneState = new LandedState();
    }
-   
+
    public double getSpeed()
    {
       return Speed;
@@ -82,6 +82,7 @@ public class Plane implements Serializable
       this.Route = Route;
       this.Target = Route.get(0);
       this.PlaneState = new TaxiState();
+      this.Speed = 2;
    }
 
    public void stopPlane()

@@ -4,93 +4,94 @@ import java.util.ArrayList;
 
 public class GroundNode
 {
-   private String name;
-   private int distanceFromSource = Integer.MAX_VALUE;
-   private int nodeId;
-   private boolean isVisited;
-   private StaticPosition staticPosition;
-   private ArrayList<Edge> jointEdges;
-   private ArrayList<GroundNode> shortestPath;
+   private String Name;
+   private int DistanceFromSource = Integer.MAX_VALUE;
+   private int NodeId;
+   private boolean IsVisited;
+   private StaticPosition Position;
+   private ArrayList<Edge> Edges;
+   private ArrayList<GroundNode> ShortestPath;
 
    public GroundNode(String name, int nodeId, StaticPosition staticPosition)
    {
-      this.name = name;
-      this.nodeId = nodeId;
-      this.staticPosition = staticPosition;
-      this.jointEdges = new ArrayList<Edge>();
-      this.shortestPath = new ArrayList<GroundNode>();
+      this.Name = name;
+      this.NodeId = nodeId;
+      this.Position = staticPosition;
+      this.Edges = new ArrayList<Edge>();
+      this.ShortestPath = new ArrayList<GroundNode>();
    }
 
    public String getName()
    {
-      return name;
+      return Name;
    }
 
    public int getNodeId()
    {
-      return nodeId;
+      return NodeId;
    }
 
    public StaticPosition getPosition()
    {
-      return staticPosition;
+      return Position;
    }
 
    public ArrayList<Edge> getJointEdges()
    {
-      return jointEdges;
+      return Edges;
    }
 
    public void setJointEdges(ArrayList<Edge> jointEdges)
    {
-      this.jointEdges = jointEdges;
+      this.Edges = jointEdges;
    }
 
    public boolean isVisited()
    {
-      return isVisited;
+      return IsVisited;
    }
 
    public void setIsVisited(boolean isVisited)
    {
-      this.isVisited = isVisited;
+      this.IsVisited = isVisited;
    }
 
    public void setDistanceFromSource(int distanceFromSource)
    {
-      this.distanceFromSource = distanceFromSource;
+      this.DistanceFromSource = distanceFromSource;
    }
 
    public int getDistanceFromSource()
    {
-      return distanceFromSource;
+      return DistanceFromSource;
    }
 
    public void addShortDistanceNode(GroundNode node)
    {
-      this.shortestPath.add(node);
+      this.ShortestPath.add(node);
    }
 
    public ArrayList<GroundNode> getShortestPath()
    {
-      return shortestPath;
+      return ShortestPath;
    }
 
    public void setShortestPath(ArrayList<GroundNode> shortestPath)
    {
-      this.shortestPath = shortestPath;
+      this.ShortestPath = shortestPath;
    }
 
    public GroundNodeDTO convertToDTO()
    {
-      return new GroundNodeDTO(this.nodeId, this.staticPosition);
+      return new GroundNodeDTO(this.NodeId, this.Position);
    }
 
    public String toString()
    {
       String s = "";
 
-      s += name;
+      s += Name + "  ";
+      s += NodeId;
 
       return s;
    }
@@ -102,6 +103,6 @@ public class GroundNode
          return false;
       }
       GroundNode other = (GroundNode) obj;
-      return other.getNodeId() == this.nodeId;
+      return other.getNodeId() == this.NodeId;
    }
 }
