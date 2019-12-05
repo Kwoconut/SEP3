@@ -1,20 +1,23 @@
 package model;
 
+import java.util.Random;
+
 public class BoardingState implements PlaneState
 {
 
-   private int time;
+   private Timer timer;
+   private Random random = new Random();
 
    public BoardingState()
    {
-      time = 1000;
+      timer = new Timer(0, random.nextInt(5) + 5, 0);
    }
 
    @Override
    public void setNextState(Plane plane)
    {
-      plane.setState(new TaxiState());
-      plane.setSpeed(2);
+      plane.setState(new LandedState());
+      plane.setSpeed(0);
       plane.setReadyForTakeOff(true);
    }
 
@@ -26,12 +29,12 @@ public class BoardingState implements PlaneState
 
    public void decrement()
    {
-      time--;
+      timer.decrement();
    }
-   
-   public int getTime()
+
+   public Timer getTime()
    {
-      return time;
+      return timer;
    }
 
 }
