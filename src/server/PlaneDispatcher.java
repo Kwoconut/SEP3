@@ -2,8 +2,6 @@ package server;
 
 import java.rmi.RemoteException;
 
-import model.PlaneDTO;
-
 public class PlaneDispatcher implements Runnable
 {
 
@@ -14,12 +12,12 @@ public class PlaneDispatcher implements Runnable
       this.manager = manager;
    }
 
-   private void sendPlane()
+   private void sendGroundPlane()
    {
 
       for (int i = 0; i < 2; i++)
       {
-         for (int j = 0; j < manager.getServer().getClients().size(); j++)
+         for (int j = 0; j < manager.getServer().getGroundClients().size(); j++)
          {
             try
             {
@@ -29,7 +27,7 @@ public class PlaneDispatcher implements Runnable
                manager.getServer().sendGroundPlaneDTO(
                      manager.getServer().getModel().getPlanes().get(i)
                            .convertToDTO(),
-                     manager.getServer().getClients().get(j));
+                     manager.getServer().getGroundClients().get(j));
             }
             catch (RemoteException e)
             {
@@ -60,7 +58,7 @@ public class PlaneDispatcher implements Runnable
    {
       {
          System.out.println("PlaneDispatcher Started");
-         sendPlane();
+         sendGroundPlane();
       }
 
    }

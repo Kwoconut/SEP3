@@ -1,7 +1,5 @@
 package server;
 
-import com.sun.javafx.geom.Edge;
-
 import model.Node;
 import model.Plane;
 

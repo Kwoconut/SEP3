@@ -7,11 +7,8 @@ import model.Edge;
 import model.Node;
 import model.NodeDTO;
 import model.InAirState;
-import model.LandedState;
-import model.LandingState;
 import model.Plane;
 import model.PlaneDTO;
-import model.StaticPosition;
 
 public class ServerModel
 {
@@ -71,7 +68,7 @@ public class ServerModel
       return groundPlanes;
    }
    
-   private ArrayList<Plane> getAirPlanes()
+   public ArrayList<Plane> getAirPlanes()
    {
 	   if(airPlanes.size() == -1)
 	   {
@@ -108,7 +105,7 @@ public class ServerModel
    public ArrayList<NodeDTO> getGroundNodesDTO()
    {
 	   ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
-	   for (int i = 0; i < 19; i++)
+	   for (int i = 0;i<this.nodes.size(); i++)
 	   {
 		   nodes.add(this.nodes.get(i).convertToDTO());
 	   }
@@ -118,7 +115,7 @@ public class ServerModel
    public ArrayList<NodeDTO> getAirNodesDTO()
    {
 	   ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
-	   for (int i = 19; i < 22; i++)
+	   for (int i = 19; i < this.nodes.size(); i++)
 	   {
 		   nodes.add(this.nodes.get(i).convertToDTO());
 	   }

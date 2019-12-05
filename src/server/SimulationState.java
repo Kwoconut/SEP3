@@ -1,9 +1,6 @@
 package server;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-
-import model.Plane;
 
 public class SimulationState implements Runnable {
 	private SimulationManager manager;
@@ -16,11 +13,17 @@ public class SimulationState implements Runnable {
 		for (int i = 0; i < manager.getServer().getModel().getGroundPlanes().size(); i++) {
 			manager.getServer().getModel().getGroundPlanes().get(i).movePlane();
 		}
-		for (int i = 0; i < manager.getServer().getClients().size(); i++) {
-			manager.getServer().getGroundPlanesDTO(manager.getServer().getClients().get(i));
+		for (int i = 0; i < manager.getServer().getGroundClients().size(); i++) {
+			manager.getServer().sendGroundPlanesDTO(manager.getServer().getGroundClients().get(i));
+		}
+		for (int i = 0; i < manager.getServer().getModel().getAirPlanes().size(); i++) {
+			manager.getServer().getModel().getAirPlanes().get(i).movePlane();
+		}
+		for (int i = 0; i < manager.getServer().getAirClients().size(); i++) {
+			manager.getServer().sendAirPlanesDTO(manager.getServer().getAirClients().get(i));
 		}
 	}
-
+// to be changed
 	private boolean checkCollision() throws RemoteException {
 		for (int i = 0; i < manager.getServer().getModel().getGroundPlanes().size(); i++) {
 			for (int j = i + 1; j < manager.getServer().getModel().getGroundPlanes().size(); j++) {
@@ -65,9 +68,16 @@ public class SimulationState implements Runnable {
             e.printStackTrace();
          }
 		}
-		for (int x = 0; x < manager.getServer().getClients().size(); x++) {
+		for (int x = 0; x < manager.getServer().getGroundClients().size(); x++) {
 			try {
-				manager.getServer().simulationFailed(manager.getServer().getClients().get(x));
+				manager.getServer().simulationFailed(manager.getServer().getGroundClients().get(x));
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+		for (int x = 0; x < manager.getServer().getAirClients().size(); x++) {
+			try {
+				manager.getServer().airSimulationFailed(manager.getServer().getAirClients().get(x));
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}

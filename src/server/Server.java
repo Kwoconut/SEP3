@@ -7,11 +7,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-
 import airClient.AirRIClient;
-import groundClient.GroundClient;
 import groundClient.GroundRIClient;
-import model.Plane;
 import model.PlaneDTO;
 
 public class Server implements GroundRIServerWrite, AirRIServerWrite
@@ -41,7 +38,10 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
          System.out.println("Updating planes for next ground clients");
       }
       groundClients.add(client);
-      if (airClients.size()+groundClients.size()==0)
+      System.out.println(airClients.size());
+      System.out.println(groundClients.size());
+      System.out.println(airClients.size()+groundClients.size());
+      if (airClients.size()+groundClients.size()==1)
       {
          manager.planeDispatcherRun();
       }
@@ -58,7 +58,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
          System.out.println("Updating planes for next air clients");
       }
       airClients.add(client);
-      if (airClients.size()+groundClients.size()==0)
+      if (airClients.size()+groundClients.size()==1)
       {
          manager.planeDispatcherRun();
       }
@@ -128,6 +128,11 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    }
    
    public void simulationFailed(GroundRIClient client) throws RemoteException
+   {
+	   client.simulationFailed();
+   }
+   
+   public void airSimulationFailed(AirRIClient client) throws RemoteException
    {
 	   client.simulationFailed();
    }
