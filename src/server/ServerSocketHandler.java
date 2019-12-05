@@ -20,11 +20,13 @@ public class ServerSocketHandler implements Runnable
    private OutputStream out;
    private InputStream in;
    private Socket socket;
+   private Gson gson;
 
    public ServerSocketHandler(ServerModel model, Socket socket)
    {
       this.model = model;
       this.socket = socket;
+      this.gson = new Gson();
       try
       {
          in = socket.getInputStream();
@@ -37,9 +39,56 @@ public class ServerSocketHandler implements Runnable
       }
    }
 
+   private void sendRequest(String jsonRequest) throws IOException
+   {
+      byte[] toSendBytes = jsonRequest.getBytes();
+      int toSendLen = toSendBytes.length;
+      byte[] toSendLenBytes = new byte[4];
+      toSendLenBytes[0] = (byte) (toSendLen & 0xff);
+      toSendLenBytes[1] = (byte) ((toSendLen >> 8) & 0xff);
+      toSendLenBytes[2] = (byte) ((toSendLen >> 16) & 0xff);
+      toSendLenBytes[3] = (byte) ((toSendLen >> 24) & 0xff);
+      out.write(toSendLenBytes);
+      out.write(toSendBytes);
+   }
+
+   public void requestPlanes() throws IOException
+   {
+      Request request = new Request("REQUESTPLANES");
+      String jsonRequest = gson.toJson(request);
+      sendRequest(jsonRequest);
+   }
+
+   public void requestNodes() throws IOException
+   {
+      Request request = new Request("REQUESTNODES");
+      String jsonRequest = gson.toJson(request);
+      sendRequest(jsonRequest);
+   }
+
+   public void requestEdges() throws IOException
+   {
+      Request request = new Request("REQUESTEDGES");
+      String jsonRequest = gson.toJson(request);
+      sendRequest(jsonRequest);
+   }
+
    @Override
    public void run()
    {
+      try
+      {
+         requestPlanes();
+         requestNodes();
+         requestEdges();
+
+      }
+      catch (IOException e1)
+      {
+         // TODO Auto-generated catch block
+         e1.printStackTrace();
+      }
+      while (true)
       {
          try
          {
@@ -51,44 +100,31 @@ public class ServerSocketHandler implements Runnable
             byte[] receivedBytes = new byte[len];
             in.read(receivedBytes, 0, len);
             String received = new String(receivedBytes, 0, len);
-            Gson gson = new Gson();
-            Plane[] jsonString = gson.fromJson(received, Plane[].class);
-            ArrayList<Plane> planes = new ArrayList<Plane>(
-                  Arrays.asList(jsonString));
-            this.model.loadPlanesFromDatabase(planes);
+            System.out.println(received);
+            Request req = gson.fromJson(received, Request.class);
 
-            byte[] lenBytes1 = new byte[4];
-            in.read(lenBytes1, 0, 4);
-            int len1 = (((lenBytes1[3] & 0xff) << 24)
-                  | ((lenBytes1[2] & 0xff) << 16) | ((lenBytes1[1] & 0xff) << 8)
-                  | (lenBytes1[0] & 0xff));
-            byte[] receivedBytes1 = new byte[len1];
-            in.read(receivedBytes1, 0, len1);
-            String received1 = new String(receivedBytes1, 0, len1);
-            GroundNode[] jsonString1 = gson.fromJson(received1,
-                  GroundNode[].class);
-            ArrayList<GroundNode> groundNodes = new ArrayList<GroundNode>(
-                  Arrays.asList(jsonString1));
-            this.model.loadGroundNodesFromDatabase(groundNodes);
-            
-            byte[] lenBytes2 = new byte[4];
-            in.read(lenBytes2, 0, 4);
-            int len2 = (((lenBytes2[3] & 0xff) << 24)
-                  | ((lenBytes2[2] & 0xff) << 16) | ((lenBytes2[1] & 0xff) << 8)
-                  | (lenBytes2[0] & 0xff));
-            byte[] receivedBytes2 = new byte[len2];
-            in.read(receivedBytes2, 0, len2);
-            String received2 = new String(receivedBytes2, 0, len2);
-            Edge[] jsonString2 = gson.fromJson(received2,
-                  Edge[].class);
-            ArrayList<Edge> edges = new ArrayList<Edge>(
-                  Arrays.asList(jsonString2));
-            this.model.loadEdgesFromDatabase(edges);
-            
-            socket.close();
+            if (req.Type.equals("RESPONSEPLANES"))
+            {
+               ArrayList<Plane> planes = new ArrayList<Plane>(
+                     Arrays.asList(req.Planes));
+               this.model.loadPlanesFromDatabase(planes);
+            }
+            else if (req.Type.equals("RESPONSENODES"))
+            {
+               ArrayList<GroundNode> nodes = new ArrayList<GroundNode>(
+                     Arrays.asList(req.Nodes));
+               this.model.loadGroundNodesFromDatabase(nodes);
+            }
+            else if (req.Type.equals("RESPONSEEDGES"))
+            {
+               ArrayList<Edge> edges = new ArrayList<Edge>(
+                     Arrays.asList(req.Edges));
+               this.model.loadEdgesFromDatabase(edges);
+            }
          }
-         catch (Exception e)
+         catch (IOException e)
          {
+            // TODO Auto-generated catch block
             e.printStackTrace();
          }
       }
