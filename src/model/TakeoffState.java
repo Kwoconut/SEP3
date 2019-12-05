@@ -7,7 +7,7 @@ public class TakeoffState implements PlaneState
    public void setNextState(Plane plane)
    {
       plane.setState(new InAirState());
-      plane.setSpeed(5);
+      plane.setSpeed(10);
 
    }
 

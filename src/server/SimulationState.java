@@ -57,7 +57,7 @@ public class SimulationState implements Runnable {
 			}
 			try
          {
-            Thread.sleep(1000);
+            Thread.sleep(0100);
          }
          catch (InterruptedException e)
          {

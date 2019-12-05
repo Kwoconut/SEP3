@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import com.google.gson.Gson;
 
+import model.Edge;
 import model.GroundNode;
 import model.Plane;
 import server.ServerModel;
@@ -69,6 +70,21 @@ public class ServerSocketHandler implements Runnable
             ArrayList<GroundNode> groundNodes = new ArrayList<GroundNode>(
                   Arrays.asList(jsonString1));
             this.model.loadGroundNodesFromDatabase(groundNodes);
+            
+            byte[] lenBytes2 = new byte[4];
+            in.read(lenBytes2, 0, 4);
+            int len2 = (((lenBytes2[3] & 0xff) << 24)
+                  | ((lenBytes2[2] & 0xff) << 16) | ((lenBytes2[1] & 0xff) << 8)
+                  | (lenBytes2[0] & 0xff));
+            byte[] receivedBytes2 = new byte[len2];
+            in.read(receivedBytes2, 0, len2);
+            String received2 = new String(receivedBytes2, 0, len2);
+            Edge[] jsonString2 = gson.fromJson(received2,
+                  Edge[].class);
+            ArrayList<Edge> edges = new ArrayList<Edge>(
+                  Arrays.asList(jsonString2));
+            this.model.loadEdgesFromDatabase(edges);
+            
             socket.close();
          }
          catch (Exception e)

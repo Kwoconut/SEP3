@@ -13,6 +13,8 @@ import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +31,9 @@ public class GroundRadarView
 {
    @FXML
    private Pane mainPane;
+   
+   @FXML
+   private ImageView flagImage;
 
    @FXML
    private TableView<PlaneViewModel> planeListTable;
@@ -85,6 +90,21 @@ public class GroundRadarView
                   failPane.setVisible(true);
                }
             });
+      
+      flagImage.setImage(new Image("Right.png"));
+      
+      
+      this.viewModel.getWindProperty().addListener((observable, oldValue, newValue) ->
+      {
+         if (newValue == true)
+         {
+          flagImage.setImage(new Image("Left.png"));  
+         }
+         else
+         {
+          flagImage.setImage(new Image("Right.png"));              
+         }
+      });
 
       mainPane.addEventFilter(MouseEvent.MOUSE_PRESSED,
             new EventHandler<MouseEvent>()

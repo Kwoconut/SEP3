@@ -15,6 +15,7 @@
             <Image url="@../../images/Layout.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="flagImage" fitHeight="150.0" fitWidth="200.0" layoutX="643.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true" />
       <Pane fx:id="failPane" layoutX="70.0" layoutY="287.0" opacity="0.76" prefHeight="200.0" prefWidth="1415.0" style="-fx-background-color: grey;">
          <children>
             <Text layoutX="327.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMULATION FAILED" textAlignment="CENTER">

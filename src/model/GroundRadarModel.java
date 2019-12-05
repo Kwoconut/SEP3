@@ -12,5 +12,7 @@ public interface GroundRadarModel
    void addPropertyChangeListener(PropertyChangeListener listener);
 
    void changePlaneRoute(String callSign, int startNodeId, int endNodeId);
+   
+   boolean getWind();
 
 }

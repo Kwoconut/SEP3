@@ -18,6 +18,7 @@ public class AirTrafficControlGroundSimulatorModel
    private static final long serialVersionUID = 3218559717712719996L;
    private ArrayList<PlaneDTO> planes;
    private ArrayList<GroundNodeDTO> groundNodes;
+   private boolean wind;
    private IClient client;
    private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -25,6 +26,7 @@ public class AirTrafficControlGroundSimulatorModel
    {
       planes = new ArrayList<PlaneDTO>();
       groundNodes = new ArrayList<GroundNodeDTO>();
+      wind = false;
    }
 
    @Override
@@ -62,8 +64,8 @@ public class AirTrafficControlGroundSimulatorModel
    @Override
    public void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes)
    {
-   //   this.planes = planes;
-      support.firePropertyChange("positionUPDATE"," ",planes);
+      // this.planes = planes;
+      support.firePropertyChange("positionUPDATE", " ", planes);
 
    }
 
@@ -104,7 +106,20 @@ public class AirTrafficControlGroundSimulatorModel
    public void getGroundNodesDTOFromServer(ArrayList<GroundNodeDTO> nodes)
    {
       this.groundNodes = nodes;
-      support.firePropertyChange("nodeADD"," ",nodes);
+      support.firePropertyChange("nodeADD", " ", nodes);
+   }
+
+   @Override
+   public boolean getWind()
+   {
+      return wind;
+   }
+
+   @Override
+   public void getWindFromServer(boolean wind)
+   {
+      this.wind = wind;
+      support.firePropertyChange("windADD"," ",wind);
    }
 
 }

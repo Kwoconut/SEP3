@@ -17,4 +17,6 @@ public interface RIClient extends Remote
 	public void getGroundNodesDTOFromServer(ArrayList<GroundNodeDTO> nodes) throws RemoteException;
 	
 	public void simulationFailed() throws RemoteException;
+	
+	public void getWindFromServer(boolean wind) throws RemoteException;
 }

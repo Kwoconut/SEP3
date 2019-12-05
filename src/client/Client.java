@@ -33,6 +33,7 @@ public class Client implements RIClient, IClient, Serializable {
 		RIServerRead serverRead = access.acquireRead();
 		serverRead.getGroundNodesDTO(this);
 		serverRead.getGroundPlanesDTO(this);
+		serverRead.getWind(this);
 		access.releaseRead();
 	}
 
@@ -65,6 +66,13 @@ public class Client implements RIClient, IClient, Serializable {
    {
       model.getGroundNodesDTOFromServer(nodes);
       
+   }
+
+   @Override
+   public void getWindFromServer(boolean wind) throws RemoteException
+   {
+      model.getWindFromServer(wind);
+ 
    }
 
 }

@@ -16,7 +16,7 @@ public class MovingPosition extends StaticPosition
                   + (position.getYCoordinate() - super.getYCoordinate())
                         * (position.getYCoordinate() - super.getYCoordinate()));
 
-      if (distance > 10)
+      if (distance > 2)
       {
          double deltaX = position.getXCoordinate() - super.getXCoordinate();
          double deltaY = position.getYCoordinate() - super.getYCoordinate();

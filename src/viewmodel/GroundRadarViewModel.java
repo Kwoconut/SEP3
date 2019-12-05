@@ -28,6 +28,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    private GroundNodeModel groundNodeViewModel;
    private PlaneModel planeViewModel;
    private BooleanProperty simulationFailed;
+   private BooleanProperty windProperty; 
 
    public GroundRadarViewModel(GroundRadarModel model,
          GroundNodeModel groundNodeViewModel, PlaneModel planeViewModel)
@@ -41,6 +42,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
       this.selectedEndNode = new SimpleObjectProperty<GroundNodeViewModel>();
       this.selectedPlane = new SimpleObjectProperty<PlaneViewModel>();
       this.simulationFailed = new SimpleBooleanProperty(false);
+      this.windProperty = new SimpleBooleanProperty(false);
       this.model.addPropertyChangeListener(this);
 
    }
@@ -70,6 +72,11 @@ public class GroundRadarViewModel implements PropertyChangeListener
 
       return selectedPlane;
 
+   }
+   
+   public BooleanProperty getWindProperty()
+   {
+      return windProperty;
    }
 
    public BooleanProperty getSimulationFailed()
@@ -132,6 +139,10 @@ public class GroundRadarViewModel implements PropertyChangeListener
          {
             planes.add(new PlaneViewModel(this.planeViewModel,
                   (PlaneDTO) evt.getNewValue()));
+         }
+         else if (evt.getPropertyName().equals("windADD"))
+         {
+            windProperty.set((boolean) evt.getNewValue());
          }
          else if (evt.getPropertyName().equals("planeREMOVE"))
          {
