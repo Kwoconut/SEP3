@@ -12,7 +12,7 @@ public class Plane implements Serializable
    private PlaneState PlaneState;
    private MovingPosition Position;
    private StaticPosition Target;
-   private ArrayList<GroundNode> Route;
+   private ArrayList<Node> Route;
    private double Speed;
    private boolean ReadyForTakeOff;
 
@@ -57,12 +57,12 @@ public class Plane implements Serializable
             else if (Route.get(0).getNodeId() == 9)
             {
                Route.add(
-                     new GroundNode(" ", 20, new StaticPosition(1550, 115)));
+                     new Node(" ", 20, new StaticPosition(1550, 115)));
                Target.setPosition(Route.get(0).getPosition());
             }
             else if (Route.get(0).getNodeId() == 16)
             {
-               Route.add(new GroundNode(" ", 21, new StaticPosition(0, 115)));
+               Route.add(new Node(" ", 21, new StaticPosition(0, 115)));
                Target.setPosition(Route.get(0).getPosition());
             }
             else if (Route.get(0).getNodeId() == 20
@@ -96,12 +96,12 @@ public class Plane implements Serializable
       this.Speed = Speed;
    }
 
-   public ArrayList<GroundNode> getRoute()
+   public ArrayList<Node> getRoute()
    {
       return Route;
    }
 
-   public void setRoute(ArrayList<GroundNode> Route)
+   public void setRoute(ArrayList<Node> Route)
    {
       this.Route = Route;
       this.Target = Route.get(0).getPosition();
@@ -154,7 +154,7 @@ public class Plane implements Serializable
       return this.Position;
    }
 
-   public void landPlane(GroundNode node)
+   public void landPlane(Node node)
    {
       if (node.getNodeId() == 9)
       {
@@ -165,7 +165,7 @@ public class Plane implements Serializable
          this.Position.setPosition(new StaticPosition(0, 114));
       }
 
-      ArrayList<GroundNode> Route = new ArrayList<GroundNode>();
+      ArrayList<Node> Route = new ArrayList<Node>();
       setState(new LandingState());
       this.Speed = 10;
       Route.add(node);

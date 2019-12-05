@@ -2,20 +2,21 @@ package model;
 
 import java.util.ArrayList;
 
-import client.Client;
+import groundClient.GroundClient;
 
 public interface AirTrafficControlGroundSimulatorModelClientHandler 
 {	
+	void setClient(GroundClient groundClient);
+	
 	void getPlaneDTOFromServer(PlaneDTO plane);
 	
 	void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes);
 	
-	void setClient(Client client);
+	void getGroundNodesDTOFromServer(ArrayList<NodeDTO> nodes);
+	
+	void getWindFromServer(boolean wind);
 	
 	void simulationFailed();
 	
-	void getGroundNodesDTOFromServer(ArrayList<GroundNodeDTO> nodes);
-	
-	void getWindFromServer(boolean wind);
 
 }

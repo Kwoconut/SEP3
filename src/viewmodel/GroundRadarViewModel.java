@@ -11,8 +11,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.GroundNodeDTO;
-import model.GroundNodeModel;
+import model.NodeDTO;
+import model.NodeModel;
 import model.GroundRadarModel;
 import model.PlaneDTO;
 import model.PlaneModel;
@@ -25,13 +25,13 @@ public class GroundRadarViewModel implements PropertyChangeListener
    private ObjectProperty<GroundNodeViewModel> selectedEndNode;
    private ObjectProperty<PlaneViewModel> selectedPlane;
    private GroundRadarModel model;
-   private GroundNodeModel groundNodeViewModel;
+   private NodeModel groundNodeViewModel;
    private PlaneModel planeViewModel;
    private BooleanProperty simulationFailed;
    private BooleanProperty windProperty; 
 
    public GroundRadarViewModel(GroundRadarModel model,
-         GroundNodeModel groundNodeViewModel, PlaneModel planeViewModel)
+         NodeModel groundNodeViewModel, PlaneModel planeViewModel)
    {
       this.model = model;
       this.groundNodeViewModel = groundNodeViewModel;
@@ -126,7 +126,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
       if (evt.getPropertyName().equals("nodeADD"))
       {
          @SuppressWarnings("unchecked")
-         ArrayList<GroundNodeDTO> nodes = (ArrayList<GroundNodeDTO>) evt
+         ArrayList<NodeDTO> nodes = (ArrayList<NodeDTO>) evt
                .getNewValue();
          for (int i = 0; i < nodes.size(); i++)
          {

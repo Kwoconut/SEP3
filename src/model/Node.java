@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class GroundNode
+public class Node
 {
    private String Name;
    private int DistanceFromSource = Integer.MAX_VALUE;
@@ -10,15 +10,15 @@ public class GroundNode
    private boolean IsVisited;
    private StaticPosition Position;
    private ArrayList<Edge> Edges;
-   private ArrayList<GroundNode> ShortestPath;
+   private ArrayList<Node> ShortestPath;
 
-   public GroundNode(String name, int nodeId, StaticPosition staticPosition)
+   public Node(String name, int nodeId, StaticPosition staticPosition)
    {
       this.Name = name;
       this.NodeId = nodeId;
       this.Position = staticPosition;
       this.Edges = new ArrayList<Edge>();
-      this.ShortestPath = new ArrayList<GroundNode>();
+      this.ShortestPath = new ArrayList<Node>();
    }
 
    public String getName()
@@ -66,24 +66,24 @@ public class GroundNode
       return DistanceFromSource;
    }
 
-   public void addShortDistanceNode(GroundNode node)
+   public void addShortDistanceNode(Node node)
    {
       this.ShortestPath.add(node);
    }
 
-   public ArrayList<GroundNode> getShortestPath()
+   public ArrayList<Node> getShortestPath()
    {
       return ShortestPath;
    }
 
-   public void setShortestPath(ArrayList<GroundNode> shortestPath)
+   public void setShortestPath(ArrayList<Node> shortestPath)
    {
       this.ShortestPath = shortestPath;
    }
 
-   public GroundNodeDTO convertToDTO()
+   public NodeDTO convertToDTO()
    {
-      return new GroundNodeDTO(this.NodeId, this.Position);
+      return new NodeDTO(this.NodeId, this.Position);
    }
 
    public String toString()
@@ -98,11 +98,11 @@ public class GroundNode
 
    public boolean equals(Object obj)
    {
-      if (!(obj instanceof GroundNode))
+      if (!(obj instanceof Node))
       {
          return false;
       }
-      GroundNode other = (GroundNode) obj;
+      Node other = (Node) obj;
       return other.getNodeId() == this.NodeId;
    }
 }

@@ -8,64 +8,70 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import client.Client;
-import client.RIClient;
+import airClient.AirRIClient;
+import groundClient.GroundClient;
+import groundClient.GroundRIClient;
 import model.Plane;
 import model.PlaneDTO;
 
-public class Server implements RIServerWrite
+public class Server implements GroundRIServerWrite, AirRIServerWrite
 {
    private ServerModel model;
    private SimulationManager manager;
-   private ArrayList<RIClient> clients;
+   private ArrayList<GroundRIClient> groundClients;
+   private ArrayList<AirRIClient> airClients;
 
    public Server(ServerModel model) throws IOException
    {
       this.model = model;
-      clients = new ArrayList<RIClient>();
+      groundClients = new ArrayList<GroundRIClient>();
+      airClients = new ArrayList<AirRIClient>();
       UnicastRemoteObject.exportObject(this, 0);
       manager = new SimulationManager(this);
    }
 
-   public void addClient(RIClient client) throws RemoteException
+   public void addGroundClient(GroundRIClient client) throws RemoteException
    {
-
-      if (clients.size() >= 1)
+      if (groundClients.size() >= 1)
       {
          for (int i = 0; i < model.getGroundPlanes().size(); i++)
          {
-            sendPlaneDTO(model.getGroundPlanesDTO().get(i), client);
+            sendGroundPlaneDTO(model.getGroundPlanesDTO().get(i), client);
          }
-         System.out.println(model.getGroundPlanesDTO());
+         System.out.println("Updating planes for next ground clients");
       }
-      clients.add(client);
-      if (clients.size() == 1)
+      groundClients.add(client);
+      if (airClients.size()+groundClients.size()==0)
+      {
+         manager.planeDispatcherRun();
+      }
+   }
+   
+   public void addAirClient(AirRIClient client) throws RemoteException
+   {
+      if (airClients.size() >= 1)
+      {
+         for (int i = 0; i < model.getGroundPlanes().size(); i++)
+         {
+            sendAirPlaneDTO(model.getAirPlanesDTO().get(i), client);
+         }
+         System.out.println("Updating planes for next air clients");
+      }
+      airClients.add(client);
+      if (airClients.size()+groundClients.size()==0)
       {
          manager.planeDispatcherRun();
       }
    }
 
-   public void sendPlaneDTO(PlaneDTO plane, RIClient client)
-         throws RemoteException
+   public ArrayList<GroundRIClient> getGroundClients()
    {
-      client.getPlaneDTOFromServer(plane);
-
+	  return groundClients;
    }
-
-   @Override
-   public void getGroundPlanesDTO(RIClient client) throws RemoteException
+   
+   public ArrayList<AirRIClient> getAirClients()
    {
-      client.getGroundPlanesDTOFromServer(model.getGroundPlanesDTO());
-   }
-
-   public void getGroundNodesDTO(RIClient client) throws RemoteException
-   {
-      client.getGroundNodesDTOFromServer(model.getGroundNodesDTO());
-   }
-
-   public void simulationFailed(RIClient client) throws RemoteException
-   {
-      client.simulationFailed();
+	  return airClients;
    }
 
    public ServerModel getModel()
@@ -73,22 +79,76 @@ public class Server implements RIServerWrite
       return model;
    }
 
-   public ArrayList<RIClient> getClients()
+   @Override
+   public void sendGroundPlanesDTO(GroundRIClient client) throws RemoteException
    {
-      return clients;
+	   client.getGroundPlanesDTOFromServer(model.getGroundPlanesDTO());
+   }
+   
+   @Override
+   public void sendAirPlanesDTO(AirRIClient client) throws RemoteException
+   {
+	   client.getAirPlanesDTOFromServer(model.getGroundPlanesDTO());
+   }
+   
+   public void sendGroundNodesDTO(GroundRIClient client) throws RemoteException
+   {
+	   client.getGroundNodesDTOFromServer(model.getGroundNodesDTO());
+   }
+   
+   public void sendAirNodesDTO(AirRIClient client) throws RemoteException
+   {
+	   client.getAirNodesDTOFromServer(model.getGroundNodesDTO());
+   }
+   
+   @Override	
+   public void sendGroundWind(GroundRIClient client) throws RemoteException
+   {
+	   client.getWindFromServer(model.getWind());
+   }
+   
+   @Override	
+   public void sendAirWind(AirRIClient client) throws RemoteException
+   {
+	   client.getWindFromServer(model.getWind());
+   }
+   
+   public void sendGroundPlaneDTO(PlaneDTO plane, GroundRIClient client)
+		   throws RemoteException
+   {
+	   client.getGroundPlaneDTOFromServer(plane);
+	   
+   }
+   
+   public void sendAirPlaneDTO(PlaneDTO plane, AirRIClient client)
+		   throws RemoteException
+   {
+	   client.getAirPlaneDTOFromServer(plane);
+	   
+   }
+   
+   public void simulationFailed(GroundRIClient client) throws RemoteException
+   {
+	   client.simulationFailed();
    }
 
    @Override
-   public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
+   public void changeGroundPlaneRoute(String callSign, int startNodeId, int endNodeId)
    {
-      model.changePlaneRoute(callSign, startNodeId, endNodeId);
+      model.changeGroundPlaneRoute(callSign, startNodeId, endNodeId);
+   }
+   
+   @Override
+   public void changeAirPlaneRoute(String callSign, int startNodeId, int endNodeId)
+   {
+      model.changeAirPlaneRoute(callSign, startNodeId, endNodeId);
    }
 
    public void execute() throws IOException
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("10.152.218.73", 6789);
+      Socket socket = new Socket("10.152.214.106", 6789);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
       manager.simulationStateRun();
@@ -101,22 +161,15 @@ public class Server implements RIServerWrite
          LocateRegistry.createRegistry(1099);
          ServerModel model = new ServerModel();
          Server server = new Server(model);
-         ServerAccess threadSafeServer = new ThreadSafeServer(server);
+         GroundServerAccess threadSafeServer = new ThreadSafeServer(server);
          Naming.rebind("server", threadSafeServer);
          System.out.println("Starting RMI part");
          server.execute();
-
       }
       catch (Exception e)
       {
          e.printStackTrace();
       }
    }
-
-   @Override
-   public void getWind(RIClient client) throws RemoteException
-   {
-      client.getWindFromServer(model.getWind());
-   }
-
 }
+

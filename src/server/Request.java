@@ -2,7 +2,7 @@ package server;
 
 import com.sun.javafx.geom.Edge;
 
-import model.GroundNode;
+import model.Node;
 import model.Plane;
 
 public class Request
@@ -10,7 +10,7 @@ public class Request
    
    public String Type;
    public Plane[] Planes;
-   public GroundNode[] Nodes;
+   public Node[] Nodes;
    public model.Edge[] Edges;
    
    public Request(String type)
@@ -24,7 +24,7 @@ public class Request
       this.Planes = planes;
    }
    
-   public Request(String type,GroundNode[] nodes)
+   public Request(String type,Node[] nodes)
    {
       this.Type = type;
       this.Nodes = nodes;

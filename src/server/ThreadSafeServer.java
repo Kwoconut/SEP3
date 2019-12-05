@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ThreadSafeServer implements ServerAccess, Serializable {
+public class ThreadSafeServer implements GroundServerAccess, AirServerAccess, Serializable {
 
 	/**
 	 * 
@@ -24,12 +24,26 @@ public class ThreadSafeServer implements ServerAccess, Serializable {
 	}
 
 	@Override
-	public synchronized RIServerRead acquireRead() throws RemoteException {
+	public synchronized GroundRIServerRead acquireGroundRead() throws RemoteException {
 		while (writers > 0 || waitingWriters > 0) {
 			try {
 				wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		readers++;
+		return server;
+	}
+	
+	@Override
+	public synchronized AirRIServerRead acquireAirRead() throws RemoteException {
+		while (writers > 0 || waitingWriters > 0) {
+			try {
+				wait();
+			} catch (InterruptedException e) 
+			{
 				e.printStackTrace();
 			}
 		}
@@ -43,17 +57,32 @@ public class ThreadSafeServer implements ServerAccess, Serializable {
 		if (readers == 0) {
 			notify();
 		}
-
 	}
 
 	@Override
-	public synchronized RIServerWrite acquireWrite() throws RemoteException {
+	public synchronized GroundRIServerWrite acquireGroundWrite() throws RemoteException {
 		waitingWriters++;
 		while (readers > 0 || writers > 0) {
 			try {
 				wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		waitingWriters--;
+		writers++;
+		return server;
+	}
+	
+	@Override
+	public synchronized AirRIServerWrite acquireAirWrite() throws RemoteException {
+		waitingWriters++;
+		while (readers > 0 || writers > 0) {
+			try {
+				wait();
+			} catch (InterruptedException e) 
+			{
 				e.printStackTrace();
 			}
 		}
@@ -67,5 +96,4 @@ public class ThreadSafeServer implements ServerAccess, Serializable {
 		writers--;
 		notifyAll();
 	}
-
 }

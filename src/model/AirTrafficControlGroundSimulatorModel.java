@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import client.Client;
-import client.IClient;
+import groundClient.GroundClient;
+import groundClient.GroundIClient;
 
 public class AirTrafficControlGroundSimulatorModel
       implements AirTrafficControlGroundSimulator, Serializable
@@ -17,15 +17,15 @@ public class AirTrafficControlGroundSimulatorModel
     */
    private static final long serialVersionUID = 3218559717712719996L;
    private ArrayList<PlaneDTO> planes;
-   private ArrayList<GroundNodeDTO> groundNodes;
+   private ArrayList<NodeDTO> groundNodes;
    private boolean wind;
-   private IClient client;
+   private GroundIClient client;
    private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
    public AirTrafficControlGroundSimulatorModel()
    {
       planes = new ArrayList<PlaneDTO>();
-      groundNodes = new ArrayList<GroundNodeDTO>();
+      groundNodes = new ArrayList<NodeDTO>();
       wind = false;
    }
 
@@ -37,16 +37,16 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public void setClient(Client client)
+   public void setClient(GroundClient groundClient)
    {
-      this.client = client;
+      this.client = groundClient;
    }
 
    public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
    {
       try
       {
-         client.changePlaneRoute(callSign, startNodeId, endNodeId);
+         client.changeGroundPlaneRoute(callSign, startNodeId, endNodeId);
       }
       catch (RemoteException e)
       {
@@ -77,7 +77,7 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public ArrayList<GroundNodeDTO> getGroundNodes()
+   public ArrayList<NodeDTO> getGroundNodes()
    {
       return groundNodes;
    }
@@ -103,7 +103,7 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public void getGroundNodesDTOFromServer(ArrayList<GroundNodeDTO> nodes)
+   public void getGroundNodesDTOFromServer(ArrayList<NodeDTO> nodes)
    {
       this.groundNodes = nodes;
       support.firePropertyChange("nodeADD", " ", nodes);

@@ -26,7 +26,7 @@ public class PlaneDispatcher implements Runnable
                manager.getServer().getModel().getPlanes().get(i).landPlane(
                      manager.getServer().getModel().getGraph().getLandingNode(
                            manager.getServer().getModel().getWind()));
-               manager.getServer().sendPlaneDTO(
+               manager.getServer().sendGroundPlaneDTO(
                      manager.getServer().getModel().getPlanes().get(i)
                            .convertToDTO(),
                      manager.getServer().getClients().get(j));

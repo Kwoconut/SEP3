@@ -4,21 +4,21 @@ import java.util.ArrayList;
 
 public class AirportGraph
 {
-   private ArrayList<GroundNode> nodes;
+   private ArrayList<Node> nodes;
    private ArrayList<Edge> edges;
 
-   public AirportGraph(ArrayList<GroundNode> nodes)
+   public AirportGraph(ArrayList<Node> nodes)
    {
       this.nodes = nodes;
    }
 
-   public ArrayList<GroundNode> getGroundNodes()
+   public ArrayList<Node> getGroundNodes()
    {
       return nodes;
    }
 
-   public synchronized ArrayList<GroundNode> calculateShortestDistance(
-         GroundNode startNode, GroundNode endNode)
+   public synchronized ArrayList<Node> calculateShortestDistance(
+         Node startNode, Node endNode)
    {
 
       nodes.stream().filter(node -> node.equals(startNode)).findFirst().get()
@@ -47,7 +47,7 @@ public class AirportGraph
                      .getDistanceFromSource())
                {
                   nodes.get(neighbourIndex).setDistanceFromSource(tentative);
-                  ArrayList<GroundNode> shortestPath = new ArrayList<GroundNode>(
+                  ArrayList<Node> shortestPath = new ArrayList<Node>(
                         nodes.get(evaluatedNodeId).getShortestPath());
                   shortestPath.add(nodes.get(evaluatedNodeId));
                   nodes.get(neighbourIndex).setShortestPath(shortestPath);
@@ -86,7 +86,7 @@ public class AirportGraph
       }
    }
 
-   public void generateAirportGraph(ArrayList<GroundNode> nodes,
+   public void generateAirportGraph(ArrayList<Node> nodes,
          ArrayList<Edge> edges)
    {
 
@@ -128,11 +128,11 @@ public class AirportGraph
  * GroundNode("Taxiway A2", 19, new StaticPosition(1170, 238));
  */
 
-      this.nodes = new ArrayList<GroundNode>();
+      this.nodes = new ArrayList<Node>();
 
-      for (GroundNode node : nodes)
+      for (Node node : nodes)
       {
-         this.nodes.add(new GroundNode(node.getName(), node.getNodeId(),
+         this.nodes.add(new Node(node.getName(), node.getNodeId(),
                new StaticPosition(node.getPosition().getXCoordinate(),
                      node.getPosition().getYCoordinate())));
       }
@@ -152,11 +152,11 @@ public class AirportGraph
 
    }
    
-   public ArrayList<GroundNode> getGateNodes()
+   public ArrayList<Node> getGateNodes()
    {
-      ArrayList<GroundNode> gateNodes = new ArrayList<GroundNode>();
+      ArrayList<Node> gateNodes = new ArrayList<Node>();
       
-      for (GroundNode nodes: this.nodes)
+      for (Node nodes: this.nodes)
       {
          if (nodes.getName().contains("Gate"))
          {
@@ -166,7 +166,7 @@ public class AirportGraph
       return gateNodes;
    }
    
-   public GroundNode getLandingNode(boolean wind)
+   public Node getLandingNode(boolean wind)
    {
       if (wind)
       {
@@ -178,7 +178,7 @@ public class AirportGraph
       }
    }
    
-   public GroundNode getTakeoffNode(boolean wind)
+   public Node getTakeoffNode(boolean wind)
    {
       if (wind)
       {

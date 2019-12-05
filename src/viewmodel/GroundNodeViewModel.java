@@ -4,17 +4,17 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import model.GroundNodeDTO;
-import model.GroundNodeModel;
+import model.NodeDTO;
+import model.NodeModel;
 
 public class GroundNodeViewModel
 {
    private DoubleProperty xProperty;
    private DoubleProperty yProperty;
    private IntegerProperty idProperty;
-   private GroundNodeModel model;
+   private NodeModel model;
 
-   public GroundNodeViewModel(GroundNodeModel model, GroundNodeDTO node)
+   public GroundNodeViewModel(NodeModel model, NodeDTO node)
    {
       this.model = model;
       xProperty = new SimpleDoubleProperty(node.getPosition().getXCoordinate());

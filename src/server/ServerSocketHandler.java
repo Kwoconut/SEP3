@@ -10,7 +10,7 @@ import java.util.Arrays;
 import com.google.gson.Gson;
 
 import model.Edge;
-import model.GroundNode;
+import model.Node;
 import model.Plane;
 import server.ServerModel;
 
@@ -19,13 +19,11 @@ public class ServerSocketHandler implements Runnable
    private ServerModel model;
    private OutputStream out;
    private InputStream in;
-   private Socket socket;
    private Gson gson;
 
    public ServerSocketHandler(ServerModel model, Socket socket)
    {
       this.model = model;
-      this.socket = socket;
       this.gson = new Gson();
       try
       {
@@ -111,9 +109,9 @@ public class ServerSocketHandler implements Runnable
             }
             else if (req.Type.equals("RESPONSENODES"))
             {
-               ArrayList<GroundNode> nodes = new ArrayList<GroundNode>(
+               ArrayList<Node> nodes = new ArrayList<Node>(
                      Arrays.asList(req.Nodes));
-               this.model.loadGroundNodesFromDatabase(nodes);
+               this.model.loadNodesFromDatabase(nodes);
             }
             else if (req.Type.equals("RESPONSEEDGES"))
             {

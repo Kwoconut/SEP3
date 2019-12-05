@@ -1,5 +1,5 @@
-import client.Client;
-import client.RIClient;
+import groundClient.GroundClient;
+import groundClient.GroundRIClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.AirTrafficControlGroundSimulator;
@@ -9,14 +9,14 @@ import model.StaticPosition;
 import view.MainView;
 import viewmodel.MainViewViewModel;
 
-public class ClientSetUp extends Application
+public class GroundClientSetUp extends Application
 {
    @Override
    public void start(Stage stage) throws Exception
    {
       AirTrafficControlGroundSimulator model = new AirTrafficControlGroundSimulatorModel();
       MainViewViewModel mvvm = new MainViewViewModel(model);
-      RIClient client = new Client(model);
+      GroundRIClient client = new GroundClient(model);
       MainView mv = new MainView(stage, mvvm);
       mv.start();
 /*      TestTimerRunnable timer = new TestTimerRunnable(model);

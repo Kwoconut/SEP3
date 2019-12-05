@@ -2,12 +2,12 @@ package model;
 
 import java.io.Serializable;
 
-public class GroundNodeDTO implements Serializable
+public class NodeDTO implements Serializable
 {
    private int nodeId;
    private StaticPosition position;
    
-   public GroundNodeDTO(int nodeId, StaticPosition position)
+   public NodeDTO(int nodeId, StaticPosition position)
    {
       this.nodeId = nodeId;
       this.position = position;
