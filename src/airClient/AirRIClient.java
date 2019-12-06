@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import model.NodeDTO;
 import model.PlaneDTO;
+import model.Timer;
 
 public interface AirRIClient 
 {
@@ -17,4 +18,6 @@ public interface AirRIClient
 	public void getWindFromServer(boolean wind) throws RemoteException;
 
 	public void simulationFailed() throws RemoteException;
+
+   public void getTimerFromServer(Timer timer) throws RemoteException;
 }

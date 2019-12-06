@@ -1,4 +1,4 @@
-package viewmodel;
+package groundclientviewmodel;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;

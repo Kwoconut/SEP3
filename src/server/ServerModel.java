@@ -9,6 +9,7 @@ import model.NodeDTO;
 import model.InAirState;
 import model.Plane;
 import model.PlaneDTO;
+import model.Timer;
 
 public class ServerModel
 {
@@ -18,6 +19,7 @@ public class ServerModel
    private ArrayList<Node> nodes;
    private ArrayList<Edge> edges;
    private AirportGraph airportGraph;
+   private Timer timer;
    private boolean wind;
 
    public ServerModel()
@@ -26,6 +28,7 @@ public class ServerModel
       groundPlanes = new ArrayList<Plane>();
       airPlanes= new ArrayList<Plane>();
       wind = false;
+      timer = new Timer(8,0,0);
    }
    
    public void loadPlanesFromDatabase(ArrayList<Plane> planes)
@@ -185,5 +188,15 @@ public class ServerModel
    public void addAirPlane(Plane plane)
    {
 	   airPlanes.add(plane);
+   }
+
+   public void incrementTimer()
+   {
+      timer.increment();
+   }
+
+   public Timer getTimer()
+   {
+      return timer;
    }
 }

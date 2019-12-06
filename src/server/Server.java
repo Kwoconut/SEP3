@@ -8,7 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import airClient.AirRIClient;
-import groundClient.GroundRIClient;
+import groundclient.GroundRIClient;
 import model.PlaneDTO;
 
 public class Server implements GroundRIServerWrite, AirRIServerWrite
@@ -44,6 +44,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       if (airClients.size()+groundClients.size()==1)
       {
          manager.planeDispatcherRun();
+         manager.simulationTimerRun();
       }
    }
    
@@ -153,7 +154,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("10.152.214.106", 6789);
+      Socket socket = new Socket("10.152.218.73", 6789);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
       manager.simulationStateRun();

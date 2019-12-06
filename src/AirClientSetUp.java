@@ -1,11 +1,11 @@
 import airClient.AirClient;
 import airClient.AirRIClient;
+import groundclientview.MainView;
+import groundclientviewmodel.MainViewViewModel;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.AirTrafficControlAirSimulator;
 import model.AirTrafficControlAirSimulatorModel;
-import view.MainView;
-import viewmodel.MainViewViewModel;
 
 public class AirClientSetUp extends Application
 {

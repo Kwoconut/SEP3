@@ -2,7 +2,8 @@
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import groundClient.GroundRIClient;
+
+import groundclient.GroundRIClient;
 
 public interface GroundRIServerRead extends Remote
 {

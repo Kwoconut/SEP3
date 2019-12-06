@@ -1,21 +1,25 @@
-package viewmodel;
+package groundclientviewmodel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
+import groundClientModel.GroundRadarModel;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.NodeDTO;
 import model.NodeModel;
-import model.GroundRadarModel;
 import model.PlaneDTO;
 import model.PlaneModel;
+import model.Timer;
 
 public class GroundRadarViewModel implements PropertyChangeListener
 {
@@ -28,7 +32,8 @@ public class GroundRadarViewModel implements PropertyChangeListener
    private NodeModel groundNodeViewModel;
    private PlaneModel planeViewModel;
    private BooleanProperty simulationFailed;
-   private BooleanProperty windProperty; 
+   private BooleanProperty windProperty;
+   private StringProperty timerProperty;
 
    public GroundRadarViewModel(GroundRadarModel model,
          NodeModel groundNodeViewModel, PlaneModel planeViewModel)
@@ -43,6 +48,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
       this.selectedPlane = new SimpleObjectProperty<PlaneViewModel>();
       this.simulationFailed = new SimpleBooleanProperty(false);
       this.windProperty = new SimpleBooleanProperty(false);
+      this.timerProperty = new SimpleStringProperty();
       this.model.addPropertyChangeListener(this);
 
    }
@@ -73,7 +79,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
       return selectedPlane;
 
    }
-   
+
    public BooleanProperty getWindProperty()
    {
       return windProperty;
@@ -83,12 +89,17 @@ public class GroundRadarViewModel implements PropertyChangeListener
    {
       return simulationFailed;
    }
+   
+   public StringProperty getTimerProperty()
+   {
+      return timerProperty;
+   }
 
    public void setSelectedGroundStartNode(GroundNodeViewModel selectedNode)
    {
       if (selectedNode != null)
       {
-      System.out.println(selectedNode.getIDProperty().get() + " ");
+         System.out.println(selectedNode.getIDProperty().get() + " ");
       }
       this.selectedStartNode.setValue(selectedNode);
 
@@ -98,7 +109,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    {
       if (selectedNode != null)
       {
-      System.out.println(selectedNode.getIDProperty().get() + " ");
+         System.out.println(selectedNode.getIDProperty().get() + " ");
       }
       this.selectedEndNode.setValue(selectedNode);
    }
@@ -107,7 +118,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    {
       if (plane != null)
       {
-      System.out.println(plane.getCallSignProperty().get() + " ");
+         System.out.println(plane.getCallSignProperty().get() + " ");
       }
       this.selectedPlane.setValue(plane);
    }
@@ -126,8 +137,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
       if (evt.getPropertyName().equals("nodeADD"))
       {
          @SuppressWarnings("unchecked")
-         ArrayList<NodeDTO> nodes = (ArrayList<NodeDTO>) evt
-               .getNewValue();
+         ArrayList<NodeDTO> nodes = (ArrayList<NodeDTO>) evt.getNewValue();
          for (int i = 0; i < nodes.size(); i++)
          {
             this.groundNodes.add(new GroundNodeViewModel(
@@ -143,6 +153,10 @@ public class GroundRadarViewModel implements PropertyChangeListener
          else if (evt.getPropertyName().equals("windADD"))
          {
             windProperty.set((boolean) evt.getNewValue());
+         }
+         else if (evt.getPropertyName().equals("timerUPDATE"))
+         {
+            timerProperty.set(((Timer) evt.getNewValue()).toString());
          }
          else if (evt.getPropertyName().equals("planeREMOVE"))
          {
@@ -173,5 +187,6 @@ public class GroundRadarViewModel implements PropertyChangeListener
       });
 
    }
+
 
 }

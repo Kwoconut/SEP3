@@ -1,4 +1,8 @@
-package model;
+package groundClientModel;
+
+import model.NodeModel;
+import model.PlaneDTO;
+import model.PlaneModel;
 
 public interface AirTrafficControlGroundSimulator
       extends GroundRadarModel, PlaneModel, NodeModel,

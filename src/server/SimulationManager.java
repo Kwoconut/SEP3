@@ -3,7 +3,8 @@ package server;
 public class SimulationManager {
 
 	private Server server;
-	private boolean exitPlaneDispatcher = false;
+	private boolean exitPlaneDispatcher;
+	private boolean exitSimulationTimer;
 
 	public SimulationManager(Server server) {
 		this.server = server;
@@ -21,6 +22,13 @@ public class SimulationManager {
 		simulationStateThread.start();
 	}
 	
+	public void simulationTimerRun()
+	{
+	   SimulationTimer simulationTimer = new SimulationTimer(this);
+	   Thread simulationTimerThread = new Thread(simulationTimer);
+	   simulationTimerThread.start();
+	}
+	
 	public Server getServer()
 	{
 		return server;
@@ -34,5 +42,15 @@ public class SimulationManager {
 	public void exitPlaneDispatcher()
 	{
 		exitPlaneDispatcher=true;
+	}
+	
+	public boolean getSimulationTimer()
+	{
+	   return exitSimulationTimer;
+	}
+	
+	public void exitSimulationTimer()
+	{
+	   exitSimulationTimer=true;
 	}
 }

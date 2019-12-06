@@ -1,7 +1,9 @@
-package view;
+package groundclientview;
 
 import java.util.NoSuchElementException;
 
+import groundclientviewmodel.GroundRadarViewModel;
+import groundclientviewmodel.PlaneViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -10,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.effect.DropShadow;
@@ -24,13 +27,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import viewmodel.GroundRadarViewModel;
-import viewmodel.PlaneViewModel;
 
 public class GroundRadarView
 {
    @FXML
    private Pane mainPane;
+   
+   @FXML
+   private Label timerLabel;
    
    @FXML
    private ImageView flagImage;
@@ -57,10 +61,12 @@ public class GroundRadarView
          MainView mainView)
    {
       groundNodes = FXCollections.observableArrayList();
+      
 
       failPane.setVisible(false);
 
       this.viewModel = groundRadarViewModel;
+      timerLabel.textProperty().bind(this.viewModel.getTimerProperty());
       for (int i = 0; i < this.viewModel.getGroundNodes().size(); i++)
       {
          Circle circle = new Circle(10);

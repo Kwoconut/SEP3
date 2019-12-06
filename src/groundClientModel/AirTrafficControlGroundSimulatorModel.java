@@ -1,4 +1,4 @@
-package model;
+package groundClientModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -6,8 +6,11 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import groundClient.GroundClient;
-import groundClient.GroundIClient;
+import groundclient.GroundClient;
+import groundclient.GroundIClient;
+import model.NodeDTO;
+import model.PlaneDTO;
+import model.Timer;
 
 public class AirTrafficControlGroundSimulatorModel
       implements AirTrafficControlGroundSimulator, Serializable
@@ -122,4 +125,11 @@ public class AirTrafficControlGroundSimulatorModel
       support.firePropertyChange("windADD"," ",wind);
    }
 
+   @Override
+   public void getTimerFromServer(Timer timer)
+   {
+      support.firePropertyChange("timerUPDATE"," ",timer);
+      System.out.println(timer);
+      
+   }
 }

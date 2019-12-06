@@ -1,8 +1,11 @@
-package model;
+package groundClientModel;
 
 import java.util.ArrayList;
 
-import groundClient.GroundClient;
+import groundclient.GroundClient;
+import model.NodeDTO;
+import model.PlaneDTO;
+import model.Timer;
 
 public interface AirTrafficControlGroundSimulatorModelClientHandler 
 {	
@@ -17,6 +20,7 @@ public interface AirTrafficControlGroundSimulatorModelClientHandler
 	void getWindFromServer(boolean wind);
 	
 	void simulationFailed();
-	
 
+   void getTimerFromServer(Timer timer);
+	
 }

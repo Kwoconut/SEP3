@@ -1,4 +1,4 @@
-package groundClient;
+package groundclient;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import model.NodeDTO;
 import model.Plane;
 import model.PlaneDTO;
+import model.Timer;
 
 public interface GroundRIClient extends Remote
 {
@@ -19,5 +20,7 @@ public interface GroundRIClient extends Remote
 	public void getWindFromServer(boolean wind) throws RemoteException;
 
 	public void simulationFailed() throws RemoteException;
+
+   public void getTimerFromServer(Timer timer) throws RemoteException;
 
 }

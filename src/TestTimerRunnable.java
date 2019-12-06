@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-import model.AirTrafficControlGroundSimulator;
+import groundClientModel.AirTrafficControlGroundSimulator;
 import model.LandedState;
 import model.Plane;
 import model.PlaneDTO;

@@ -1,4 +1,4 @@
-package groundClient;
+package groundclient;
 
 import java.rmi.RemoteException;
 
