@@ -152,43 +152,7 @@ public class AirportGraph
 
    }
    
-   public ArrayList<Node> getGateNodes()
-   {
-      ArrayList<Node> gateNodes = new ArrayList<Node>();
-      
-      for (Node nodes: this.nodes)
-      {
-         if (nodes.getName().contains("Gate"))
-         {
-            gateNodes.add(nodes);
-         }
-      }
-      return gateNodes;
-   }
-   
-   public Node getLandingNode(boolean wind)
-   {
-      if (wind)
-      {
-         return nodes.get(16);
-      }
-      else
-      {
-         return nodes.get(9);
-      }
-   }
-   
-   public Node getTakeoffNode(boolean wind)
-   {
-      if (wind)
-      {
-         return nodes.get(9);
-      }
-      else
-      {
-         return nodes.get(16);
-      }
-   }
+
 
 /*
  * public void refreshNodes(ArrayList<GroundNode> nodes, ArrayList<Edge> edges)

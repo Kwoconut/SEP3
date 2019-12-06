@@ -1,6 +1,6 @@
 package groundclientviewmodel;
 
-import groundClientModel.AirTrafficControlGroundSimulator;
+import groundclientmodel.AirTrafficControlGroundSimulator;
 
 public class MainViewViewModel
 {

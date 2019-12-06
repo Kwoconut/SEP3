@@ -22,7 +22,7 @@ public class PlaneDispatcher implements Runnable
             try
             {
                manager.getServer().getModel().getPlanes().get(i).landPlane(
-                     manager.getServer().getModel().getGraph().getLandingNode(
+                     manager.getServer().getModel().getLandingNode(
                            manager.getServer().getModel().getWind()));
                manager.getServer().sendGroundPlaneDTO(
                      manager.getServer().getModel().getPlanes().get(i)

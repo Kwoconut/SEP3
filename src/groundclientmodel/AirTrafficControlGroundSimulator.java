@@ -1,4 +1,4 @@
-package groundClientModel;
+package groundclientmodel;
 
 import model.NodeModel;
 import model.PlaneDTO;

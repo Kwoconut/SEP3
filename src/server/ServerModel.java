@@ -26,19 +26,19 @@ public class ServerModel
    {
       planes = new ArrayList<Plane>();
       groundPlanes = new ArrayList<Plane>();
-      airPlanes= new ArrayList<Plane>();
+      airPlanes = new ArrayList<Plane>();
       wind = false;
-      timer = new Timer(8,0,0);
+      timer = new Timer(8, 0, 0);
    }
-   
+
    public void loadPlanesFromDatabase(ArrayList<Plane> planes)
    {
-	   for (int i = 0; i < planes.size(); i++)
-	   {
-		   planes.get(i).setState(new InAirState());
-		   
-	   }
-	   this.planes = planes;
+      for (int i = 0; i < planes.size(); i++)
+      {
+         planes.get(i).setState(new InAirState());
+
+      }
+      this.planes = planes;
    }
 
    public void loadNodesFromDatabase(ArrayList<Node> nodes)
@@ -52,10 +52,10 @@ public class ServerModel
          node.setJointEdges(new ArrayList<Edge>());
       }
    }
-   
+
    public void loadEdgesFromDatabase(ArrayList<Edge> edges)
    {
-	   this.edges = edges;
+      this.edges = edges;
    }
 
    public ArrayList<Plane> getPlanes()
@@ -70,13 +70,13 @@ public class ServerModel
       }
       return groundPlanes;
    }
-   
+
    public ArrayList<Plane> getAirPlanes()
    {
-	   if(airPlanes.size() == -1)
-	   {
-	   }
-	   return airPlanes;
+      if (airPlanes.size() == -1)
+      {
+      }
+      return airPlanes;
    }
 
    public ArrayList<PlaneDTO> getGroundPlanesDTO()
@@ -91,7 +91,7 @@ public class ServerModel
       }
       return planesToSend;
    }
-   
+
    public ArrayList<PlaneDTO> getAirPlanesDTO()
    {
       if (airPlanes.size() == -1)
@@ -104,43 +104,44 @@ public class ServerModel
       }
       return planesToSend;
    }
-   
+
    public ArrayList<NodeDTO> getGroundNodesDTO()
    {
-	   ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
-	   for (int i = 0;i<this.nodes.size(); i++)
-	   {
-		   nodes.add(this.nodes.get(i).convertToDTO());
-	   }
-	   return nodes;
+      ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
+      for (int i = 0; i < this.nodes.size(); i++)
+      {
+         nodes.add(this.nodes.get(i).convertToDTO());
+      }
+      return nodes;
    }
-   
+
    public ArrayList<NodeDTO> getAirNodesDTO()
    {
-	   ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
-	   for (int i = 19; i < this.nodes.size(); i++)
-	   {
-		   nodes.add(this.nodes.get(i).convertToDTO());
-	   }
-	   return nodes;
+      ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
+      for (int i = 19; i < this.nodes.size(); i++)
+      {
+         nodes.add(this.nodes.get(i).convertToDTO());
+      }
+      return nodes;
    }
-    
+
    public AirportGraph getGraph()
    {
       return airportGraph;
    }
-   
+
    public boolean getWind()
    {
       return wind;
    }
-   
+
    public void changeWind()
    {
-	   wind = !wind;
+      wind = !wind;
    }
 
-   public void changeGroundPlaneRoute(String callSign, int startNodeId, int endNodeId)
+   public void changeGroundPlaneRoute(String callSign, int startNodeId,
+         int endNodeId)
    {
       groundPlanes.stream()
             .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
@@ -148,46 +149,41 @@ public class ServerModel
 
       airportGraph.generateAirportGraph(nodes, edges);
 
-      ArrayList<Node> shortestDistance = airportGraph
-            .calculateShortestDistance(
-                  airportGraph.getGroundNodes().get(startNodeId),
-                  airportGraph.getGroundNodes().get(endNodeId));
-
+      ArrayList<Node> shortestDistance = airportGraph.calculateShortestDistance(
+            airportGraph.getGroundNodes().get(startNodeId),
+            airportGraph.getGroundNodes().get(endNodeId));
 
       groundPlanes.stream()
             .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
             .get().setRoute(shortestDistance);
 
    }
-   
-   public void changeAirPlaneRoute(String callSign, int startNodeId, int endNodeId)
+
+   public void changeAirPlaneRoute(String callSign, int startNodeId,
+         int endNodeId)
    {
-      airPlanes.stream()
-            .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
-            .get().stopPlane();
+      airPlanes.stream().filter(plane -> plane.getCallSign().equals(callSign))
+            .findFirst().get().stopPlane();
 
       airportGraph.generateAirportGraph(nodes, edges);
 
-      ArrayList<Node> shortestDistance = airportGraph
-            .calculateShortestDistance(
-                  airportGraph.getGroundNodes().get(startNodeId),
-                  airportGraph.getGroundNodes().get(endNodeId));
+      ArrayList<Node> shortestDistance = airportGraph.calculateShortestDistance(
+            airportGraph.getGroundNodes().get(startNodeId),
+            airportGraph.getGroundNodes().get(endNodeId));
 
-
-      airPlanes.stream()
-            .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
-            .get().setRoute(shortestDistance);
+      airPlanes.stream().filter(plane -> plane.getCallSign().equals(callSign))
+            .findFirst().get().setRoute(shortestDistance);
 
    }
 
    public void addGroundPlane(Plane plane)
    {
-	   groundPlanes.add(plane);
+      groundPlanes.add(plane);
    }
-   
+
    public void addAirPlane(Plane plane)
    {
-	   airPlanes.add(plane);
+      airPlanes.add(plane);
    }
 
    public void incrementTimer()
@@ -198,5 +194,39 @@ public class ServerModel
    public Timer getTimer()
    {
       return timer;
+   }
+
+   public ArrayList<Node> getGateNodes()
+   {
+      ArrayList<Node> gateNodes = new ArrayList<Node>();
+
+      for (Node nodes : this.nodes)
+      {
+         if (nodes.getName().contains("Gate"))
+         {
+            gateNodes.add(nodes);
+         }
+      }
+      return gateNodes;
+   }
+
+   public Node getLandingNode(boolean wind)
+   {
+      if (wind)
+      {
+         return nodes.get(16);
+      }
+      else
+      {
+         return nodes.get(9);
+      }
+   }
+
+   public ArrayList<Node> getTakeoffNodes()
+   {
+      ArrayList<Node> nodes = new ArrayList<Node>();
+      nodes.add(this.nodes.get(9));
+      nodes.add(this.nodes.get(16));
+      return nodes;
    }
 }

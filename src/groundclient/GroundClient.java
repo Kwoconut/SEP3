@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import groundClientModel.AirTrafficControlGroundSimulatorModelClientHandler;
+import groundclientmodel.AirTrafficControlGroundSimulatorModelClientHandler;
 import model.NodeDTO;
 import model.Plane;
 import model.PlaneDTO;

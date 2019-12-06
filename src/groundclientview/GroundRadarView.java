@@ -32,10 +32,10 @@ public class GroundRadarView
 {
    @FXML
    private Pane mainPane;
-   
+
    @FXML
    private Label timerLabel;
-   
+
    @FXML
    private ImageView flagImage;
 
@@ -47,6 +47,9 @@ public class GroundRadarView
 
    @FXML
    private TableColumn<PlaneViewModel, String> statusColumn;
+
+   @FXML
+   private TableColumn<PlaneViewModel, String> targetColumn;
 
    @FXML
    private Pane failPane;
@@ -61,7 +64,6 @@ public class GroundRadarView
          MainView mainView)
    {
       groundNodes = FXCollections.observableArrayList();
-      
 
       failPane.setVisible(false);
 
@@ -84,6 +86,8 @@ public class GroundRadarView
             cellData -> cellData.getValue().getCallSignProperty());
       statusColumn.setCellValueFactory(
             cellData -> cellData.getValue().getStatusProperty());
+      targetColumn.setCellValueFactory(
+            cellData -> cellData.getValue().getTargetProperty());
       planeListTable.setItems(this.viewModel.getPlanes());
 
       // LISTENER CHECKING IF SIMULATION FAILED
@@ -96,21 +100,20 @@ public class GroundRadarView
                   failPane.setVisible(true);
                }
             });
-      
+
       flagImage.setImage(new Image("Right.png"));
-      
-      
-      this.viewModel.getWindProperty().addListener((observable, oldValue, newValue) ->
-      {
-         if (newValue == true)
-         {
-          flagImage.setImage(new Image("Left.png"));  
-         }
-         else
-         {
-          flagImage.setImage(new Image("Right.png"));              
-         }
-      });
+
+      this.viewModel.getWindProperty()
+            .addListener((observable, oldValue, newValue) -> {
+               if (newValue == true)
+               {
+                  flagImage.setImage(new Image("Left.png"));
+               }
+               else
+               {
+                  flagImage.setImage(new Image("Right.png"));
+               }
+            });
 
       mainPane.addEventFilter(MouseEvent.MOUSE_PRESSED,
             new EventHandler<MouseEvent>()
@@ -193,7 +196,10 @@ public class GroundRadarView
                               {
                                  if (!change.getAddedSubList().get(0)
                                        .getStatusProperty().get()
-                                       .equals("Landing"))
+                                       .equals("Landing")
+                                       && !change.getAddedSubList().get(0)
+                                             .getStatusProperty().get()
+                                             .startsWith("Boarding"))
                                  {
                                     selectedPlane = pane;
                                     int depth = 70; // Setting the uniform
@@ -214,7 +220,8 @@ public class GroundRadarView
                                                                 // JavaFX node
 
                                     Circle circle = findNearestGroundNode(
-                                          mainPane.getChildren(), pane.getTranslateX(),
+                                          mainPane.getChildren(),
+                                          pane.getTranslateX(),
                                           pane.getTranslateY());
                                     viewModel.setSelectedGroundStartNode(
                                           viewModel.getGroundNodes().stream()

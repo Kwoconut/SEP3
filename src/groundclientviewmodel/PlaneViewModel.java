@@ -1,4 +1,5 @@
 package groundclientviewmodel;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,6 +13,7 @@ public class PlaneViewModel
    private StringProperty statusProperty;
    private DoubleProperty xProperty;
    private DoubleProperty yProperty;
+   private StringProperty targetProperty;
    private PlaneModel model;
 
    public PlaneViewModel(PlaneModel model, PlaneDTO plane)
@@ -24,6 +26,12 @@ public class PlaneViewModel
             plane.getPosition().getXCoordinate());
       yProperty = new SimpleDoubleProperty(
             plane.getPosition().getYCoordinate());
+      targetProperty = new SimpleStringProperty(plane.getTarget());
+   }
+   
+   public StringProperty getTargetProperty()
+   {
+      return targetProperty;
    }
 
    public StringProperty getCallSignProperty()

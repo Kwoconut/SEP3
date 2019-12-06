@@ -1,4 +1,4 @@
-package groundClientModel;
+package groundclientmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -128,8 +128,6 @@ public class AirTrafficControlGroundSimulatorModel
    @Override
    public void getTimerFromServer(Timer timer)
    {
-      support.firePropertyChange("timerUPDATE"," ",timer);
-      System.out.println(timer);
-      
+      support.firePropertyChange("timerUPDATE"," ",timer);      
    }
 }

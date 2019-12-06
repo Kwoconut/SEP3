@@ -1,4 +1,4 @@
-package groundClientModel;
+package groundclientmodel;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;

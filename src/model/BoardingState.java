@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class BoardingState implements PlaneState
+public class BoardingState implements PlaneState, Serializable
 {
 
    private Timer timer;
@@ -10,7 +11,7 @@ public class BoardingState implements PlaneState
 
    public BoardingState()
    {
-      timer = new Timer(0, random.nextInt(5) + 5, 0);
+      timer = new Timer(0, random.nextInt(5), 0);
    }
 
    @Override

@@ -4,7 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-import groundClientModel.GroundRadarModel;
+import groundclientmodel.GroundRadarModel;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -15,6 +15,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.BoardingState;
 import model.NodeDTO;
 import model.NodeModel;
 import model.PlaneDTO;
@@ -89,7 +90,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    {
       return simulationFailed;
    }
-   
+
    public StringProperty getTimerProperty()
    {
       return timerProperty;
@@ -179,14 +180,25 @@ public class GroundRadarViewModel implements PropertyChangeListener
                         .setValue(planes.get(i).getPosition().getXCoordinate());
                   this.planes.get(i).getYProperty()
                         .setValue(planes.get(i).getPosition().getYCoordinate());
-                  this.planes.get(i).getStatusProperty()
-                        .setValue(planes.get(i).getPlaneState().toString());
+                  if (planes.get(i).getPlaneState() instanceof BoardingState)
+                  {
+                     this.planes.get(i).getStatusProperty().setValue(planes
+                           .get(i).getPlaneState().toString() + " - "
+                           + ((BoardingState) planes.get(i).getPlaneState())
+                                 .getTime().toString());
+                  }
+                  else
+                  {
+                     this.planes.get(i).getStatusProperty()
+                           .setValue(planes.get(i).getPlaneState().toString());
+                  }
+                  this.planes.get(i).getTargetProperty()
+                        .setValue(planes.get(i).getTarget());
                }
             }
          }
       });
 
    }
-
 
 }

@@ -3,6 +3,7 @@ package server;
 import java.rmi.RemoteException;
 
 import model.BoardingState;
+import model.Timer;
 
 public class SimulationTimer implements Runnable
 {
@@ -23,7 +24,17 @@ public class SimulationTimer implements Runnable
          {
             ((BoardingState) this.simulationManager.getServer().getModel()
                   .getPlanes().get(i).getPlaneState()).decrement();
+            
+            if (((BoardingState) this.simulationManager.getServer().getModel()
+                  .getPlanes().get(i).getPlaneState()).getTime()
+                  .equals(new Timer(0, 0, 0)))
+            {
+               this.simulationManager.getServer().getModel().getPlanes().get(i)
+               .setReadyForTakeOff(true);
+            }
+            
          }
+
 
       }
    }
@@ -56,6 +67,7 @@ public class SimulationTimer implements Runnable
       {
          try
          {
+            updateBoardingTimer();
             sendUpdatedTimer();
             Thread.sleep(0250);
          }

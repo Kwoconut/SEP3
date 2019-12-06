@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-import groundClientModel.AirTrafficControlGroundSimulator;
+import groundclientmodel.AirTrafficControlGroundSimulator;
 import model.LandedState;
 import model.Plane;
 import model.PlaneDTO;
@@ -20,9 +20,9 @@ public class TestTimerRunnable implements Runnable
    private void createDummyData()
    {
       PlaneDTO plane1 = new PlaneDTO("WZZ235", new LandedState(),
-            new StaticPosition(500, 500));
+            new StaticPosition(500, 500),"bbb");
       PlaneDTO plane2 = new PlaneDTO("TA235", new LandedState(),
-            new StaticPosition(800, 800));
+            new StaticPosition(800, 800),"asd");
       
       planes.add(plane1);
       planes.add(plane2);

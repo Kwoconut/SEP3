@@ -26,10 +26,11 @@
             </Text>
          </children>
       </Pane>
-      <TableView fx:id="planeListTable" layoutX="468.0" layoutY="530.0" prefHeight="200.0" prefWidth="181.0">
+      <TableView fx:id="planeListTable" layoutX="468.0" layoutY="530.0" prefHeight="200.0" prefWidth="401.0">
         <columns>
           <TableColumn fx:id="callSignColumn" prefWidth="83.19992065429688" text="Callsign" />
-            <TableColumn fx:id="statusColumn" prefWidth="95.99993896484375" text="Status" />
+            <TableColumn fx:id="statusColumn" prefWidth="138.4000244140625" text="Status" />
+            <TableColumn fx:id="targetColumn" prefWidth="177.800048828125" text="Target" />
         </columns>
       </TableView>
       <Label fx:id="timerLabel" layoutX="731.0" layoutY="22.0" text="22:30:59" textFill="#2eb23f">

@@ -1,7 +1,7 @@
-import groundClientModel.AirTrafficControlGroundSimulator;
-import groundClientModel.AirTrafficControlGroundSimulatorModel;
 import groundclient.GroundClient;
 import groundclient.GroundRIClient;
+import groundclientmodel.AirTrafficControlGroundSimulator;
+import groundclientmodel.AirTrafficControlGroundSimulatorModel;
 import groundclientview.MainView;
 import groundclientviewmodel.MainViewViewModel;
 import javafx.application.Application;
