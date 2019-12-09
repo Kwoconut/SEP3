@@ -12,30 +12,24 @@ import model.NodeDTO;
 import model.PlaneDTO;
 import model.Timer;
 
-public class AirTrafficControlGroundSimulatorModel
-      implements AirTrafficControlGroundSimulator, Serializable
+public class ATCGroundSimulatorModel
+      implements ATCGroundSimulator, Serializable
 {
    /**
     * 
     */
    private static final long serialVersionUID = 3218559717712719996L;
-   private ArrayList<PlaneDTO> planes;
-   private ArrayList<NodeDTO> groundNodes;
-   private boolean wind;
    private GroundIClient client;
    private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-   public AirTrafficControlGroundSimulatorModel()
+   public ATCGroundSimulatorModel()
    {
-      planes = new ArrayList<PlaneDTO>();
-      groundNodes = new ArrayList<NodeDTO>();
-      wind = false;
+
    }
 
    @Override
    public void getPlaneDTOFromServer(PlaneDTO plane)
    {
-      planes.add(plane);
       support.firePropertyChange("planeADD", " ", plane);
    }
 
@@ -59,15 +53,8 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public ArrayList<PlaneDTO> getPlanes()
-   {
-      return planes;
-   }
-
-   @Override
    public void getGroundPlanesDTOFromServer(ArrayList<PlaneDTO> planes)
    {
-      // this.planes = planes;
       support.firePropertyChange("positionUPDATE", " ", planes);
 
    }
@@ -80,25 +67,6 @@ public class AirTrafficControlGroundSimulatorModel
    }
 
    @Override
-   public ArrayList<NodeDTO> getGroundNodes()
-   {
-      return groundNodes;
-   }
-
-   public void addPlane(PlaneDTO plane)
-   {
-      this.planes.add(plane);
-      support.firePropertyChange("planeADD", " ", plane);
-
-   }
-
-   public void removePlane(int index)
-   {
-      this.planes.remove(index);
-      support.firePropertyChange("planeREMOVE", " ", index);
-   }
-
-   @Override
    public void simulationFailed()
    {
       support.firePropertyChange("simulationFAILED", " ", true);
@@ -108,20 +76,12 @@ public class AirTrafficControlGroundSimulatorModel
    @Override
    public void getGroundNodesDTOFromServer(ArrayList<NodeDTO> nodes)
    {
-      this.groundNodes = nodes;
       support.firePropertyChange("nodeADD", " ", nodes);
-   }
-
-   @Override
-   public boolean getWind()
-   {
-      return wind;
    }
 
    @Override
    public void getWindFromServer(boolean wind)
    {
-      this.wind = wind;
       support.firePropertyChange("windADD"," ",wind);
    }
 

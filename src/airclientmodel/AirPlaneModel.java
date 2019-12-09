@@ -1,9 +1,10 @@
-package model;
+package airclientmodel;
 
 import java.beans.PropertyChangeListener;
 
-public interface PlaneModel
+public interface AirPlaneModel
 {
    void addPropertyChangeListener(PropertyChangeListener listener);
+
 
 }

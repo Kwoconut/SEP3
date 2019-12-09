@@ -1,22 +1,24 @@
-package groundclientviewmodel;
+package airclientviewmodel;
 
+import airclientmodel.AirPlaneModel;
+import groundclientmodel.GroundPlaneModel;
+import groundclientviewmodel.GroundPlaneViewModel;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.PlaneDTO;
-import model.PlaneModel;
 
-public class PlaneViewModel
+public class AirPlaneViewModel
 {
    private StringProperty callSignProperty;
    private StringProperty statusProperty;
    private DoubleProperty xProperty;
    private DoubleProperty yProperty;
    private StringProperty targetProperty;
-   private PlaneModel model;
+   private AirPlaneModel model;
 
-   public PlaneViewModel(PlaneModel model, PlaneDTO plane)
+   public AirPlaneViewModel(AirPlaneModel model, PlaneDTO plane)
    {
       this.model = model;
       callSignProperty = new SimpleStringProperty(plane.getCallSign());
@@ -56,11 +58,11 @@ public class PlaneViewModel
 
    public boolean equals(Object obj)
    {
-      if (!(obj instanceof PlaneViewModel))
+      if (!(obj instanceof GroundPlaneViewModel))
       {
          return false;
       }
-      PlaneViewModel other = (PlaneViewModel) obj;
+      GroundPlaneViewModel other = (GroundPlaneViewModel) obj;
       return other.getCallSignProperty().get()
             .equals(this.getCallSignProperty().get())
             && other.getStatusProperty().get()

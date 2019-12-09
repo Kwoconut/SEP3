@@ -2,7 +2,8 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import airClient.AirRIClient;
+
+import airclient.AirRIClient;
 
 public interface AirRIServerRead extends Remote
 {

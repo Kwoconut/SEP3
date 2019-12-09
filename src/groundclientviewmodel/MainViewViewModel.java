@@ -1,14 +1,14 @@
 package groundclientviewmodel;
 
-import groundclientmodel.AirTrafficControlGroundSimulator;
+import groundclientmodel.ATCGroundSimulator;
 
 public class MainViewViewModel
 {
 
-   private AirTrafficControlGroundSimulator model;
+   private ATCGroundSimulator model;
    private GroundRadarViewModel groundRadarViewModel;
 
-   public MainViewViewModel(AirTrafficControlGroundSimulator model)
+   public MainViewViewModel(ATCGroundSimulator model)
    {
       this.model = model;
       this.groundRadarViewModel = new GroundRadarViewModel(model, model, model);

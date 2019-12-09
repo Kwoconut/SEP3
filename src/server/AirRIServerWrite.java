@@ -1,11 +1,13 @@
 package server;
 
 import java.rmi.RemoteException;
-import airClient.AirRIClient;
+
+import airclient.AirRIClient;
+import model.StaticPosition;
 
 public interface AirRIServerWrite extends AirRIServerRead
 {
 	void addAirClient(AirRIClient client) throws RemoteException;
 
-	void changeAirPlaneRoute(String callSign, int startNodeId, int endNodeId) throws RemoteException;
+	void reRoutePlane(String callSign,StaticPosition position) throws RemoteException;
 }

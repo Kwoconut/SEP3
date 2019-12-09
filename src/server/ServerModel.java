@@ -9,6 +9,7 @@ import model.NodeDTO;
 import model.InAirState;
 import model.Plane;
 import model.PlaneDTO;
+import model.StaticPosition;
 import model.Timer;
 
 public class ServerModel
@@ -228,5 +229,13 @@ public class ServerModel
       nodes.add(this.nodes.get(9));
       nodes.add(this.nodes.get(16));
       return nodes;
+   }
+
+   public void reRoutePlane(String callSign, StaticPosition position)
+   {
+      ArrayList<Node> route = new ArrayList<Node>();
+      route.add(new Node("Aalborg Airspace", 50, position));
+      airPlanes.stream().filter(plane -> plane.getCallSign().equals(callSign))
+            .findFirst().get().setRoute(route);
    }
 }

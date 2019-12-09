@@ -3,7 +3,7 @@ package groundclientview;
 import java.util.NoSuchElementException;
 
 import groundclientviewmodel.GroundRadarViewModel;
-import groundclientviewmodel.PlaneViewModel;
+import groundclientviewmodel.GroundPlaneViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -40,16 +40,16 @@ public class GroundRadarView
    private ImageView flagImage;
 
    @FXML
-   private TableView<PlaneViewModel> planeListTable;
+   private TableView<GroundPlaneViewModel> planeListTable;
 
    @FXML
-   private TableColumn<PlaneViewModel, String> callSignColumn;
+   private TableColumn<GroundPlaneViewModel, String> callSignColumn;
 
    @FXML
-   private TableColumn<PlaneViewModel, String> statusColumn;
+   private TableColumn<GroundPlaneViewModel, String> statusColumn;
 
    @FXML
-   private TableColumn<PlaneViewModel, String> targetColumn;
+   private TableColumn<GroundPlaneViewModel, String> targetColumn;
 
    @FXML
    private Pane failPane;
@@ -166,7 +166,7 @@ public class GroundRadarView
       // CALLSIGN BOUND AND THE LOCATION BOUND
 
       this.viewModel.getPlanes()
-            .addListener((ListChangeListener<PlaneViewModel>) change ->
+            .addListener((ListChangeListener<GroundPlaneViewModel>) change ->
 
             {
                while (change.next())

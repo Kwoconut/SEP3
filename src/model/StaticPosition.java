@@ -22,12 +22,12 @@ public class StaticPosition implements Serializable
    {
       return YCoordinate;
    }
-   
+
    public void setXCoordinate(double XCoordinate)
    {
       this.XCoordinate = XCoordinate;
    }
-   
+
    public void setYCoordinate(double YCoordinate)
    {
       this.YCoordinate = YCoordinate;
@@ -38,7 +38,7 @@ public class StaticPosition implements Serializable
       this.XCoordinate = staticPosition.getXCoordinate();
       this.YCoordinate = staticPosition.getYCoordinate();
    }
-   
+
    public boolean equals(Object obj)
    {
       if (!(obj instanceof StaticPosition))
@@ -46,9 +46,10 @@ public class StaticPosition implements Serializable
          return false;
       }
       StaticPosition other = (StaticPosition) obj;
-      return other.getXCoordinate() == XCoordinate && other.getYCoordinate() == YCoordinate;
+      return other.getXCoordinate() == XCoordinate
+            && other.getYCoordinate() == YCoordinate;
    }
-   
+
    public String toString()
    {
       return this.XCoordinate + ", " + this.YCoordinate;

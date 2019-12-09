@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import groundclientmodel.AirTrafficControlGroundSimulatorModelClientHandler;
+import groundclientmodel.ATCGroundSimulatorModelClientHandler;
 import model.NodeDTO;
 import model.Plane;
 import model.PlaneDTO;
@@ -20,10 +20,10 @@ import server.GroundServerAccess;
 public class GroundClient implements GroundRIClient, GroundIClient, Serializable
 {
    private static final long serialVersionUID = 1L;
-   private AirTrafficControlGroundSimulatorModelClientHandler model;
+   private ATCGroundSimulatorModelClientHandler model;
    private GroundServerAccess access;
 
-   public GroundClient(AirTrafficControlGroundSimulatorModelClientHandler model)
+   public GroundClient(ATCGroundSimulatorModelClientHandler model)
          throws RemoteException, NotBoundException, MalformedURLException
    {
       this.model = model;

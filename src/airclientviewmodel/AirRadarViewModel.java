@@ -1,89 +1,77 @@
-package groundclientviewmodel;
+package airclientviewmodel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
+import airclientmodel.AirNodeModel;
+import airclientmodel.AirPlaneModel;
+import airclientmodel.AirRadarModel;
 import groundclientmodel.GroundRadarModel;
 import groundclientmodel.GroundNodeModel;
 import groundclientmodel.GroundPlaneModel;
+import groundclientviewmodel.GroundNodeViewModel;
+import groundclientviewmodel.GroundPlaneViewModel;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.BoardingState;
+import model.EmergencyState;
 import model.NodeDTO;
 import model.PlaneDTO;
+import model.StaticPosition;
 import model.Timer;
 
-public class GroundRadarViewModel implements PropertyChangeListener
+public class AirRadarViewModel implements PropertyChangeListener
 {
-   private ObservableList<GroundPlaneViewModel> planes;
-   private ObservableList<GroundNodeViewModel> groundNodes;
-   private ObjectProperty<GroundNodeViewModel> selectedStartNode;
-   private ObjectProperty<GroundNodeViewModel> selectedEndNode;
-   private ObjectProperty<GroundPlaneViewModel> selectedPlane;
-   private GroundRadarModel model;
-   private GroundNodeModel groundNodeViewModel;
-   private GroundPlaneModel planeViewModel;
+   private ObservableList<AirPlaneViewModel> planes;
+   private ObservableList<AirNodeViewModel> airNodes;
+   private ObjectProperty<AirPlaneViewModel> selectedPlane;
+   private ObjectProperty<AirNodeViewModel> selectedNode;
+   private AirRadarModel model;
+   private AirNodeModel airNodeViewModel;
+   private AirPlaneModel planeViewModel;
    private BooleanProperty simulationFailed;
    private BooleanProperty windProperty;
    private StringProperty timerProperty;
 
-   public GroundRadarViewModel(GroundRadarModel model,
-         GroundNodeModel groundNodeViewModel, GroundPlaneModel planeViewModel)
+   public AirRadarViewModel(AirRadarModel model, AirNodeModel airNodeViewModel,
+         AirPlaneModel planeViewModel)
    {
       this.model = model;
-      this.groundNodeViewModel = groundNodeViewModel;
+      this.airNodeViewModel = airNodeViewModel;
       this.planeViewModel = planeViewModel;
       this.planes = FXCollections.observableArrayList();
-      this.groundNodes = FXCollections.observableArrayList();
-      this.selectedStartNode = new SimpleObjectProperty<GroundNodeViewModel>();
-      this.selectedEndNode = new SimpleObjectProperty<GroundNodeViewModel>();
-      this.selectedPlane = new SimpleObjectProperty<GroundPlaneViewModel>();
+      this.airNodes = FXCollections.observableArrayList();
       this.simulationFailed = new SimpleBooleanProperty(false);
       this.windProperty = new SimpleBooleanProperty(false);
       this.timerProperty = new SimpleStringProperty();
       this.model.addPropertyChangeListener(this);
-
    }
 
-   public ObservableList<GroundPlaneViewModel> getPlanes()
+   public ObservableList<AirPlaneViewModel> getPlanes()
    {
       return planes;
    }
 
-   public ObservableList<GroundNodeViewModel> getGroundNodes()
+   public ObservableList<AirNodeViewModel> getAirNodes()
    {
-      return groundNodes;
+      return airNodes;
    }
 
-   public ObjectProperty<GroundNodeViewModel> getSelectedStartNode()
+   public ObjectProperty<AirPlaneViewModel> getSelectedPlane()
    {
-      return selectedStartNode;
-   }
-
-   public ObjectProperty<GroundNodeViewModel> getSelectedEndNode()
-   {
-      return selectedEndNode;
-   }
-
-   public ObjectProperty<GroundPlaneViewModel> getSelectedPlane()
-   {
-
       return selectedPlane;
-
    }
 
-   public BooleanProperty getWindProperty()
+   public ObjectProperty<AirNodeViewModel> getSelectedAirNode()
    {
-      return windProperty;
+      return selectedNode;
    }
 
    public BooleanProperty getSimulationFailed()
@@ -91,64 +79,49 @@ public class GroundRadarViewModel implements PropertyChangeListener
       return simulationFailed;
    }
 
+   public BooleanProperty getWindProperty()
+   {
+      return windProperty;
+   }
+
    public StringProperty getTimerProperty()
    {
       return timerProperty;
    }
 
-   public void setSelectedGroundStartNode(GroundNodeViewModel selectedNode)
+   public void setSelectedPlane(AirPlaneViewModel plane)
    {
-      if (selectedNode != null)
-      {
-         System.out.println(selectedNode.getIDProperty().get() + " ");
-      }
-      this.selectedStartNode.setValue(selectedNode);
-
+      this.selectedPlane.set(plane);
    }
 
-   public void setSelectedGroundEndNode(GroundNodeViewModel selectedNode)
+   public void setSelectedNode(AirNodeViewModel node)
    {
-      if (selectedNode != null)
-      {
-         System.out.println(selectedNode.getIDProperty().get() + " ");
-      }
-      this.selectedEndNode.setValue(selectedNode);
+      this.selectedNode.set(node);
    }
-
-   public void setSelectedPlane(GroundPlaneViewModel plane)
+   
+   public void reRoutePlane(String callSign,StaticPosition position)
    {
-      if (plane != null)
-      {
-         System.out.println(plane.getCallSignProperty().get() + " ");
-      }
-      this.selectedPlane.setValue(plane);
-   }
-
-   public void changePlaneRoute()
-   {
-      this.model.changePlaneRoute(
-            selectedPlane.get().getCallSignProperty().get(),
-            selectedStartNode.get().getIDProperty().get(),
-            selectedEndNode.get().getIDProperty().get());
+      
    }
 
    @Override
    public void propertyChange(PropertyChangeEvent evt)
    {
+
       if (evt.getPropertyName().equals("nodeADD"))
       {
          @SuppressWarnings("unchecked")
          ArrayList<NodeDTO> nodes = (ArrayList<NodeDTO>) evt.getNewValue();
          for (int i = 0; i < nodes.size(); i++)
          {
-            this.groundNodes.add(new GroundNodeViewModel(
-                  this.groundNodeViewModel, nodes.get(i)));
+            this.airNodes.add(new AirNodeViewModel(
+                  this.airNodeViewModel, nodes.get(i)));
          }
       }
       Platform.runLater(() -> {
          if (evt.getPropertyName().equals("planeADD"))
          {
-            planes.add(new GroundPlaneViewModel(this.planeViewModel,
+            planes.add(new AirPlaneViewModel(this.planeViewModel,
                   (PlaneDTO) evt.getNewValue()));
          }
          else if (evt.getPropertyName().equals("windADD"))
@@ -180,11 +153,11 @@ public class GroundRadarViewModel implements PropertyChangeListener
                         .setValue(planes.get(i).getPosition().getXCoordinate());
                   this.planes.get(i).getYProperty()
                         .setValue(planes.get(i).getPosition().getYCoordinate());
-                  if (planes.get(i).getPlaneState() instanceof BoardingState)
+                  if (planes.get(i).getPlaneState() instanceof EmergencyState)
                   {
                      this.planes.get(i).getStatusProperty().setValue(planes
                            .get(i).getPlaneState().toString() + " - "
-                           + ((BoardingState) planes.get(i).getPlaneState())
+                           + ((EmergencyState) planes.get(i).getPlaneState())
                                  .getTime().toString());
                   }
                   else

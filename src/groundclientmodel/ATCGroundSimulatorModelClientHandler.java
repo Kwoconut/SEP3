@@ -7,7 +7,7 @@ import model.NodeDTO;
 import model.PlaneDTO;
 import model.Timer;
 
-public interface AirTrafficControlGroundSimulatorModelClientHandler 
+public interface ATCGroundSimulatorModelClientHandler 
 {	
 	void setClient(GroundClient groundClient);
 	

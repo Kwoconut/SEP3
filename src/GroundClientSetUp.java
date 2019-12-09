@@ -1,7 +1,7 @@
 import groundclient.GroundClient;
 import groundclient.GroundRIClient;
-import groundclientmodel.AirTrafficControlGroundSimulator;
-import groundclientmodel.AirTrafficControlGroundSimulatorModel;
+import groundclientmodel.ATCGroundSimulator;
+import groundclientmodel.ATCGroundSimulatorModel;
 import groundclientview.MainView;
 import groundclientviewmodel.MainViewViewModel;
 import javafx.application.Application;
@@ -14,7 +14,7 @@ public class GroundClientSetUp extends Application
    @Override
    public void start(Stage stage) throws Exception
    {
-      AirTrafficControlGroundSimulator model = new AirTrafficControlGroundSimulatorModel();
+      ATCGroundSimulator model = new ATCGroundSimulatorModel();
       MainViewViewModel mvvm = new MainViewViewModel(model);
       GroundRIClient client = new GroundClient(model);
       MainView mv = new MainView(stage, mvvm);

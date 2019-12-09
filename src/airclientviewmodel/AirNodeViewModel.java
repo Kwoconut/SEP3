@@ -1,26 +1,28 @@
-package groundclientviewmodel;
+package airclientviewmodel;
 
+import airclientmodel.AirNodeModel;
 import groundclientmodel.GroundNodeModel;
+import groundclientviewmodel.GroundNodeViewModel;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import model.NodeDTO;
 
-public class GroundNodeViewModel
+public class AirNodeViewModel
 {
    private DoubleProperty xProperty;
    private DoubleProperty yProperty;
    private IntegerProperty idProperty;
-   private GroundNodeModel model;
+   private AirNodeModel model;
 
-   public GroundNodeViewModel(GroundNodeModel model, NodeDTO node)
-   {
-      this.model = model;
-      xProperty = new SimpleDoubleProperty(node.getPosition().getXCoordinate());
-      yProperty = new SimpleDoubleProperty(node.getPosition().getYCoordinate());
-      idProperty = new SimpleIntegerProperty(node.getNodeId());
-   }
+   public AirNodeViewModel(AirNodeModel model, NodeDTO node)
+      {
+         this.model = model;
+         xProperty = new SimpleDoubleProperty(node.getPosition().getXCoordinate());
+         yProperty = new SimpleDoubleProperty(node.getPosition().getYCoordinate());
+         idProperty = new SimpleIntegerProperty(node.getNodeId());
+      }
 
    public DoubleProperty getXProperty()
    {

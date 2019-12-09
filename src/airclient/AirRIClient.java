@@ -1,5 +1,6 @@
-package airClient;
+package airclient;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -7,7 +8,7 @@ import model.NodeDTO;
 import model.PlaneDTO;
 import model.Timer;
 
-public interface AirRIClient 
+public interface AirRIClient extends Remote
 {
 	public void getAirPlaneDTOFromServer(PlaneDTO plane) throws RemoteException;
 	

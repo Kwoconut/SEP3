@@ -7,9 +7,11 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import airClient.AirRIClient;
+
+import airclient.AirRIClient;
 import groundclient.GroundRIClient;
 import model.PlaneDTO;
+import model.StaticPosition;
 
 public class Server implements GroundRIServerWrite, AirRIServerWrite
 {
@@ -144,17 +146,12 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       model.changeGroundPlaneRoute(callSign, startNodeId, endNodeId);
    }
    
-   @Override
-   public void changeAirPlaneRoute(String callSign, int startNodeId, int endNodeId)
-   {
-      model.changeAirPlaneRoute(callSign, startNodeId, endNodeId);
-   }
 
    public void execute() throws IOException
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("10.152.218.73", 6789);
+      Socket socket = new Socket("10.152.218.70", 2607);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
       manager.simulationStateRun();
@@ -176,6 +173,14 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       {
          e.printStackTrace();
       }
+   }
+
+   @Override
+   public void reRoutePlane(String callSign, StaticPosition position)
+         throws RemoteException
+   {
+      this.model.reRoutePlane(callSign,position);
+      
    }
 }
 
