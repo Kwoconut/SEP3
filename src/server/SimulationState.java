@@ -152,6 +152,7 @@ public class SimulationState implements Runnable
                if (checkCollision())
                {
                   manager.exitPlaneDispatcher();
+                  manager.exitSimulationTimer();
                   System.out.println("Simulation State Thread Stopped");
                   break;
                }

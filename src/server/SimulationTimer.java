@@ -40,7 +40,7 @@ public class SimulationTimer implements Runnable
       }
    }
    
-   private void updateEmergencyTimer()
+   private void updateEmergencyTimer() throws RemoteException
    {
       for (int i = 0; i < this.simulationManager.getServer().getModel()
             .getPlanes().size(); i++)
@@ -55,7 +55,16 @@ public class SimulationTimer implements Runnable
                   .getPlanes().get(i).getPlaneState()).getTime()
                   .equals(new Timer(0, 0, 0)))
             {
-               
+             for (int j = 0 ; j < this.simulationManager.getServer().getAirClients().size();j++)
+             {
+                this.simulationManager.getServer().getAirClients().get(j).simulationFailed();
+             }
+             for (int j = 0 ; j < this.simulationManager.getServer().getGroundClients().size();j++)
+             {
+                this.simulationManager.getServer().getGroundClients().get(j).simulationFailed();
+             }
+             this.simulationManager.exitPlaneDispatcher();
+             this.simulationManager.exitSimulationTimer();
             }
             
          }
@@ -94,6 +103,7 @@ public class SimulationTimer implements Runnable
          try
          {
             updateBoardingTimer();
+            updateEmergencyTimer();
             sendUpdatedTimer();
             Thread.sleep(0250);
          }
