@@ -12,8 +12,7 @@ import model.NodeDTO;
 import model.PlaneDTO;
 import model.Timer;
 
-public class ATCGroundSimulatorModel
-      implements ATCGroundSimulator, Serializable
+public class ATCGroundSimulatorModel implements ATCGroundSimulator, Serializable
 {
    /**
     * 
@@ -82,12 +81,19 @@ public class ATCGroundSimulatorModel
    @Override
    public void getWindFromServer(boolean wind)
    {
-      support.firePropertyChange("windADD"," ",wind);
+      support.firePropertyChange("windADD", " ", wind);
    }
 
    @Override
    public void getTimerFromServer(Timer timer)
    {
-      support.firePropertyChange("timerUPDATE"," ",timer);      
+      support.firePropertyChange("timerUPDATE", " ", timer);
+   }
+
+   @Override
+   public void removePlane(int index)
+   {
+      support.firePropertyChange("planeREMOVE", " ", index);
+
    }
 }

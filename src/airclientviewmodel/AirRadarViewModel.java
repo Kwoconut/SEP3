@@ -98,10 +98,11 @@ public class AirRadarViewModel implements PropertyChangeListener
    {
       this.selectedNode.set(node);
    }
-   
-   public void reRoutePlane(String callSign,StaticPosition position)
+
+   public void reRoutePlane(double xCoordinate, double yCoordinate)
    {
-      
+      this.model.reRoutePlane(selectedPlane.get().getCallSignProperty().get(),
+            new StaticPosition(xCoordinate, yCoordinate));
    }
 
    @Override
@@ -114,8 +115,8 @@ public class AirRadarViewModel implements PropertyChangeListener
          ArrayList<NodeDTO> nodes = (ArrayList<NodeDTO>) evt.getNewValue();
          for (int i = 0; i < nodes.size(); i++)
          {
-            this.airNodes.add(new AirNodeViewModel(
-                  this.airNodeViewModel, nodes.get(i)));
+            this.airNodes.add(
+                  new AirNodeViewModel(this.airNodeViewModel, nodes.get(i)));
          }
       }
       Platform.runLater(() -> {

@@ -90,4 +90,11 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
    {
       this.model.getTimerFromServer(timer);
    }
+
+   @Override
+   public void removeGroundPlane(int index) throws RemoteException
+   {
+      this.model.removePlane(index);
+      
+   }
 }

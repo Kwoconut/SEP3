@@ -57,13 +57,13 @@ public class Plane implements Serializable
             else if (Route.get(0).getNodeId() == 9)
             {
                Route.add(new Node("Exit point EAST", 20,
-                     new StaticPosition(1550, 115)));
+                     new StaticPosition(1560, 115)));
                Target.setPosition(Route.get(0).getPosition());
             }
             else if (Route.get(0).getNodeId() == 16)
             {
                Route.add(new Node("Exit point WEST ", 21,
-                     new StaticPosition(0, 115)));
+                     new StaticPosition(-10, 115)));
                Target.setPosition(Route.get(0).getPosition());
             }
             else if (Route.get(0).getNodeId() == 20

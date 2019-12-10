@@ -22,5 +22,7 @@ public interface ATCGroundSimulatorModelClientHandler
 	void simulationFailed();
 
    void getTimerFromServer(Timer timer);
+   
+   void removePlane(int index);
 	
 }

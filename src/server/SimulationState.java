@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 
 import model.BoardingState;
 import model.LandedState;
+import model.StaticPosition;
 import model.TakeoffState;
 import model.TaxiState;
 
@@ -14,6 +15,41 @@ public class SimulationState implements Runnable
    SimulationState(SimulationManager manager)
    {
       this.manager = manager;
+   }
+
+   private void takeOffPlanes() throws RemoteException
+   {
+      for (int i = 0; i < manager.getServer().getModel().getGroundPlanes()
+            .size(); i++)
+      {
+         if (manager.getServer().getModel().getGroundPlanes().get(i)
+               .getPosition().equals(new StaticPosition(1560, 115)))
+         {
+            manager.getServer().getModel().getAirPlanes()
+                  .add(manager.getServer().getModel().getGroundPlanes().get(i));
+            manager.getServer().getModel().getGroundPlanes().remove(i);
+            for (int j = 0; j < manager.getServer().getGroundClients()
+                  .size(); j++)
+            {
+               manager.getServer().removeGroundPlane(
+                     manager.getServer().getGroundClients().get(j), i);
+            }
+         }
+
+         if (manager.getServer().getModel().getGroundPlanes().get(i)
+               .getPosition().equals(new StaticPosition(-10, 115)))
+         {
+            manager.getServer().getModel().getAirPlanes()
+                  .add(manager.getServer().getModel().getGroundPlanes().get(i));
+            manager.getServer().getModel().getGroundPlanes().remove(i);
+            for (int j = 0; j < manager.getServer().getGroundClients()
+                  .size(); j++)
+            {
+               manager.getServer().removeGroundPlane(
+                     manager.getServer().getGroundClients().get(j), i);
+            }
+         }
+      }
    }
 
    private void updateStateOnLocation()
@@ -137,6 +173,7 @@ public class SimulationState implements Runnable
          {
             try
             {
+               takeOffPlanes();
                updateStateOnLocation();
                movePlanes();
             }

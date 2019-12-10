@@ -15,7 +15,7 @@ public class PlaneDispatcher implements Runnable
    private void sendGroundPlane()
    {
 
-      for (int i = 0; i < 7; i++)
+      for (int i = 0; i < 1; i++)
       {
          for (int j = 0; j < manager.getServer().getGroundClients().size(); j++)
          {

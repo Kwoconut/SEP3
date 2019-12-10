@@ -8,6 +8,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import com.sun.security.ntlm.Client;
+
 import airclient.AirRIClient;
 import groundclient.GroundRIClient;
 import model.PlaneDTO;
@@ -121,6 +123,11 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    {
 	   client.getGroundPlaneDTOFromServer(plane);
 	   
+   }
+   
+   public void removeGroundPlane(GroundRIClient client,int index) throws RemoteException
+   {
+      client.removeGroundPlane(index);
    }
    
    public void sendAirPlaneDTO(PlaneDTO plane, AirRIClient client)

@@ -1,3 +1,7 @@
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
 import model.Timer;
 
 public class TestingShiet
@@ -14,5 +18,4 @@ public class TestingShiet
       
       System.out.println(timer2);
    }
-
 }
