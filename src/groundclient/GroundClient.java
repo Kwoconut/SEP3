@@ -94,7 +94,6 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
    @Override
    public void removeGroundPlane(int index) throws RemoteException
    {
-      this.model.removePlane(index);
-      
+      this.model.removePlane(index); 
    }
 }

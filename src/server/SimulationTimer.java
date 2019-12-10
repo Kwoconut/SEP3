@@ -18,41 +18,38 @@ public class SimulationTimer implements Runnable
    private void updateBoardingTimer()
    {
       for (int i = 0; i < this.simulationManager.getServer().getModel()
-            .getPlanes().size(); i++)
+            .getGroundPlanes().size(); i++)
       {
-         if (this.simulationManager.getServer().getModel().getPlanes().get(i)
+         if (this.simulationManager.getServer().getModel().getGroundPlanes().get(i)
                .getPlaneState() instanceof BoardingState)
          {
             ((BoardingState) this.simulationManager.getServer().getModel()
-                  .getPlanes().get(i).getPlaneState()).decrement();
+                  .getGroundPlanes().get(i).getPlaneState()).decrement();
             
             if (((BoardingState) this.simulationManager.getServer().getModel()
-                  .getPlanes().get(i).getPlaneState()).getTime()
+                  .getGroundPlanes().get(i).getPlaneState()).getTime()
                   .equals(new Timer(0, 0, 0)))
             {
-               this.simulationManager.getServer().getModel().getPlanes().get(i)
+               this.simulationManager.getServer().getModel().getGroundPlanes().get(i)
                .setReadyForTakeOff(true);
-            }
-            
+            }      
          }
-
-
       }
    }
    
    private void updateEmergencyTimer() throws RemoteException
    {
       for (int i = 0; i < this.simulationManager.getServer().getModel()
-            .getPlanes().size(); i++)
+            .getAirPlanes().size(); i++)
       {
-         if (this.simulationManager.getServer().getModel().getPlanes().get(i)
+         if (this.simulationManager.getServer().getModel().getAirPlanes().get(i)
                .getPlaneState() instanceof EmergencyState)
          {
             ((EmergencyState) this.simulationManager.getServer().getModel()
-                  .getPlanes().get(i).getPlaneState()).decrement();
+                  .getAirPlanes().get(i).getPlaneState()).decrement();
             
             if (((EmergencyState) this.simulationManager.getServer().getModel()
-                  .getPlanes().get(i).getPlaneState()).getTime()
+                  .getAirPlanes().get(i).getPlaneState()).getTime()
                   .equals(new Timer(0, 0, 0)))
             {
              for (int j = 0 ; j < this.simulationManager.getServer().getAirClients().size();j++)
@@ -113,7 +110,5 @@ public class SimulationTimer implements Runnable
             e.printStackTrace();
          }
       }
-
    }
-
 }
