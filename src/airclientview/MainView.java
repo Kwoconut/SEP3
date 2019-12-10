@@ -30,14 +30,14 @@ public class MainView
       FXMLLoader loader = new FXMLLoader();
       Parent root = null;
 
-      if ("GroundRadar".equals(viewToOpen))
+      if ("AirRadar".equals(viewToOpen))
       {
          loader.setLocation(getClass().getResource("AirRadarView.fxml"));
          root = loader.load();
          AirRadarView view = loader.getController();
          view.init(mvViewModel.getAirRadarViewModel(),this);
       }
-      stage.setTitle("GroundRadar");
+      stage.setTitle("AirRadar");
       
       Stage localStage = new Stage();
 

@@ -49,6 +49,13 @@ public class AirRadarView
       this.airNodes = FXCollections.observableArrayList();
       this.failPane.setVisible(false);
       this.timerLabel.textProperty().bind(this.viewModel.getTimerProperty());
+      
+      Circle testCircle = new Circle(10);
+      testCircle.setFill(Color.YELLOW);
+      testCircle.setStroke(Color.BLACK);
+      testCircle.centerXProperty().set(575);
+      testCircle.centerYProperty().set(980);
+      mainPane.getChildren().add(testCircle);
 
       for (int i = 0; i < this.viewModel.getAirNodes().size(); i++)
       {
