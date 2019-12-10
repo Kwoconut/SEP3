@@ -85,5 +85,12 @@ public class ATCAirSimulatorModel
       
       
    }
+   
+   @Override
+   public void removePlane(int index)
+   {
+      support.firePropertyChange("planeREMOVE", " ", index);
+
+   }
 
 }

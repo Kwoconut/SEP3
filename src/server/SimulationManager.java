@@ -10,9 +10,15 @@ public class SimulationManager {
 		this.server = server;
 	}
 
-	public void planeDispatcherRun() {
-		PlaneDispatcher planeDispatcher = new PlaneDispatcher(this);
-		Thread planeDispatcherThread = new Thread(planeDispatcher);
+	public void airPlaneDispatcherRun() {
+		AirPlaneDispatcher airPlaneDispatcher = new AirPlaneDispatcher(this);
+		Thread planeDispatcherThread = new Thread(airPlaneDispatcher);
+		planeDispatcherThread.start();
+	}
+	
+	public void groundPlaneDispatcherRun() {
+		GroundPlaneDispatcher groundPlaneDispatcher = new GroundPlaneDispatcher(this);
+		Thread planeDispatcherThread = new Thread(groundPlaneDispatcher);
 		planeDispatcherThread.start();
 	}
 

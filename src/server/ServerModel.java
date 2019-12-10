@@ -14,7 +14,6 @@ import model.Timer;
 
 public class ServerModel
 {
-   private ArrayList<Plane> planes;
    private ArrayList<Plane> groundPlanes;
    private ArrayList<Plane> airPlanes;
    private ArrayList<Node> nodes;
@@ -25,7 +24,6 @@ public class ServerModel
 
    public ServerModel()
    {
-      planes = new ArrayList<Plane>();
       groundPlanes = new ArrayList<Plane>();
       airPlanes = new ArrayList<Plane>();
       wind = false;
@@ -36,10 +34,18 @@ public class ServerModel
    {
       for (int i = 0; i < planes.size(); i++)
       {
-         planes.get(i).setState(new InAirState());
-
+         if(planes.get(i).getFlightPlan().getEndLocation().equals("Aalborg"))
+         {
+        	 planes.get(i).setState(new InAirState());
+        	airPlanes.add(planes.get(i)); 
+         }
+         if(planes.get(i).getFlightPlan().getStartLocation().equals("Aalborg"))
+         {
+        	 planes.get(i).landPlane(
+						getLandingNode(getWind()));
+        	 groundPlanes.add(planes.get(i));
+         }
       }
-      this.planes = planes;
    }
 
    public void loadNodesFromDatabase(ArrayList<Node> nodes)
@@ -57,11 +63,6 @@ public class ServerModel
    public void loadEdgesFromDatabase(ArrayList<Edge> edges)
    {
       this.edges = edges;
-   }
-
-   public ArrayList<Plane> getPlanes()
-   {
-      return planes;
    }
 
    public ArrayList<Plane> getGroundPlanes()

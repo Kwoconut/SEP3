@@ -100,4 +100,10 @@ public class AirClient implements AirIClient, AirRIClient
 
    }
 
+   @Override
+   public void removeAirPlane(int index) throws RemoteException
+   {
+      this.model.removePlane(index); 
+   }
+
 }

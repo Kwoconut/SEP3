@@ -8,7 +8,7 @@ public class Plane implements Serializable
    private String CallSign;
    private String Model;
    private String Company;
-//   private FlightPlan FlightPlan;
+   private FlightPlan FlightPlan;
    private PlaneState PlaneState;
    private MovingPosition Position;
    private StaticPosition Target;
@@ -17,12 +17,12 @@ public class Plane implements Serializable
    private boolean ReadyForTakeOff;
 
    public Plane(String callSign, String model, String company,
-         MovingPosition position, StaticPosition target)
+         MovingPosition position, StaticPosition target,FlightPlan flightPlan)
    {
       this.CallSign = callSign;
       this.Model = model;
       this.Company = company;
-      // this.FlightPlan = flightPlan;
+      this.FlightPlan = flightPlan;
       this.Position = position;
       this.Target = target;
       this.Route = null;
@@ -154,9 +154,12 @@ public class Plane implements Serializable
       return new PlaneDTO(this.CallSign, this.PlaneState, this.Position, route);
    }
 
-/*
- * public FlightPlan getFlightPlan() { return FlightPlan; }
- */
+
+   public FlightPlan getFlightPlan() 
+ 	{ 
+	  return FlightPlan; 
+	}
+ 
 
    public StaticPosition getPosition()
    {

@@ -1,18 +1,18 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
+
 
 public class FlightPlan implements Serializable
 {
    private int Id;
-   private Date DepartureTime;
-   private Date ArrivalTime;
-   private Date Delay;
+   private FlightDate DepartureTime;
+   private FlightDate ArrivalTime;
+   private Timer Delay;
    private String StartLocation;
    private String EndLocation;
 
-   public FlightPlan(int id, Date departureTime, Date arrivalTime, Date delay,
+   public FlightPlan(int id, FlightDate departureTime, FlightDate arrivalTime, Timer delay,
          String startLocation, String endLocation)
    {
       this.Id = id;
@@ -21,6 +21,36 @@ public class FlightPlan implements Serializable
       this.Delay = delay;
       this.StartLocation = startLocation;
       this.EndLocation = endLocation;
+   }
+   
+   public String getStartLocation()
+   {
+	   return StartLocation;
+   }
+   
+   public String getEndLocation()
+   {
+	   return EndLocation;
+   }
+   
+   public Timer getDelay()
+   {
+	   return Delay;
+   }
+   
+   public FlightDate getDepartureTime()
+   {
+	   return DepartureTime;
+   }
+   
+   public FlightDate getArrivalTime()
+   {
+	   return ArrivalTime;
+   }
+   
+   public int getID()
+   {
+	   return Id;
    }
 
 }

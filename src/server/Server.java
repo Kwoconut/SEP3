@@ -45,9 +45,10 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       System.out.println(airClients.size());
       System.out.println(groundClients.size());
       System.out.println(airClients.size()+groundClients.size());
-      if (airClients.size()+groundClients.size()==1)
+      if (airClients.size()>=1 && groundClients.size()>=1)
       {
-         manager.planeDispatcherRun();
+         manager.airPlaneDispatcherRun();
+         manager.groundPlaneDispatcherRun();
          manager.simulationTimerRun();
       }
    }
@@ -63,9 +64,11 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
          System.out.println("Updating planes for next air clients");
       }
       airClients.add(client);
-      if (airClients.size()+groundClients.size()==1)
+      if (airClients.size()>=1 && groundClients.size()>=1)
       {
-         manager.planeDispatcherRun();
+         manager.airPlaneDispatcherRun();
+         manager.groundPlaneDispatcherRun();
+         manager.simulationTimerRun();
       }
    }
 
@@ -128,6 +131,11 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    public void removeGroundPlane(GroundRIClient client,int index) throws RemoteException
    {
       client.removeGroundPlane(index);
+   }
+   
+   public void removeAirPlane(AirRIClient client,int index) throws RemoteException
+   {
+      client.removeAirPlane(index);
    }
    
    public void sendAirPlaneDTO(PlaneDTO plane, AirRIClient client)
