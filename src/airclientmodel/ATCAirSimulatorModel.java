@@ -40,14 +40,14 @@ public class ATCAirSimulatorModel
    @Override
    public void getAirPlanesDTOFromServer(ArrayList<PlaneDTO> planes)
    {
-      support.firePropertyChange("planeUPDATE", " ", planes);
+      support.firePropertyChange("positionUPDATE", " ", planes);
 
    }
 
    @Override
    public void getAirNodesDTOFromServer(ArrayList<NodeDTO> nodes)
    {
-      support.firePropertyChange("nodeADD", " ", nodes);
+ //     support.firePropertyChange("nodeADD", " ", nodes);
 
    }
 

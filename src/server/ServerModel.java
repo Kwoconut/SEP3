@@ -37,6 +37,10 @@ public class ServerModel
          if(planes.get(i).getFlightPlan().getEndLocation().equals("Aalborg"))
          {
         	 planes.get(i).setState(new InAirState());
+        	 ArrayList<Node> route = new ArrayList<Node>();
+        	 route.add(new Node("kkt",50,new StaticPosition(956,486)));
+        	 planes.get(i).setRoute(route);
+        	 planes.get(i).setSpeed(1);
         	 airPlanes.add(planes.get(i)); 
          }
          if(planes.get(i).getFlightPlan().getStartLocation().equals("Aalborg"))

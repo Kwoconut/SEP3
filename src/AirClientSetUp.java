@@ -14,7 +14,7 @@ public class AirClientSetUp extends Application
 	   {
 	      ATCAirSimulator model = new ATCAirSimulatorModel();
 	      MainViewViewModel mvvm = new MainViewViewModel(model);
-	  //    AirRIClient client = new AirClient(model);
+	      AirRIClient client = new AirClient(model);
 	      MainView mv = new MainView(stage, mvvm);
 	      mv.start();
 	   }

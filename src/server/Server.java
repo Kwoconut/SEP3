@@ -92,7 +92,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    @Override
    public void sendAirPlanesDTO(AirRIClient client) throws RemoteException
    {
-	   client.getAirPlanesDTOFromServer(model.getGroundPlanesDTO());
+	   client.getAirPlanesDTOFromServer(model.getAirPlanesDTO());
    }
    
    public void sendGroundNodesDTO(GroundRIClient client) throws RemoteException
@@ -162,7 +162,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("10.152.218.75", 2607);
+      Socket socket = new Socket("10.152.218.92", 6789);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
    }

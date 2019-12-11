@@ -51,24 +51,35 @@ public class SimulationState implements Runnable
          }
       }
    }
-   
+
    private void landPlanes() throws RemoteException
    {
       for (int i = 0; i < manager.getServer().getModel().getAirPlanes()
             .size(); i++)
       {
-         if (manager.getServer().getModel().getAirPlanes().get(i)
-               .getPosition().equals(new StaticPosition(956,486)))
+         if (manager.getServer().getModel().getAirPlanes().get(i).getPosition()
+               .equals(new StaticPosition(956, 486)))
          {
             manager.getServer().getModel().getGroundPlanes()
                   .add(manager.getServer().getModel().getAirPlanes().get(i));
-            manager.getServer().getModel().getAirPlanes().remove(i);
-            for (int j = 0; j < manager.getServer().getAirClients()
+            manager.getServer().getModel().getAirPlanes().get(i)
+                  .landPlane(manager.getServer().getModel().getLandingNode(
+                        manager.getServer().getModel().getWind()));
+            for (int j = 0; j < manager.getServer().getGroundClients()
                   .size(); j++)
+            {
+               manager.getServer().sendGroundPlaneDTO(
+                     manager.getServer().getModel().getAirPlanes().get(i)
+                           .convertToDTO(),
+                     manager.getServer().getGroundClients().get(j));
+            }
+            manager.getServer().getModel().getAirPlanes().remove(i);
+            for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
             {
                manager.getServer().removeAirPlane(
                      manager.getServer().getAirClients().get(j), i);
             }
+
          }
       }
    }
@@ -152,6 +163,7 @@ public class SimulationState implements Runnable
          manager.getServer().sendGroundPlanesDTO(
                manager.getServer().getGroundClients().get(i));
       }
+
       for (int i = 0; i < manager.getServer().getModel().getAirPlanes()
             .size(); i++)
       {
@@ -190,10 +202,12 @@ public class SimulationState implements Runnable
       System.out.println("SimulationState started");
       while (true)
       {
-         if (manager.getServer().getModel().getGroundPlanes().size() >= 1)
+         if (manager.getServer().getModel().getGroundPlanes().size() >= 1
+               && manager.getServer().getModel().getAirPlanes().size() >= 1)
          {
             try
             {
+
                takeOffPlanes();
                landPlanes();
                updateStateOnLocation();

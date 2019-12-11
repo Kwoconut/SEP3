@@ -79,7 +79,7 @@ public class AirClient implements AirIClient, AirRIClient
    @Override
    public void getTimerFromServer(Timer timer) throws RemoteException
    {
-      this.getTimerFromServer(timer);
+      this.model.getTimerFromServer(timer);
 
    }
 
