@@ -49,7 +49,7 @@ public class AirRadarView
       this.airNodes = FXCollections.observableArrayList();
       this.failPane.setVisible(false);
       this.timerLabel.textProperty().bind(this.viewModel.getTimerProperty());
-      
+
       Circle testCircle = new Circle(10);
       testCircle.setFill(Color.YELLOW);
       testCircle.setStroke(Color.BLACK);
@@ -123,96 +123,80 @@ public class AirRadarView
 
                }
             });
-      
+
       this.viewModel.getPlanes()
-      .addListener((ListChangeListener<AirPlaneViewModel>) change ->
+            .addListener((ListChangeListener<AirPlaneViewModel>) change ->
 
-      {
-         while (change.next())
-         {
-            if (change.wasAdded())
             {
-               Pane pane = new Pane();
-               Text callSignText = new Text();
-               callSignText.textProperty().bind(change.getAddedSubList()
-                     .get(0).getCallSignProperty());
-               callSignText.setFill(Color.GREEN);
-               callSignText.translateYProperty().setValue(-12);
-               callSignText.translateXProperty().setValue(10);
-               Rectangle square = new Rectangle();
-               square.scaleXProperty().setValue(20);
-               square.scaleYProperty().setValue(20);
-               square.setStroke(Color.GREEN);
-               pane.getChildren().addAll(square, callSignText);
-               pane.translateXProperty().bind(
-                     change.getAddedSubList().get(0).getXProperty());
-               pane.translateYProperty().bind(
-                     change.getAddedSubList().get(0).getYProperty());
-               pane.addEventFilter(MouseEvent.MOUSE_PRESSED,
-                     new EventHandler<MouseEvent>()
-                     {
-                        public void handle(MouseEvent e)
-                        {
-                           if (!change.getAddedSubList().get(0)
-                                 .getStatusProperty().get()
-                                 .equals("Landing")
-                                 && !change.getAddedSubList().get(0)
-                                       .getStatusProperty().get()
-                                       .startsWith("Boarding"))
-                           {
-                              selectedPlane = pane;
-                              int depth = 70; // Setting the uniform
-                                              // variable
-                                              // for the glow width and
-                                              // height
-
-                              DropShadow borderGlow = new DropShadow();
-                              borderGlow.setOffsetY(0f);
-                              borderGlow.setOffsetX(0f);
-                              borderGlow.setColor(Color.RED);
-                              borderGlow.setWidth(depth);
-                              borderGlow.setHeight(depth);
-
-                              pane.setEffect(borderGlow); // Apply the
-                                                          // borderGlow
-                                                          // effect to the
-                                                          // JavaFX node
-                              viewModel.setSelectedPlane(viewModel
-                                    .getPlanes().stream()
-                                    .filter(plane -> plane
-                                          .getCallSignProperty().get()
-                                          .equals(callSignText.getText()))
-                                    .findFirst().get());
-                           }
-                        }
-                     });
-
-               mainPane.getChildren().add(pane);
-            }
-            else if (change.wasRemoved())
-            {
-               for (Node node : mainPane.getChildren())
+               while (change.next())
                {
-                  if (node instanceof Pane && !node.equals(failPane))
+                  if (change.wasAdded())
                   {
-                     if (((Pane) node).getChildren()
-                           .get(1) instanceof Text)
-                     {
-                        if (((Text) ((Pane) node).getChildren().get(1))
-                              .textProperty().get()
-                              .equals(change.getRemoved().get(0)
-                                    .getCallSignProperty().get()))
-                        {
-                           mainPane.getChildren().remove(node);
-                           return;
-                        }
-                     }
+                     Pane pane = new Pane();
+                     Text callSignText = new Text();
+                     callSignText.textProperty().bind(change.getAddedSubList()
+                           .get(0).getCallSignProperty());
+                     callSignText.setFill(Color.GREEN);
+                     callSignText.translateYProperty().setValue(-12);
+                     callSignText.translateXProperty().setValue(10);
+                     Rectangle square = new Rectangle();
+                     square.scaleXProperty().setValue(20);
+                     square.scaleYProperty().setValue(20);
+                     square.setStroke(Color.GREEN);
+                     pane.getChildren().addAll(square, callSignText);
+                     pane.translateXProperty().bind(
+                           change.getAddedSubList().get(0).getXProperty());
+                     pane.translateYProperty().bind(
+                           change.getAddedSubList().get(0).getYProperty());
+                     pane.addEventFilter(MouseEvent.MOUSE_PRESSED,
+                           new EventHandler<MouseEvent>()
+                           {
+                              public void handle(MouseEvent e)
+                              {
+                                 if (!change.getAddedSubList().get(0)
+                                       .getStatusProperty().get()
+                                       .equals("Landing")
+                                       && !change.getAddedSubList().get(0)
+                                             .getStatusProperty().get()
+                                             .startsWith("Boarding"))
+                                 {
+                                    selectedPlane = pane;
+                                    int depth = 70; // Setting the uniform
+                                                    // variable
+                                                    // for the glow width and
+                                                    // height
+
+                                    DropShadow borderGlow = new DropShadow();
+                                    borderGlow.setOffsetY(0f);
+                                    borderGlow.setOffsetX(0f);
+                                    borderGlow.setColor(Color.RED);
+                                    borderGlow.setWidth(depth);
+                                    borderGlow.setHeight(depth);
+
+                                    pane.setEffect(borderGlow); // Apply the
+                                                                // borderGlow
+                                                                // effect to the
+                                                                // JavaFX node
+                                    viewModel.setSelectedPlane(viewModel
+                                          .getPlanes().stream()
+                                          .filter(plane -> plane
+                                                .getCallSignProperty().get()
+                                                .equals(callSignText.getText()))
+                                          .findFirst().get());
+                                 }
+                              }
+                           });
+
+                     mainPane.getChildren().add(pane);
+                  }
+                  else if (change.wasRemoved())
+                  {
+                     mainPane.getChildren()
+                           .remove(viewModel.getRemoveProperty().get() + 32);
+                     viewModel.getRemoveProperty().setValue(100);
                   }
                }
-
-            }
-         }
-      });
+            });
 
    }
 

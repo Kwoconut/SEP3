@@ -16,6 +16,8 @@ public class ServerModel
 {
    private ArrayList<Plane> groundPlanes;
    private ArrayList<Plane> airPlanes;
+   private ArrayList<Plane> simulationGroundPlanes;
+   private ArrayList<Plane> simulationAirPlanes;
    private ArrayList<Node> nodes;
    private ArrayList<Edge> edges;
    private AirportGraph airportGraph;
@@ -26,6 +28,8 @@ public class ServerModel
    {
       groundPlanes = new ArrayList<Plane>();
       airPlanes = new ArrayList<Plane>();
+      simulationGroundPlanes = new ArrayList<Plane>();
+      simulationAirPlanes = new ArrayList<Plane>();
       wind = false;
       timer = new Timer(8, 0, 0);
    }
@@ -34,20 +38,15 @@ public class ServerModel
    {
       for (int i = 0; i < planes.size(); i++)
       {
-         if(planes.get(i).getFlightPlan().getEndLocation().equals("Aalborg"))
+         if (planes.get(i).getFlightPlan().getEndLocation().equals("Aalborg"))
          {
-        	 planes.get(i).setState(new InAirState());
-        	 ArrayList<Node> route = new ArrayList<Node>();
-        	 route.add(new Node("kkt",50,new StaticPosition(956,486)));
-        	 planes.get(i).setRoute(route);
-        	 planes.get(i).setSpeed(1);
-        	 airPlanes.add(planes.get(i)); 
+            planes.get(i).approachPlane();
+            airPlanes.add(planes.get(i));
          }
-         if(planes.get(i).getFlightPlan().getStartLocation().equals("Aalborg"))
+         if (planes.get(i).getFlightPlan().getStartLocation().equals("Aalborg"))
          {
-        	 planes.get(i).landPlane(
-						getLandingNode(getWind()));
-        	 groundPlanes.add(planes.get(i));
+            planes.get(i).landPlane(getLandingNode(getWind()));
+            groundPlanes.add(planes.get(i));
          }
       }
    }
@@ -55,13 +54,39 @@ public class ServerModel
    public void loadNodesFromDatabase(ArrayList<Node> nodes)
    {
       this.nodes = nodes;
-      airportGraph = new AirportGraph(nodes);
+      airportGraph = new AirportGraph(getGroundNodes());
 
       for (Node node : nodes)
       {
          node.setShortestPath(new ArrayList<Node>());
          node.setJointEdges(new ArrayList<Edge>());
       }
+   }
+
+   public ArrayList<Node> getGroundNodes()
+   {
+      ArrayList<Node> groundNodes = new ArrayList<Node>();
+      for (int i = 0; i < nodes.size(); i++)
+      {
+         if (nodes.get(i).IsGroundNode())
+         {
+            groundNodes.add(nodes.get(i));
+         }
+      }
+      return groundNodes;
+   }
+
+   public ArrayList<Node> getAirNodes()
+   {
+      ArrayList<Node> airNodes = new ArrayList<Node>();
+      for (int i = 0; i < nodes.size(); i++)
+      {
+         if (!nodes.get(i).IsGroundNode())
+         {
+            airNodes.add(nodes.get(i));
+         }
+      }
+      return airNodes;
    }
 
    public void loadEdgesFromDatabase(ArrayList<Edge> edges)
@@ -85,28 +110,33 @@ public class ServerModel
       return airPlanes;
    }
 
-   public ArrayList<PlaneDTO> getGroundPlanesDTO()
+   public ArrayList<Plane> getSimulationGroundPlanes()
    {
-      if (groundPlanes.size() == -1)
-      {
-      }
+      return simulationGroundPlanes;
+   }
+   
+   public ArrayList<Plane> getSimulationAirPlanes()
+   {
+      return simulationAirPlanes;
+   }
+   
+   public ArrayList<PlaneDTO> getSimulationGroundPlanesDTO()
+   {
+
       ArrayList<PlaneDTO> planesToSend = new ArrayList<PlaneDTO>();
-      for (int i = 0; i < groundPlanes.size(); i++)
+      for (int i = 0; i < simulationGroundPlanes.size(); i++)
       {
-         planesToSend.add(groundPlanes.get(i).convertToDTO());
+         planesToSend.add(simulationGroundPlanes.get(i).convertToDTO());
       }
       return planesToSend;
    }
 
-   public ArrayList<PlaneDTO> getAirPlanesDTO()
+   public ArrayList<PlaneDTO> getSimulationAirPlanesDTO()
    {
-      if (airPlanes.size() == -1)
-      {
-      }
       ArrayList<PlaneDTO> planesToSend = new ArrayList<PlaneDTO>();
-      for (int i = 0; i < airPlanes.size(); i++)
+      for (int i = 0; i < simulationAirPlanes.size(); i++)
       {
-         planesToSend.add(airPlanes.get(i).convertToDTO());
+         planesToSend.add(simulationAirPlanes.get(i).convertToDTO());
       }
       return planesToSend;
    }
@@ -116,7 +146,10 @@ public class ServerModel
       ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
       for (int i = 0; i < this.nodes.size(); i++)
       {
-         nodes.add(this.nodes.get(i).convertToDTO());
+         if (this.nodes.get(i).IsGroundNode())
+         {
+            nodes.add(this.nodes.get(i).convertToDTO());
+         }
       }
       return nodes;
    }
@@ -126,7 +159,10 @@ public class ServerModel
       ArrayList<NodeDTO> nodes = new ArrayList<NodeDTO>();
       for (int i = 19; i < this.nodes.size(); i++)
       {
-         nodes.add(this.nodes.get(i).convertToDTO());
+         if (!this.nodes.get(i).IsGroundNode())
+         {
+            nodes.add(this.nodes.get(i).convertToDTO());
+         }
       }
       return nodes;
    }
@@ -153,7 +189,7 @@ public class ServerModel
             .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
             .get().stopPlane();
 
-      airportGraph.generateAirportGraph(nodes, edges);
+      airportGraph.generateAirportGraph(getGroundNodes(), edges);
 
       ArrayList<Node> shortestDistance = airportGraph.calculateShortestDistance(
             airportGraph.getGroundNodes().get(startNodeId),

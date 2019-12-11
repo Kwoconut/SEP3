@@ -59,7 +59,7 @@ public class GroundRadarView
    private ObservableList<Circle> groundNodes;
 
    private Pane selectedPlane;
-   
+
    private MainView mainView;
 
    public void init(GroundRadarViewModel groundRadarViewModel,
@@ -70,7 +70,7 @@ public class GroundRadarView
       this.groundNodes = FXCollections.observableArrayList();
       this.failPane.setVisible(false);
       this.timerLabel.textProperty().bind(this.viewModel.getTimerProperty());
-      for (int i = 0; i < this.viewModel.getGroundNodes().size(); i++)
+      for (int i = 0; i < this.viewModel.getGroundNodes().size() - 2; i++)
       {
          Circle circle = new Circle(10);
          circle.centerXProperty()
@@ -263,7 +263,6 @@ public class GroundRadarView
                                           .getCallSignProperty().get()))
                               {
                                  mainPane.getChildren().remove(node);
-                                 return;
                               }
                            }
                         }

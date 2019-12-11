@@ -47,7 +47,7 @@ public class ATCAirSimulatorModel
    @Override
    public void getAirNodesDTOFromServer(ArrayList<NodeDTO> nodes)
    {
- //     support.firePropertyChange("nodeADD", " ", nodes);
+      support.firePropertyChange("nodeADD", " ", nodes);
 
    }
 

@@ -9,8 +9,10 @@ import airclientmodel.AirPlaneModel;
 import airclientmodel.AirRadarModel;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -33,6 +35,7 @@ public class AirRadarViewModel implements PropertyChangeListener
    private BooleanProperty simulationFailed;
    private BooleanProperty windProperty;
    private StringProperty timerProperty;
+   private IntegerProperty removeProperty;
 
    public AirRadarViewModel(AirRadarModel model, AirNodeModel airNodeViewModel,
          AirPlaneModel planeViewModel)
@@ -45,7 +48,13 @@ public class AirRadarViewModel implements PropertyChangeListener
       this.simulationFailed = new SimpleBooleanProperty(false);
       this.windProperty = new SimpleBooleanProperty(false);
       this.timerProperty = new SimpleStringProperty();
+      this.removeProperty = new SimpleIntegerProperty(100);
       this.model.addPropertyChangeListener(this);
+   }
+
+   public IntegerProperty getRemoveProperty()
+   {
+      return removeProperty;
    }
 
    public ObservableList<AirPlaneViewModel> getPlanes()
@@ -129,6 +138,7 @@ public class AirRadarViewModel implements PropertyChangeListener
          }
          else if (evt.getPropertyName().equals("planeREMOVE"))
          {
+            removeProperty.setValue(((int) evt.getNewValue()));
             planes.remove((int) evt.getNewValue());
          }
          else if (evt.getPropertyName().equals("simulationFAILED"))

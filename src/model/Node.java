@@ -11,6 +11,7 @@ public class Node
    private StaticPosition Position;
    private ArrayList<Edge> Edges;
    private ArrayList<Node> ShortestPath;
+   private boolean IsGroundNode;
 
    public Node(String name, int nodeId, StaticPosition staticPosition)
    {
@@ -19,6 +20,12 @@ public class Node
       this.Position = staticPosition;
       this.Edges = new ArrayList<Edge>();
       this.ShortestPath = new ArrayList<Node>();
+      this.IsGroundNode = false;
+   }
+
+   public boolean IsGroundNode()
+   {
+      return IsGroundNode;
    }
 
    public String getName()

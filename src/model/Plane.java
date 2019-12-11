@@ -17,7 +17,7 @@ public class Plane implements Serializable
    private boolean ReadyForTakeOff;
 
    public Plane(String callSign, String model, String company,
-         MovingPosition position, StaticPosition target,FlightPlan flightPlan)
+         MovingPosition position, StaticPosition target, FlightPlan flightPlan)
    {
       this.CallSign = callSign;
       this.Model = model;
@@ -154,12 +154,10 @@ public class Plane implements Serializable
       return new PlaneDTO(this.CallSign, this.PlaneState, this.Position, route);
    }
 
-
-   public FlightPlan getFlightPlan() 
- 	{ 
-	  return FlightPlan; 
-	}
- 
+   public FlightPlan getFlightPlan()
+   {
+      return FlightPlan;
+   }
 
    public StaticPosition getPosition()
    {
@@ -183,6 +181,15 @@ public class Plane implements Serializable
       Route.add(node);
       this.Target = Route.get(0).getPosition();
       this.Route = Route;
+   }
+
+   public void approachPlane()
+   {
+      setState(new InAirState());
+      ArrayList<Node> route = new ArrayList<Node>();
+      route.add(new Node("kkt", 50, new StaticPosition(956, 486)));
+      setRoute(route);
+      setSpeed(1);
    }
 
 }

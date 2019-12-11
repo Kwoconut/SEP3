@@ -13,31 +13,31 @@ public class SimulationManager {
 	{
 		airPlaneDispatcherRun();
 		groundPlaneDispatcherRun();
-		simulationStateRun();
 		simulationTimerRun();
+		simulationStateRun();
 	}
 
 	public void airPlaneDispatcherRun() {
-		AirPlaneDispatcher airPlaneDispatcher = new AirPlaneDispatcher(this);
+		AirPlaneDispatcher airPlaneDispatcher = new AirPlaneDispatcher(this,server.getModel());
 		Thread planeDispatcherThread = new Thread(airPlaneDispatcher);
 		planeDispatcherThread.start();
 	}
 	
 	public void groundPlaneDispatcherRun() {
-		GroundPlaneDispatcher groundPlaneDispatcher = new GroundPlaneDispatcher(this);
+		GroundPlaneDispatcher groundPlaneDispatcher = new GroundPlaneDispatcher(this,this.server.getModel());
 		Thread planeDispatcherThread = new Thread(groundPlaneDispatcher);
 		planeDispatcherThread.start();
 	}
 
 	public void simulationStateRun() {
-		SimulationState simulationState = new SimulationState(this);
+		SimulationState simulationState = new SimulationState(this,this.server.getModel());
 		Thread simulationStateThread = new Thread(simulationState);
 		simulationStateThread.start();
 	}
 	
 	public void simulationTimerRun()
 	{
-	   SimulationTimer simulationTimer = new SimulationTimer(this);
+	   SimulationTimer simulationTimer = new SimulationTimer(this,this.server.getModel());
 	   Thread simulationTimerThread = new Thread(simulationTimer);
 	   simulationTimerThread.start();
 	}

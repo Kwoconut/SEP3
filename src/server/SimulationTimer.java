@@ -9,86 +9,84 @@ import model.Timer;
 public class SimulationTimer implements Runnable
 {
    private SimulationManager simulationManager;
+   private ServerModel model;
 
-   public SimulationTimer(SimulationManager simulationManager)
+   public SimulationTimer(SimulationManager simulationManager,
+         ServerModel model)
    {
       this.simulationManager = simulationManager;
+      this.model = model;
    }
 
-   private void updateBoardingTimer()
+   private synchronized void updateBoardingTimer()
    {
-      for (int i = 0; i < this.simulationManager.getServer().getModel()
-            .getGroundPlanes().size(); i++)
+      for (int i = 0; i < model.getSimulationGroundPlanes().size(); i++)
       {
-         if (this.simulationManager.getServer().getModel().getGroundPlanes().get(i)
+         if (model.getSimulationGroundPlanes().get(i)
                .getPlaneState() instanceof BoardingState)
          {
-            ((BoardingState) this.simulationManager.getServer().getModel()
-                  .getGroundPlanes().get(i).getPlaneState()).decrement();
-            
-            if (((BoardingState) this.simulationManager.getServer().getModel()
-                  .getGroundPlanes().get(i).getPlaneState()).getTime()
-                  .equals(new Timer(0, 0, 0)))
+            ((BoardingState) model.getSimulationGroundPlanes().get(i).getPlaneState())
+                  .decrement();
+
+            if (((BoardingState) model.getSimulationGroundPlanes().get(i).getPlaneState())
+                  .getTime().equals(new Timer(0, 0, 0)))
             {
-               this.simulationManager.getServer().getModel().getGroundPlanes().get(i)
-               .setReadyForTakeOff(true);
-            }      
+               model.getSimulationGroundPlanes().get(i).setReadyForTakeOff(true);
+            }
          }
       }
    }
-   
-   private void updateEmergencyTimer() throws RemoteException
+
+   private synchronized void updateEmergencyTimer() throws RemoteException
    {
-      for (int i = 0; i < this.simulationManager.getServer().getModel()
-            .getAirPlanes().size(); i++)
+      for (int i = 0; i < model.getSimulationAirPlanes().size(); i++)
       {
-         if (this.simulationManager.getServer().getModel().getAirPlanes().get(i)
+         if (model.getSimulationAirPlanes().get(i)
                .getPlaneState() instanceof EmergencyState)
          {
-            ((EmergencyState) this.simulationManager.getServer().getModel()
-                  .getAirPlanes().get(i).getPlaneState()).decrement();
-            
-            if (((EmergencyState) this.simulationManager.getServer().getModel()
-                  .getAirPlanes().get(i).getPlaneState()).getTime()
-                  .equals(new Timer(0, 0, 0)))
-            {
-             for (int j = 0 ; j < this.simulationManager.getServer().getAirClients().size();j++)
-             {
-                this.simulationManager.getServer().getAirClients().get(j).simulationFailed();
-             }
-             for (int j = 0 ; j < this.simulationManager.getServer().getGroundClients().size();j++)
-             {
-                this.simulationManager.getServer().getGroundClients().get(j).simulationFailed();
-             }
-             this.simulationManager.exitPlaneDispatcher();
-             this.simulationManager.exitSimulationTimer();
-            }
-            
-         }
+            ((EmergencyState) model.getSimulationAirPlanes().get(i).getPlaneState())
+                  .decrement();
 
+            if (((EmergencyState) model.getSimulationAirPlanes().get(i).getPlaneState())
+                  .getTime().equals(new Timer(0, 0, 0)))
+            {
+               for (int j = 0; j < this.simulationManager.getServer()
+                     .getAirClients().size(); j++)
+               {
+                  this.simulationManager.getServer().getAirClients().get(j)
+                        .simulationFailed();
+               }
+               for (int j = 0; j < this.simulationManager.getServer()
+                     .getGroundClients().size(); j++)
+               {
+                  this.simulationManager.getServer().getGroundClients().get(j)
+                        .simulationFailed();
+               }
+               this.simulationManager.exitPlaneDispatcher();
+               this.simulationManager.exitSimulationTimer();
+            }
+
+         }
 
       }
    }
 
-
-   private void sendUpdatedTimer() throws RemoteException
+   private synchronized void sendUpdatedTimer() throws RemoteException
    {
-      this.simulationManager.getServer().getModel().incrementTimer();
+      model.incrementTimer();
 
       for (int i = 0; i < this.simulationManager.getServer().getAirClients()
             .size(); i++)
       {
          this.simulationManager.getServer().getAirClients().get(i)
-               .getTimerFromServer(
-                     this.simulationManager.getServer().getModel().getTimer());
+               .getTimerFromServer(model.getTimer());
       }
 
       for (int i = 0; i < this.simulationManager.getServer().getGroundClients()
             .size(); i++)
       {
          this.simulationManager.getServer().getGroundClients().get(i)
-               .getTimerFromServer(
-                     this.simulationManager.getServer().getModel().getTimer());
+               .getTimerFromServer(model.getTimer());
       }
    }
 
