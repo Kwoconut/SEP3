@@ -11,7 +11,7 @@ public class BoardingState implements PlaneState, Serializable
 
    public BoardingState()
    {
-      timer = new Timer(0, random.nextInt(5), 0);
+      timer = new Timer(0, random.nextInt(4) + 1, 0);
    }
 
    @Override

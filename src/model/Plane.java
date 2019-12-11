@@ -188,7 +188,25 @@ public class Plane implements Serializable
       route.add(new Node("kkt", 50, new StaticPosition(956, 486)));
       setRoute(route);
       setState(new InAirState());
-      setSpeed(5);
+      setSpeed(1);
+   }
+
+   public void departPlane(boolean wind)
+   {
+      ArrayList<Node> route = new ArrayList<Node>();
+      this.Position.setPosition(new StaticPosition(956, 487));
+      if (wind == false)
+      {
+         route.add(new Node("kkt", 50, new StaticPosition(565, 530)));
+      }
+      else
+      {
+         route.add(new Node("oi", 50, new StaticPosition(1362, 430)));
+      }
+      setRoute(route);
+      setState(new InAirState());
+      setSpeed(1);
+
    }
 
 }

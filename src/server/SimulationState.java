@@ -26,7 +26,15 @@ public class SimulationState implements Runnable
          if (model.getSimulationGroundPlanes().get(i).getPosition()
                .equals(new StaticPosition(1560, 115)))
          {
-            model.getSimulationAirPlanes().add(model.getSimulationGroundPlanes().get(i));
+            model.getSimulationGroundPlanes().get(i).departPlane(true);
+            model.getSimulationAirPlanes()
+                  .add(model.getSimulationGroundPlanes().get(i));
+            for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
+            {
+               manager.getServer().sendAirPlaneDTO(
+                     model.getSimulationGroundPlanes().get(i).convertToDTO(),
+                     manager.getServer().getAirClients().get(j));
+            }
             model.getSimulationGroundPlanes().remove(i);
             for (int j = 0; j < manager.getServer().getGroundClients()
                   .size(); j++)
@@ -39,7 +47,15 @@ public class SimulationState implements Runnable
          if (model.getSimulationGroundPlanes().get(i).getPosition()
                .equals(new StaticPosition(-10, 115)))
          {
-            model.getSimulationAirPlanes().add(model.getSimulationGroundPlanes().get(i));
+            model.getSimulationGroundPlanes().get(i).departPlane(false);
+            model.getSimulationAirPlanes()
+                  .add(model.getSimulationGroundPlanes().get(i));
+            for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
+            {
+               manager.getServer().sendAirPlaneDTO(
+                     model.getSimulationGroundPlanes().get(i).convertToDTO(),
+                     manager.getServer().getAirClients().get(j));
+            }
             model.getSimulationGroundPlanes().remove(i);
             for (int j = 0; j < manager.getServer().getGroundClients()
                   .size(); j++)
@@ -61,7 +77,8 @@ public class SimulationState implements Runnable
          {
             model.getSimulationAirPlanes().get(i)
                   .landPlane(model.getLandingNode(model.getWind()));
-            model.getSimulationGroundPlanes().add(model.getSimulationAirPlanes().get(i));
+            model.getSimulationGroundPlanes()
+                  .add(model.getSimulationAirPlanes().get(i));
             for (int j = 0; j < manager.getServer().getGroundClients()
                   .size(); j++)
             {
@@ -88,12 +105,13 @@ public class SimulationState implements Runnable
          {
             for (int j = 0; j < model.getGateNodes().size(); j++)
             {
-               if (model.getGateNodes().get(j).getPosition()
-                     .equals(model.getSimulationGroundPlanes().get(i).getPosition())
+               if (model.getGateNodes().get(j).getPosition().equals(
+                     model.getSimulationGroundPlanes().get(i).getPosition())
                      && !(model.getSimulationGroundPlanes().get(i)
                            .getPlaneState() instanceof BoardingState))
                {
-                  model.getSimulationGroundPlanes().get(i).setState(new BoardingState());
+                  model.getSimulationGroundPlanes().get(i)
+                        .setState(new BoardingState());
                   model.getSimulationGroundPlanes().get(i).setSpeed(0);
                }
             }
@@ -105,12 +123,13 @@ public class SimulationState implements Runnable
                if (!(model.getSimulationGroundPlanes().get(i)
                      .getPlaneState() instanceof TaxiState))
                {
-                  if (model.getGateNodes().get(j).getPosition()
-                        .equals(model.getSimulationGroundPlanes().get(i).getPosition())
+                  if (model.getGateNodes().get(j).getPosition().equals(
+                        model.getSimulationGroundPlanes().get(i).getPosition())
                         && !(model.getSimulationGroundPlanes().get(i)
                               .getPlaneState() instanceof LandedState))
                   {
-                     model.getSimulationGroundPlanes().get(i).setState(new LandedState());
+                     model.getSimulationGroundPlanes().get(i)
+                           .setState(new LandedState());
                      model.getSimulationGroundPlanes().get(i).setSpeed(0);
                   }
                }
@@ -122,7 +141,8 @@ public class SimulationState implements Runnable
                if (model.getSimulationGroundPlanes().get(i).getPosition()
                      .equals(model.getTakeoffNodes().get(j).getPosition()))
                {
-                  model.getSimulationGroundPlanes().get(i).setState(new TakeoffState());
+                  model.getSimulationGroundPlanes().get(i)
+                        .setState(new TakeoffState());
                   model.getSimulationGroundPlanes().get(i).setSpeed(10);
 
                }
@@ -162,14 +182,14 @@ public class SimulationState implements Runnable
       {
          for (int j = i + 1; j < model.getSimulationGroundPlanes().size(); j++)
          {
-            if (model.getSimulationGroundPlanes().get(i).getPosition()
-                  .equals(model.getSimulationGroundPlanes().get(j).getPosition()))
+            if (model.getSimulationGroundPlanes().get(i).getPosition().equals(
+                  model.getSimulationGroundPlanes().get(j).getPosition()))
             {
                return true;
             }
          }
       }
-      
+
       for (int i = 0; i < model.getSimulationAirPlanes().size(); i++)
       {
          for (int j = i + 1; j < model.getSimulationAirPlanes().size(); j++)
@@ -190,19 +210,19 @@ public class SimulationState implements Runnable
       System.out.println("SimulationState started");
       while (true)
       {
-            try
-            {
+         try
+         {
 
-               movePlanes();
-               updateStateOnGroundLocation();
-               takeOffPlanes();
-               landPlanes();
-            }
-            catch (RemoteException e)
-            {
-               e.printStackTrace();
-            }
-         
+            movePlanes();
+            updateStateOnGroundLocation();
+            takeOffPlanes();
+            landPlanes();
+         }
+         catch (RemoteException e)
+         {
+            e.printStackTrace();
+         }
+
          if (model.getSimulationGroundPlanes().size() >= 2)
          {
             try
