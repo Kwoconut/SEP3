@@ -47,9 +47,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       System.out.println(airClients.size()+groundClients.size());
       if (airClients.size()>=1 && groundClients.size()>=1)
       {
-         manager.airPlaneDispatcherRun();
-         manager.groundPlaneDispatcherRun();
-         manager.simulationTimerRun();
+         manager.startThreads();
       }
    }
    
@@ -66,9 +64,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       airClients.add(client);
       if (airClients.size()>=1 && groundClients.size()>=1)
       {
-         manager.airPlaneDispatcherRun();
-         manager.groundPlaneDispatcherRun();
-         manager.simulationTimerRun();
+         manager.startThreads();
       }
    }
 
@@ -169,7 +165,6 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       Socket socket = new Socket("10.152.218.75", 2607);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
-      manager.simulationStateRun();
    }
 
    public static void main(String[] args) throws IOException
