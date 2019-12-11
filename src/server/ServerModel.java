@@ -37,7 +37,7 @@ public class ServerModel
          if(planes.get(i).getFlightPlan().getEndLocation().equals("Aalborg"))
          {
         	 planes.get(i).setState(new InAirState());
-        	airPlanes.add(planes.get(i)); 
+        	 airPlanes.add(planes.get(i)); 
          }
          if(planes.get(i).getFlightPlan().getStartLocation().equals("Aalborg"))
          {

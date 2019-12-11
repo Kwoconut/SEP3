@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 
-
 public class FlightPlan implements Serializable
 {
    private int Id;
@@ -12,8 +11,8 @@ public class FlightPlan implements Serializable
    private String StartLocation;
    private String EndLocation;
 
-   public FlightPlan(int id, FlightDate departureTime, FlightDate arrivalTime, Timer delay,
-         String startLocation, String endLocation)
+   public FlightPlan(int id, FlightDate departureTime, FlightDate arrivalTime,
+         Timer delay, String startLocation, String endLocation)
    {
       this.Id = id;
       this.DepartureTime = departureTime;
@@ -22,35 +21,41 @@ public class FlightPlan implements Serializable
       this.StartLocation = startLocation;
       this.EndLocation = endLocation;
    }
-   
+
    public String getStartLocation()
    {
-	   return StartLocation;
+      return StartLocation;
    }
-   
+
    public String getEndLocation()
    {
-	   return EndLocation;
+      return EndLocation;
    }
-   
+
    public Timer getDelay()
    {
-	   return Delay;
+      return Delay;
    }
-   
+
    public FlightDate getDepartureTime()
    {
-	   return DepartureTime;
+      return DepartureTime;
    }
-   
+
    public FlightDate getArrivalTime()
    {
-	   return ArrivalTime;
+      return ArrivalTime;
    }
-   
+
    public int getID()
    {
-	   return Id;
+      return Id;
+   }
+
+   public String toString()
+   {
+      return Id + " " + StartLocation + " " + EndLocation + " " + DepartureTime
+            + " " + ArrivalTime + " " + Delay;
    }
 
 }

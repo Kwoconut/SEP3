@@ -53,8 +53,8 @@ public class AirRadarView
       Circle testCircle = new Circle(10);
       testCircle.setFill(Color.YELLOW);
       testCircle.setStroke(Color.BLACK);
-      testCircle.centerXProperty().set(575);
-      testCircle.centerYProperty().set(980);
+      testCircle.centerXProperty().set(1464);
+      testCircle.centerYProperty().set(868);
       mainPane.getChildren().add(testCircle);
 
       for (int i = 0; i < this.viewModel.getAirNodes().size(); i++)

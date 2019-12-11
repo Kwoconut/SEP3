@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class Timer implements Serializable
 {
 
-   private int second;
-   private int minute;
-   private int hour;
+   private int Second;
+   private int Minute;
+   private int Hour;
 
    public Timer(int hour, int minute, int second)
    {
@@ -16,9 +16,9 @@ public class Timer implements Serializable
 
    public Timer(int second)
    {
-      this.hour = second / 3600;
-      this.minute = (second % 3600) / 60;
-      this.second = (second % 3600) % 60;
+      this.Hour = second / 3600;
+      this.Minute = (second % 3600) / 60;
+      this.Second = (second % 3600) % 60;
    }
 
    public void setTimer(int hour, int minute, int second)
@@ -39,15 +39,15 @@ public class Timer implements Serializable
    {
       if (hour > 23)
       {
-         this.hour = 23;
+         this.Hour = 23;
       }
       else if (hour < 0)
       {
-         this.hour = 0;
+         this.Hour = 0;
       }
       else
       {
-         this.hour = hour;
+         this.Hour = hour;
       }
    }
 
@@ -55,15 +55,15 @@ public class Timer implements Serializable
    {
       if (minute > 59)
       {
-         this.minute = 59;
+         this.Minute = 59;
       }
       else if (minute < 0)
       {
-         this.minute = 0;
+         this.Minute = 0;
       }
       else
       {
-         this.minute = minute;
+         this.Minute = minute;
       }
    }
 
@@ -71,85 +71,85 @@ public class Timer implements Serializable
    {
       if (second > 59)
       {
-         this.second = 59;
+         this.Second = 59;
       }
       else if (second < 0)
       {
-         this.second = 0;
+         this.Second = 0;
       }
       else
       {
-         this.second = second;
+         this.Second = second;
       }
    }
 
    public void increment()
    {
-      this.second++;
-      if (this.second == 60)
+      this.Second++;
+      if (this.Second == 60)
       {
-         this.second = 0;
-         this.minute++;
+         this.Second = 0;
+         this.Minute++;
       }
 
-      if (this.minute == 60)
+      if (this.Minute == 60)
       {
-         this.minute = 0;
-         this.hour++;
+         this.Minute = 0;
+         this.Hour++;
       }
 
-      if (this.hour == 24)
+      if (this.Hour == 24)
       {
-         this.hour = 0;
+         this.Hour = 0;
       }
    }
 
    public void decrement()
    {
-      this.second--;
+      this.Second--;
 
-      if (this.second == -1)
+      if (this.Second == -1)
       {
-         this.second = 59;
-         this.minute--;
+         this.Second = 59;
+         this.Minute--;
       }
 
-      if (this.minute == -1)
+      if (this.Minute == -1)
       {
-         this.minute = 59;
-         this.hour--;
+         this.Minute = 59;
+         this.Hour--;
       }
 
-      if (this.hour == -1)
+      if (this.Hour == -1)
       {
-         this.hour = 23;
+         this.Hour = 23;
       }
 
    }
 
    public int getHour()
    {
-      return hour;
+      return Hour;
    }
 
    public int getMinute()
    {
-      return minute;
+      return Minute;
    }
 
    public int getSecond()
    {
-      return second;
+      return Second;
    }
 
    public Timer timeNow()
    {
-      return new Timer(this.second, this.minute, this.hour);
+      return new Timer(this.Second, this.Minute, this.Hour);
    }
 
    public int convertToSeconds()
    {
-      return this.hour * 60 * 60 + this.minute * 60
+      return this.Hour * 60 * 60 + this.Minute * 60
             + this.getSecond();
    }
 
@@ -185,31 +185,31 @@ public class Timer implements Serializable
    {
       String s = "";
 
-      if (this.hour < 10)
+      if (this.Hour < 10)
       {
-         s += "0" + this.hour + ":";
+         s += "0" + this.Hour + ":";
       }
       else
       {
-         s += this.hour + ":";
+         s += this.Hour + ":";
       }
 
-      if (this.minute < 10)
+      if (this.Minute < 10)
       {
-         s += "0" + this.minute + ":";
+         s += "0" + this.Minute + ":";
       }
       else
       {
-         s += this.minute + ":";
+         s += this.Minute + ":";
       }
 
-      if (this.second < 10)
+      if (this.Second < 10)
       {
-         s += "0" + this.second;
+         s += "0" + this.Second;
       }
       else
       {
-         s += this.second;
+         s += this.Second;
       }
 
       return s;
@@ -223,8 +223,8 @@ public class Timer implements Serializable
          return false;
       }
       Timer other = (Timer) obj;
-      return this.second == other.getSecond()
-            && this.minute == other.getMinute() && this.hour == other.getHour();
+      return this.Second == other.getSecond()
+            && this.Minute == other.getMinute() && this.Hour == other.getHour();
    }
 
 }

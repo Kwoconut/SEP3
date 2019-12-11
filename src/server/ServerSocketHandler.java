@@ -76,10 +76,9 @@ public class ServerSocketHandler implements Runnable
    {
       try
       {
-         requestPlanes();
          requestNodes();
-         System.out.println("requestNodes");
          requestEdges();
+         requestPlanes();
 
       }
       catch (IOException e1)
@@ -107,7 +106,6 @@ public class ServerSocketHandler implements Runnable
                ArrayList<Plane> planes = new ArrayList<Plane>(
                      Arrays.asList(req.Planes));
                this.model.loadPlanesFromDatabase(planes);
-               System.out.println("Recieved Planes from db");
             }
             else if (req.Type.equals("RESPONSENODES"))
             {
@@ -115,7 +113,6 @@ public class ServerSocketHandler implements Runnable
                ArrayList<Node> nodes = new ArrayList<Node>(
                      Arrays.asList(req.Nodes));
                this.model.loadNodesFromDatabase(nodes);
-               System.out.println("Recieved Nodes");
             }
             else if (req.Type.equals("RESPONSEEDGES"))
             {
