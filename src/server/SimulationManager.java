@@ -5,16 +5,21 @@ public class SimulationManager {
 	private Server server;
 	private boolean exitPlaneDispatcher;
 	private boolean exitSimulationTimer;
+	private boolean aloha=false;
 
 	public SimulationManager(Server server) {
 		this.server = server;
 	}
 	public void startThreads()
 	{
+		if(aloha==false)
+		{
 		airPlaneDispatcherRun();
 		groundPlaneDispatcherRun();
 		simulationTimerRun();
 		simulationStateRun();
+		this.aloha=true;
+		}
 	}
 
 	public void airPlaneDispatcherRun() {
