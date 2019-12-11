@@ -9,6 +9,13 @@ public class SimulationManager {
 	public SimulationManager(Server server) {
 		this.server = server;
 	}
+	public void startThreads()
+	{
+		airPlaneDispatcherRun();
+		groundPlaneDispatcherRun();
+		simulationStateRun();
+		simulationTimerRun();
+	}
 
 	public void airPlaneDispatcherRun() {
 		AirPlaneDispatcher airPlaneDispatcher = new AirPlaneDispatcher(this);
