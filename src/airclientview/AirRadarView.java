@@ -191,9 +191,23 @@ public class AirRadarView
                   }
                   else if (change.wasRemoved())
                   {
-                     mainPane.getChildren()
-                           .remove(viewModel.getRemoveProperty().get() + 32);
-                     viewModel.getRemoveProperty().setValue(100);
+                     for (Node node : mainPane.getChildren())
+                     {
+                        if (node instanceof Pane && !node.equals(failPane))
+                        {
+                           if (((Pane) node).getChildren()
+                                 .get(1) instanceof Text)
+                           {
+                              if (((Text) ((Pane) node).getChildren().get(1))
+                                    .textProperty().get()
+                                    .equals(change.getRemoved().get(0)
+                                          .getCallSignProperty().get()))
+                              {
+                                 node.setVisible(false);
+                              }
+                           }
+                        }
+                     }
                   }
                }
             });

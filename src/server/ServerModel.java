@@ -185,7 +185,7 @@ public class ServerModel
    public void changeGroundPlaneRoute(String callSign, int startNodeId,
          int endNodeId)
    {
-      groundPlanes.stream()
+      simulationGroundPlanes.stream()
             .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
             .get().stopPlane();
 
@@ -195,7 +195,7 @@ public class ServerModel
             airportGraph.getGroundNodes().get(startNodeId),
             airportGraph.getGroundNodes().get(endNodeId));
 
-      groundPlanes.stream()
+      simulationGroundPlanes.stream()
             .filter(plane -> plane.getCallSign().equals(callSign)).findFirst()
             .get().setRoute(shortestDistance);
 

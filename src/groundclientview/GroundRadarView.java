@@ -262,7 +262,7 @@ public class GroundRadarView
                                     .equals(change.getRemoved().get(0)
                                           .getCallSignProperty().get()))
                               {
-                                 mainPane.getChildren().remove(node);
+                                 node.setVisible(false);
                               }
                            }
                         }

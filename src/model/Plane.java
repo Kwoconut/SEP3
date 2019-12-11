@@ -175,21 +175,20 @@ public class Plane implements Serializable
          this.Position.setPosition(new StaticPosition(0, 114));
       }
 
-      ArrayList<Node> Route = new ArrayList<Node>();
+      ArrayList<Node> route = new ArrayList<Node>();
+      route.add(node);
+      setRoute(route);
       setState(new LandingState());
-      this.Speed = 10;
-      Route.add(node);
-      this.Target = Route.get(0).getPosition();
-      this.Route = Route;
+      setSpeed(10);
    }
 
    public void approachPlane()
    {
-      setState(new InAirState());
       ArrayList<Node> route = new ArrayList<Node>();
       route.add(new Node("kkt", 50, new StaticPosition(956, 486)));
       setRoute(route);
-      setSpeed(1);
+      setState(new InAirState());
+      setSpeed(5);
    }
 
 }

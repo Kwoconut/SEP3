@@ -190,9 +190,6 @@ public class SimulationState implements Runnable
       System.out.println("SimulationState started");
       while (true)
       {
-         if (manager.getServer().getModel().getSimulationGroundPlanes().size() >= 1
-               && manager.getServer().getModel().getSimulationAirPlanes().size() >= 1)
-         {
             try
             {
 
@@ -205,7 +202,7 @@ public class SimulationState implements Runnable
             {
                e.printStackTrace();
             }
-         }
+         
          if (model.getSimulationGroundPlanes().size() >= 2)
          {
             try
