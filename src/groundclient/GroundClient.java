@@ -29,7 +29,7 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
       this.model = model;
       this.model.setClient(this);
       access = (GroundServerAccess) Naming
-            .lookup("rmi://10.152.218.92:1099/server");
+            .lookup("rmi://localhost:1099/server");
       UnicastRemoteObject.exportObject(this, 0);
       GroundRIServerWrite server = access.acquireGroundWrite();
       server.addGroundClient(this);
