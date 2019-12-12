@@ -12,14 +12,11 @@ public class SimulationManager {
 	}
 	public void startThreads()
 	{
-		if(aloha==false)
-		{
 		airPlaneDispatcherRun();
 		groundPlaneDispatcherRun();
 		simulationTimerRun();
 		simulationStateRun();
 		this.aloha=true;
-		}
 	}
 
 	public void airPlaneDispatcherRun() {
@@ -50,6 +47,10 @@ public class SimulationManager {
 	public Server getServer()
 	{
 		return server;
+	}
+	public boolean getAloha()
+	{
+		return aloha;
 	}
 	
 	public boolean getExitPlaneDispatcher()

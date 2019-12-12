@@ -42,7 +42,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
          }
       }
       groundClients.add(client);
-      if (airClients.size() >= 1 && groundClients.size() >= 1)
+      if (airClients.size() >= 1 && groundClients.size() >= 1 && manager.getAloha()==false)
       {
          manager.startThreads();
       }
