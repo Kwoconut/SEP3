@@ -8,7 +8,7 @@ public class Node
    private int DistanceFromSource = Integer.MAX_VALUE;
    private int NodeId;
    private boolean IsVisited;
-   private StaticPosition Position;
+   final private StaticPosition Position;
    private ArrayList<Edge> Edges;
    private ArrayList<Node> ShortestPath;
    private boolean IsGroundNode;

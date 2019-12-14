@@ -84,12 +84,12 @@ public class AirClient implements AirIClient, AirRIClient
    }
 
    @Override
-   public void reRoutePlane(String callSign, StaticPosition position)
+   public void reRoutePlane(String registrationNo, StaticPosition position)
    {
       try
       {
          AirRIServerWrite server = this.access.acquireAirWrite();
-         server.reRoutePlane(callSign, position);
+         server.reRoutePlane(registrationNo, position);
          this.access.releaseWrite();
       }
       catch (RemoteException e)

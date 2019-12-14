@@ -150,17 +150,17 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    }
 
    @Override
-   public void changeGroundPlaneRoute(String callSign, int startNodeId,
+   public void changeGroundPlaneRoute(String registrationNo, int startNodeId,
          int endNodeId)
    {
-      model.changeGroundPlaneRoute(callSign, startNodeId, endNodeId);
+      model.changeGroundPlaneRoute(registrationNo, startNodeId, endNodeId);
    }
 
    public void execute() throws IOException
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("192.168.1.100", 6789);
+      Socket socket = new Socket("10.152.218.15", 6789);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
    }

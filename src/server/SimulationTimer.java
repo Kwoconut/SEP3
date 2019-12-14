@@ -25,13 +25,48 @@ public class SimulationTimer implements Runnable
          if (model.getSimulationGroundPlanes().get(i)
                .getPlaneState() instanceof BoardingState)
          {
-            ((BoardingState) model.getSimulationGroundPlanes().get(i).getPlaneState())
-                  .decrement();
+            ((BoardingState) model.getSimulationGroundPlanes().get(i)
+                  .getPlaneState()).decrement();
 
-            if (((BoardingState) model.getSimulationGroundPlanes().get(i).getPlaneState())
-                  .getTime().equals(new Timer(0, 0, 0)))
+            if (((BoardingState) model.getSimulationGroundPlanes().get(i)
+                  .getPlaneState()).getTime().equals(new Timer(0, 0, 0)))
             {
-               model.getSimulationGroundPlanes().get(i).setReadyForTakeOff(true);
+               model.getSimulationGroundPlanes().get(i)
+                     .setReadyForTakeOff(true);
+            }
+         }
+      }
+   }
+
+   private synchronized void sendAirPlane()
+   {
+
+      for (int i = 0; i < model.getAirPlanes().size(); i++)
+      {
+         if (model.getAirPlanes().get(i).getFlightPlan().getArrivalTime()
+               .timeNow().equals(model.getTimer()))
+         {
+            for (int j = 0; j < simulationManager.getServer().getAirClients()
+                  .size(); j++)
+            {
+               try
+               {
+                  model.getSimulationAirPlanes()
+                        .add(model.getAirPlanes().get(i));
+                  simulationManager.getServer()
+                        .sendAirPlaneDTO(
+                              model.getSimulationAirPlanes()
+                                    .get(model.getSimulationAirPlanes().size()
+                                          - 1)
+                                    .convertToDTO(),
+                              simulationManager.getServer().getAirClients()
+                                    .get(j));
+               }
+               catch (RemoteException e)
+               {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+               }
             }
          }
       }
@@ -44,11 +79,11 @@ public class SimulationTimer implements Runnable
          if (model.getSimulationAirPlanes().get(i)
                .getPlaneState() instanceof EmergencyState)
          {
-            ((EmergencyState) model.getSimulationAirPlanes().get(i).getPlaneState())
-                  .decrement();
+            ((EmergencyState) model.getSimulationAirPlanes().get(i)
+                  .getPlaneState()).decrement();
 
-            if (((EmergencyState) model.getSimulationAirPlanes().get(i).getPlaneState())
-                  .getTime().equals(new Timer(0, 0, 0)))
+            if (((EmergencyState) model.getSimulationAirPlanes().get(i)
+                  .getPlaneState()).getTime().equals(new Timer(0, 0, 0)))
             {
                for (int j = 0; j < this.simulationManager.getServer()
                      .getAirClients().size(); j++)
@@ -97,6 +132,7 @@ public class SimulationTimer implements Runnable
       {
          try
          {
+            sendAirPlane();
             updateBoardingTimer();
             updateEmergencyTimer();
             sendUpdatedTimer();

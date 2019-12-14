@@ -8,5 +8,5 @@ public interface GroundRIServerWrite extends GroundRIServerRead
 {
 	void addGroundClient(GroundRIClient client) throws RemoteException;
 
-	void changeGroundPlaneRoute(String callSign, int startNodeId, int endNodeId) throws RemoteException;
+	void changeGroundPlaneRoute(String registrationNo, int startNodeId, int endNodeId) throws RemoteException;
 }

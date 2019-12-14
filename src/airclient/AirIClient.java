@@ -6,6 +6,6 @@ import model.StaticPosition;
 
 public interface AirIClient 
 {
-   void reRoutePlane(String callSign,StaticPosition position);
+   void reRoutePlane(String registrationNo,StaticPosition position);
    
 }

@@ -135,7 +135,7 @@ public class AirRadarView
                      Pane pane = new Pane();
                      Text callSignText = new Text();
                      callSignText.textProperty().bind(change.getAddedSubList()
-                           .get(0).getCallSignProperty());
+                           .get(0).getRegistrationNoProperty());
                      callSignText.setFill(Color.GREEN);
                      callSignText.translateYProperty().setValue(-12);
                      callSignText.translateXProperty().setValue(10);
@@ -180,7 +180,8 @@ public class AirRadarView
                                     viewModel.setSelectedPlane(viewModel
                                           .getPlanes().stream()
                                           .filter(plane -> plane
-                                                .getCallSignProperty().get()
+                                                .getRegistrationNoProperty()
+                                                .get()
                                                 .equals(callSignText.getText()))
                                           .findFirst().get());
                                  }
@@ -201,7 +202,7 @@ public class AirRadarView
                               if (((Text) ((Pane) node).getChildren().get(1))
                                     .textProperty().get()
                                     .equals(change.getRemoved().get(0)
-                                          .getCallSignProperty().get()))
+                                          .getRegistrationNoProperty().get()))
                               {
                                  node.setVisible(false);
                               }

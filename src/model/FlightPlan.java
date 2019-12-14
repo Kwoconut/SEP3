@@ -4,17 +4,19 @@ import java.io.Serializable;
 
 public class FlightPlan implements Serializable
 {
-   private int Id;
+   private String CallSign;
+   private int FlightNumber;
    private FlightDate DepartureTime;
    private FlightDate ArrivalTime;
    private Timer Delay;
    private String StartLocation;
    private String EndLocation;
 
-   public FlightPlan(int id, FlightDate departureTime, FlightDate arrivalTime,
+   public FlightPlan(String callSign,int flightNumber, FlightDate departureTime, FlightDate arrivalTime,
          Timer delay, String startLocation, String endLocation)
    {
-      this.Id = id;
+      this.CallSign = callSign;
+      this.FlightNumber = flightNumber;
       this.DepartureTime = departureTime;
       this.ArrivalTime = arrivalTime;
       this.Delay = delay;
@@ -47,14 +49,19 @@ public class FlightPlan implements Serializable
       return ArrivalTime;
    }
 
-   public int getID()
+   public int getFlightNumber()
    {
-      return Id;
+      return FlightNumber;
+   }
+   
+   public String getCallSign()
+   {
+      return CallSign;
    }
 
    public String toString()
    {
-      return Id + " " + StartLocation + " " + EndLocation + " " + DepartureTime
+      return CallSign + " " + FlightNumber + " " + StartLocation + " " + EndLocation + " " + DepartureTime
             + " " + ArrivalTime + " " + Delay;
    }
 

@@ -2,6 +2,8 @@ package server;
 
 import java.rmi.RemoteException;
 
+import model.StaticPosition;
+
 public class AirPlaneDispatcher implements Runnable
 {
 

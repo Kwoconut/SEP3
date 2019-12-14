@@ -84,7 +84,7 @@ public class GroundRadarView
       }
 
       callSignColumn.setCellValueFactory(
-            cellData -> cellData.getValue().getCallSignProperty());
+            cellData -> cellData.getValue().getRegistrationNoProperty());
       statusColumn.setCellValueFactory(
             cellData -> cellData.getValue().getStatusProperty());
       targetColumn.setCellValueFactory(
@@ -177,7 +177,7 @@ public class GroundRadarView
                      Pane pane = new Pane();
                      Text callSignText = new Text();
                      callSignText.textProperty().bind(change.getAddedSubList()
-                           .get(0).getCallSignProperty());
+                           .get(0).getRegistrationNoProperty());
                      callSignText.setFill(Color.GREEN);
                      callSignText.translateYProperty().setValue(-12);
                      callSignText.translateXProperty().setValue(10);
@@ -239,7 +239,8 @@ public class GroundRadarView
                                     viewModel.setSelectedPlane(viewModel
                                           .getPlanes().stream()
                                           .filter(plane -> plane
-                                                .getCallSignProperty().get()
+                                                .getRegistrationNoProperty()
+                                                .get()
                                                 .equals(callSignText.getText()))
                                           .findFirst().get());
                                  }
@@ -260,7 +261,7 @@ public class GroundRadarView
                               if (((Text) ((Pane) node).getChildren().get(1))
                                     .textProperty().get()
                                     .equals(change.getRemoved().get(0)
-                                          .getCallSignProperty().get()))
+                                          .getRegistrationNoProperty().get()))
                               {
                                  node.setVisible(false);
                               }

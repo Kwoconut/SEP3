@@ -13,6 +13,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -45,6 +46,8 @@ public class AirRadarViewModel implements PropertyChangeListener
       this.planeViewModel = planeViewModel;
       this.planes = FXCollections.observableArrayList();
       this.airNodes = FXCollections.observableArrayList();
+      this.selectedPlane = new SimpleObjectProperty<AirPlaneViewModel>();
+      this.selectedNode = new SimpleObjectProperty<AirNodeViewModel>();
       this.simulationFailed = new SimpleBooleanProperty(false);
       this.windProperty = new SimpleBooleanProperty(false);
       this.timerProperty = new SimpleStringProperty();
@@ -104,7 +107,8 @@ public class AirRadarViewModel implements PropertyChangeListener
 
    public void reRoutePlane(double xCoordinate, double yCoordinate)
    {
-      this.model.reRoutePlane(selectedPlane.get().getCallSignProperty().get(),
+      this.model.reRoutePlane(
+            selectedPlane.get().getRegistrationNoProperty().get(),
             new StaticPosition(xCoordinate, yCoordinate));
    }
 

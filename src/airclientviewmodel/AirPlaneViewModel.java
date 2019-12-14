@@ -11,7 +11,7 @@ import model.PlaneDTO;
 
 public class AirPlaneViewModel
 {
-   private StringProperty callSignProperty;
+   private StringProperty registrationNoProperty;
    private StringProperty statusProperty;
    private DoubleProperty xProperty;
    private DoubleProperty yProperty;
@@ -21,7 +21,8 @@ public class AirPlaneViewModel
    public AirPlaneViewModel(AirPlaneModel model, PlaneDTO plane)
    {
       this.model = model;
-      callSignProperty = new SimpleStringProperty(plane.getCallSign());
+      registrationNoProperty = new SimpleStringProperty(
+            plane.getRegistrationNo());
       statusProperty = new SimpleStringProperty(
             plane.getPlaneState().toString());
       xProperty = new SimpleDoubleProperty(
@@ -30,15 +31,15 @@ public class AirPlaneViewModel
             plane.getPosition().getYCoordinate());
       targetProperty = new SimpleStringProperty(plane.getTarget());
    }
-   
+
    public StringProperty getTargetProperty()
    {
       return targetProperty;
    }
 
-   public StringProperty getCallSignProperty()
+   public StringProperty getRegistrationNoProperty()
    {
-      return callSignProperty;
+      return registrationNoProperty;
    }
 
    public StringProperty getStatusProperty()
@@ -63,8 +64,8 @@ public class AirPlaneViewModel
          return false;
       }
       GroundPlaneViewModel other = (GroundPlaneViewModel) obj;
-      return other.getCallSignProperty().get()
-            .equals(this.getCallSignProperty().get())
+      return other.getRegistrationNoProperty().get()
+            .equals(this.getRegistrationNoProperty().get())
             && other.getStatusProperty().get()
                   .equals(this.statusProperty.get());
    }

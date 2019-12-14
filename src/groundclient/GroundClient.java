@@ -77,11 +77,11 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
    }
 
    @Override
-   public void changeGroundPlaneRoute(String callSign, int startNodeId,
+   public void changeGroundPlaneRoute(String registrationNo, int startNodeId,
          int endNodeId) throws RemoteException
    {
       GroundRIServerWrite server = access.acquireGroundWrite();
-      server.changeGroundPlaneRoute(callSign, startNodeId, endNodeId);
+      server.changeGroundPlaneRoute(registrationNo, startNodeId, endNodeId);
       access.releaseWrite();
    }
 
@@ -94,6 +94,6 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
    @Override
    public void removeGroundPlane(int index) throws RemoteException
    {
-      this.model.removePlane(index); 
+      this.model.removePlane(index);
    }
 }

@@ -23,10 +23,48 @@ public class SimulationState implements Runnable
    {
       for (int i = 0; i < model.getSimulationGroundPlanes().size(); i++)
       {
-         if (model.getSimulationGroundPlanes().get(i).getPosition()
-               .equals(new StaticPosition(1560, 115)))
+         if (model.getSimulationGroundPlanes().get(i).isReadyForTakeOff())
          {
-            model.getSimulationGroundPlanes().get(i).departPlane(true);
+            if (model.getSimulationGroundPlanes().get(i).getPosition()
+                  .equals(model.getGroundNodes().stream()
+                        .filter(node -> node.getNodeId() == 9).findFirst().get()
+                        .getPosition()))
+            {
+               model.getSimulationGroundPlanes().get(i)
+                     .takeOffPlane(model.getGroundNodes().stream()
+                           .filter(node -> node.getNodeId() == 21).findFirst()
+                           .get());
+            }
+            else if (model.getSimulationGroundPlanes().get(i).getPosition()
+                  .equals(model.getGroundNodes().stream()
+                        .filter(node -> node.getNodeId() == 16).findFirst()
+                        .get().getPosition()))
+            {
+               model.getSimulationGroundPlanes().get(i)
+                     .takeOffPlane(model.getGroundNodes().stream()
+                           .filter(node -> node.getNodeId() == 20).findFirst()
+                           .get());
+            }
+         }
+      }
+
+      for (int i = 0; i < model.getSimulationGroundPlanes().size(); i++)
+      {
+         if (model.getSimulationGroundPlanes().get(i).getPosition()
+               .equals(model.getGroundNodes().get(21).getPosition()))
+         {
+            model.getSimulationGroundPlanes().get(i)
+                  .departPlane(model.getAirNodes().stream()
+                        .filter(node -> node.getNodeId() == 25).findFirst()
+                        .get());
+            model.getSimulationGroundPlanes().get(i).getRoute()
+                  .add(model.getApproachNodesByDirection(
+                        model.getSimulationGroundPlanes().get(i).getFlightPlan()
+                              .getStartLocation()));
+            model.getSimulationGroundPlanes().get(i).getPosition()
+                  .setPosition(model.getAirNodes().stream()
+                        .filter(node -> node.getNodeId() == 22).findFirst()
+                        .get().getPosition());
             model.getSimulationAirPlanes()
                   .add(model.getSimulationGroundPlanes().get(i));
             for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
@@ -43,11 +81,23 @@ public class SimulationState implements Runnable
                      manager.getServer().getGroundClients().get(j), i);
             }
          }
-
-         if (model.getSimulationGroundPlanes().get(i).getPosition()
-               .equals(new StaticPosition(-10, 115)))
+         else if (model.getSimulationGroundPlanes().get(i).getPosition()
+               .equals(model.getGroundNodes().stream()
+                     .filter(node -> node.getNodeId() == 20).findFirst().get()
+                     .getPosition()))
          {
-            model.getSimulationGroundPlanes().get(i).departPlane(false);
+            model.getSimulationGroundPlanes().get(i)
+                  .departPlane(model.getAirNodes().stream()
+                        .filter(node -> node.getNodeId() == 29).findFirst()
+                        .get());
+            model.getSimulationGroundPlanes().get(i).getRoute()
+                  .add(model.getApproachNodesByDirection(
+                        model.getSimulationGroundPlanes().get(i).getFlightPlan()
+                              .getStartLocation()));
+            model.getSimulationGroundPlanes().get(i).getPosition()
+                  .setPosition(model.getAirNodes().stream()
+                        .filter(node -> node.getNodeId() == 22).findFirst()
+                        .get().getPosition());
             model.getSimulationAirPlanes()
                   .add(model.getSimulationGroundPlanes().get(i));
             for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
@@ -67,32 +117,37 @@ public class SimulationState implements Runnable
       }
    }
 
-   // 956 486
    private synchronized void landPlanes() throws RemoteException
    {
       for (int i = 0; i < model.getSimulationAirPlanes().size(); i++)
       {
-         if (model.getSimulationAirPlanes().get(i).getPosition()
-               .equals(new StaticPosition(956, 486)))
+         if (!model.getSimulationAirPlanes().get(i).isReadyForTakeOff())
          {
-            model.getSimulationAirPlanes().get(i)
-                  .landPlane(model.getLandingNode(model.getWind()));
-            model.getSimulationGroundPlanes()
-                  .add(model.getSimulationAirPlanes().get(i));
-            for (int j = 0; j < manager.getServer().getGroundClients()
-                  .size(); j++)
+            if (model.getSimulationAirPlanes().get(i).getPosition()
+                  .equals(model.getAirNodes().stream()
+                        .filter(node -> node.getNodeId() == 22).findFirst()
+                        .get().getPosition()))
             {
-               manager.getServer().sendGroundPlaneDTO(
-                     model.getSimulationAirPlanes().get(i).convertToDTO(),
-                     manager.getServer().getGroundClients().get(j));
+               model.getSimulationAirPlanes().get(i)
+                     .landPlane(model.getLandingNode(model.getWind()));
+               model.getSimulationGroundPlanes()
+                     .add(model.getSimulationAirPlanes().get(i));
+               for (int j = 0; j < manager.getServer().getGroundClients()
+                     .size(); j++)
+               {
+                  manager.getServer().sendGroundPlaneDTO(
+                        model.getSimulationAirPlanes().get(i).convertToDTO(),
+                        manager.getServer().getGroundClients().get(j));
+               }
+               for (int j = 0; j < manager.getServer().getAirClients()
+                     .size(); j++)
+               {
+                  manager.getServer().removeAirPlane(
+                        manager.getServer().getAirClients().get(j), i);
+               }
+               model.getSimulationAirPlanes().remove(i);
+               i = model.getSimulationAirPlanes().size();
             }
-            for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
-            {
-               manager.getServer().removeAirPlane(
-                     manager.getServer().getAirClients().get(j), i);
-            }
-            model.getSimulationAirPlanes().remove(i);
-            i = model.getSimulationAirPlanes().size();
          }
       }
    }
@@ -134,19 +189,6 @@ public class SimulationState implements Runnable
                   }
                }
             }
-
-            for (int j = 0; j < model.getTakeoffNodes().size(); j++)
-            {
-
-               if (model.getSimulationGroundPlanes().get(i).getPosition()
-                     .equals(model.getTakeoffNodes().get(j).getPosition()))
-               {
-                  model.getSimulationGroundPlanes().get(i)
-                        .setState(new TakeoffState());
-                  model.getSimulationGroundPlanes().get(i).setSpeed(10);
-
-               }
-            }
          }
       }
    }
@@ -175,7 +217,6 @@ public class SimulationState implements Runnable
       }
    }
 
-// to be changed
    private synchronized boolean checkCollision() throws RemoteException
    {
       for (int i = 0; i < model.getSimulationGroundPlanes().size(); i++)

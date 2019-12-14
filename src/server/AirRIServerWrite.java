@@ -9,5 +9,5 @@ public interface AirRIServerWrite extends AirRIServerRead
 {
 	void addAirClient(AirRIClient client) throws RemoteException;
 
-	void reRoutePlane(String callSign,StaticPosition position) throws RemoteException;
+	void reRoutePlane(String registrationNo,StaticPosition position) throws RemoteException;
 }

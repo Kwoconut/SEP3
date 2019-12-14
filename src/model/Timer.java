@@ -5,27 +5,27 @@ import java.io.Serializable;
 public class Timer implements Serializable
 {
 
-   private int Second;
-   private int Minute;
+   private int Seconds;
+   private int Minutes;
    private int Hour;
 
-   public Timer(int hour, int minute, int second)
+   public Timer(int seconds, int minutes, int hour)
    {
-      setTimer(hour, minute, second);
+      setTimer(seconds, minutes, hour);
    }
 
-   public Timer(int second)
+   public Timer(int seconds)
    {
-      this.Hour = second / 3600;
-      this.Minute = (second % 3600) / 60;
-      this.Second = (second % 3600) % 60;
+      this.Hour = seconds / 3600;
+      this.Minutes = (seconds % 3600) / 60;
+      this.Seconds = (seconds % 3600) % 60;
    }
 
-   public void setTimer(int hour, int minute, int second)
+   public void setTimer(int seconds, int minutes, int hour)
    {
       setHour(hour);
-      setMinute(minute);
-      setSecond(second);
+      setMinute(minutes);
+      setSecond(seconds);
    }
 
    public void setTimer(Timer timer)
@@ -55,15 +55,15 @@ public class Timer implements Serializable
    {
       if (minute > 59)
       {
-         this.Minute = 59;
+         this.Minutes = 59;
       }
       else if (minute < 0)
       {
-         this.Minute = 0;
+         this.Minutes = 0;
       }
       else
       {
-         this.Minute = minute;
+         this.Minutes = minute;
       }
    }
 
@@ -71,30 +71,30 @@ public class Timer implements Serializable
    {
       if (second > 59)
       {
-         this.Second = 59;
+         this.Seconds = 59;
       }
       else if (second < 0)
       {
-         this.Second = 0;
+         this.Seconds = 0;
       }
       else
       {
-         this.Second = second;
+         this.Seconds = second;
       }
    }
 
    public void increment()
    {
-      this.Second++;
-      if (this.Second == 60)
+      this.Seconds++;
+      if (this.Seconds == 60)
       {
-         this.Second = 0;
-         this.Minute++;
+         this.Seconds = 0;
+         this.Minutes++;
       }
 
-      if (this.Minute == 60)
+      if (this.Minutes == 60)
       {
-         this.Minute = 0;
+         this.Minutes = 0;
          this.Hour++;
       }
 
@@ -106,17 +106,17 @@ public class Timer implements Serializable
 
    public void decrement()
    {
-      this.Second--;
+      this.Seconds--;
 
-      if (this.Second == -1)
+      if (this.Seconds == -1)
       {
-         this.Second = 59;
-         this.Minute--;
+         this.Seconds = 59;
+         this.Minutes--;
       }
 
-      if (this.Minute == -1)
+      if (this.Minutes == -1)
       {
-         this.Minute = 59;
+         this.Minutes = 59;
          this.Hour--;
       }
 
@@ -134,23 +134,22 @@ public class Timer implements Serializable
 
    public int getMinute()
    {
-      return Minute;
+      return Minutes;
    }
 
    public int getSecond()
    {
-      return Second;
+      return Seconds;
    }
 
    public Timer timeNow()
    {
-      return new Timer(this.Second, this.Minute, this.Hour);
+      return new Timer(this.Seconds, this.Minutes, this.Hour);
    }
 
    public int convertToSeconds()
    {
-      return this.Hour * 60 * 60 + this.Minute * 60
-            + this.getSecond();
+      return this.Hour * 60 * 60 + this.Minutes * 60 + this.getSecond();
    }
 
    public boolean isBefore(Timer timer)
@@ -194,22 +193,22 @@ public class Timer implements Serializable
          s += this.Hour + ":";
       }
 
-      if (this.Minute < 10)
+      if (this.Minutes < 10)
       {
-         s += "0" + this.Minute + ":";
+         s += "0" + this.Minutes + ":";
       }
       else
       {
-         s += this.Minute + ":";
+         s += this.Minutes + ":";
       }
 
-      if (this.Second < 10)
+      if (this.Seconds < 10)
       {
-         s += "0" + this.Second;
+         s += "0" + this.Seconds;
       }
       else
       {
-         s += this.Second;
+         s += this.Seconds;
       }
 
       return s;
@@ -223,8 +222,9 @@ public class Timer implements Serializable
          return false;
       }
       Timer other = (Timer) obj;
-      return this.Second == other.getSecond()
-            && this.Minute == other.getMinute() && this.Hour == other.getHour();
+      return this.Seconds == other.getSecond()
+            && this.Minutes == other.getMinute()
+            && this.Hour == other.getHour();
    }
 
 }

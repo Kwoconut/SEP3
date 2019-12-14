@@ -8,7 +8,7 @@ public class MovingPosition extends StaticPosition
       super(XCoordinate, YCoordinate);
    }
 
-   public boolean movePosition(StaticPosition position, double speed)
+   public synchronized boolean movePosition(StaticPosition position, double speed)
    {
       double distance = Math
             .sqrt((position.getXCoordinate() - super.getXCoordinate())

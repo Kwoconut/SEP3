@@ -119,7 +119,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    {
       if (plane != null)
       {
-         System.out.println(plane.getCallSignProperty().get() + " ");
+         System.out.println(plane.getRegistrationNoProperty().get() + " ");
       }
       this.selectedPlane.setValue(plane);
    }
@@ -127,7 +127,7 @@ public class GroundRadarViewModel implements PropertyChangeListener
    public void changePlaneRoute()
    {
       this.model.changePlaneRoute(
-            selectedPlane.get().getCallSignProperty().get(),
+            selectedPlane.get().getRegistrationNoProperty().get(),
             selectedStartNode.get().getIDProperty().get(),
             selectedEndNode.get().getIDProperty().get());
    }

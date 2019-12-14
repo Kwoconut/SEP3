@@ -12,8 +12,6 @@ public class SimulationManager {
 	}
 	public void startThreads()
 	{
-		airPlaneDispatcherRun();
-		groundPlaneDispatcherRun();
 		simulationTimerRun();
 		simulationStateRun();
 		this.aloha=true;

@@ -8,6 +8,6 @@ public interface AirRadarModel
 {
    void addPropertyChangeListener(PropertyChangeListener listener);
 
-   void reRoutePlane(String callSign, StaticPosition position);
+   void reRoutePlane(String registrationNo, StaticPosition position);
 
 }

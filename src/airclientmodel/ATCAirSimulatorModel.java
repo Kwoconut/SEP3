@@ -80,7 +80,7 @@ public class ATCAirSimulatorModel
    }
 
    @Override
-   public void reRoutePlane(String callSign, StaticPosition position)
+   public void reRoutePlane(String registrationNo, StaticPosition position)
    {
       
       

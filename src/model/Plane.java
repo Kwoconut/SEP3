@@ -5,29 +5,28 @@ import java.util.ArrayList;
 
 public class Plane implements Serializable
 {
-   private String CallSign;
+   private String RegistrationNo;
    private String Model;
    private String Company;
    private FlightPlan FlightPlan;
    private PlaneState PlaneState;
-   private MovingPosition Position;
+   private MovingPosition PlanePosition;
    private StaticPosition Target;
    private ArrayList<Node> Route;
    private double Speed;
    private boolean ReadyForTakeOff;
 
-   public Plane(String callSign, String model, String company,
+   public Plane(String registrationNo, String model, String company,
          MovingPosition position, StaticPosition target, FlightPlan flightPlan)
    {
-      this.CallSign = callSign;
+      this.RegistrationNo = registrationNo;
       this.Model = model;
       this.Company = company;
       this.FlightPlan = flightPlan;
-      this.Position = position;
+      this.PlanePosition = position;
       this.Target = target;
       this.Route = null;
       this.PlaneState = new LandedState();
-      this.ReadyForTakeOff = true;
    }
 
    public double getSpeed()
@@ -45,7 +44,7 @@ public class Plane implements Serializable
       if (!(PlaneState instanceof LandedState
             || PlaneState instanceof BoardingState))
       {
-         boolean targetReached = Position.movePosition(Target, Speed);
+         boolean targetReached = PlanePosition.movePosition(Target, Speed);
          if (targetReached)
          {
             Route.remove(0);
@@ -53,23 +52,6 @@ public class Plane implements Serializable
             {
                setState(new LandedState());
                this.Speed = 0;
-            }
-            else if (Route.get(0).getNodeId() == 9)
-            {
-               Route.add(new Node("Exit point EAST", 20,
-                     new StaticPosition(1560, 115)));
-               Target.setPosition(Route.get(0).getPosition());
-            }
-            else if (Route.get(0).getNodeId() == 16)
-            {
-               Route.add(new Node("Exit point WEST ", 21,
-                     new StaticPosition(-10, 115)));
-               Target.setPosition(Route.get(0).getPosition());
-            }
-            else if (Route.get(0).getNodeId() == 20
-                  || Route.get(0).getNodeId() == 21)
-            {
-               Target.setPosition(Route.get(0).getPosition());
             }
             else
             {
@@ -115,9 +97,9 @@ public class Plane implements Serializable
       this.Speed = 0;
    }
 
-   public String getCallSign()
+   public String getRegistrationNo()
    {
-      return CallSign;
+      return RegistrationNo;
    }
 
    public String getModel()
@@ -151,7 +133,7 @@ public class Plane implements Serializable
       {
          route = "No target";
       }
-      return new PlaneDTO(this.CallSign, this.PlaneState, this.Position, route);
+      return new PlaneDTO(this.RegistrationNo, this.PlaneState, this.PlanePosition, route);
    }
 
    public FlightPlan getFlightPlan()
@@ -161,18 +143,18 @@ public class Plane implements Serializable
 
    public StaticPosition getPosition()
    {
-      return this.Position;
+      return this.PlanePosition;
    }
 
    public void landPlane(Node node)
    {
       if (node.getNodeId() == 9)
       {
-         this.Position.setPosition(new StaticPosition(1550, 114));
+         this.PlanePosition.setPosition(new StaticPosition(1550, 114));
       }
       else
       {
-         this.Position.setPosition(new StaticPosition(0, 114));
+         this.PlanePosition.setPosition(new StaticPosition(0, 114));
       }
 
       ArrayList<Node> route = new ArrayList<Node>();
@@ -182,27 +164,31 @@ public class Plane implements Serializable
       setSpeed(10);
    }
 
-   public void approachPlane()
+   public void approachPlane(ArrayList<Node> route)
    {
-      ArrayList<Node> route = new ArrayList<Node>();
-      route.add(new Node("kkt", 50, new StaticPosition(956, 486)));
-      setRoute(route);
+      ArrayList<Node> newRoute = new ArrayList<Node>();
+      for (Node nodes: route)
+      {
+         newRoute.add(nodes);
+      }
+      setRoute(newRoute);
       setState(new InAirState());
       setSpeed(1);
    }
-
-   public void departPlane(boolean wind)
+   
+   public void takeOffPlane(Node node)
    {
       ArrayList<Node> route = new ArrayList<Node>();
-      this.Position.setPosition(new StaticPosition(956, 487));
-      if (wind == false)
-      {
-         route.add(new Node("kkt", 50, new StaticPosition(565, 530)));
-      }
-      else
-      {
-         route.add(new Node("oi", 50, new StaticPosition(1362, 430)));
-      }
+      route.add(node);
+      setRoute(route);
+      setState(new TakeoffState());
+      setSpeed(10);
+   }
+
+   public void departPlane(Node node)
+   {
+      ArrayList<Node> route = new ArrayList<Node>();
+      route.add(node);
       setRoute(route);
       setState(new InAirState());
       setSpeed(1);

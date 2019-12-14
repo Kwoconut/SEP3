@@ -38,11 +38,11 @@ public class ATCGroundSimulatorModel implements ATCGroundSimulator, Serializable
       this.client = groundClient;
    }
 
-   public void changePlaneRoute(String callSign, int startNodeId, int endNodeId)
+   public void changePlaneRoute(String registrationNo, int startNodeId, int endNodeId)
    {
       try
       {
-         client.changeGroundPlaneRoute(callSign, startNodeId, endNodeId);
+         client.changeGroundPlaneRoute(registrationNo, startNodeId, endNodeId);
       }
       catch (RemoteException e)
       {
