@@ -55,13 +55,6 @@ public class AirRadarView
       this.failPane.setVisible(false);
       this.timerLabel.textProperty().bind(this.viewModel.getTimerProperty());
 
-      Circle testCircle = new Circle(10);
-      testCircle.setFill(Color.YELLOW);
-      testCircle.setStroke(Color.BLACK);
-      testCircle.centerXProperty().set(1464);
-      testCircle.centerYProperty().set(868);
-      mainPane.getChildren().add(testCircle);
-
       for (int i = 0; i < this.viewModel.getAirNodes().size(); i++)
       {
          Circle circle = new Circle(10);
@@ -74,6 +67,7 @@ public class AirRadarView
          airNodes.add(circle);
          mainPane.getChildren().add(circle);
       }
+      this.failPane.toFront();
 
       this.viewModel.getSimulationFailed()
             .addListener((observable, oldValue, newValue) -> {

@@ -14,9 +14,9 @@
             <Image url="@../../images/airRadar.png" />
          </image>
       </ImageView>
-      <Pane fx:id="failPane" layoutX="70.0" layoutY="287.0" opacity="0.91" prefHeight="200.0" prefWidth="1415.0" style="-fx-background-color: #002f5f; -fx-background-radius: 20;">
+      <Pane fx:id="failPane" layoutX="260.0" layoutY="424.0" opacity="0.91" prefHeight="200.0" prefWidth="1415.0" style="-fx-background-color: #002f5f; -fx-background-radius: 20;">
          <children>
-            <Text fill="WHITE" layoutX="327.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMULATION FAILED" textAlignment="CENTER">
+            <Text fill="WHITE" layoutX="310.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMULATION FAILED" textAlignment="CENTER">
                <font>
                   <Font size="96.0" />
                </font>
