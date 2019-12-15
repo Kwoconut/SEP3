@@ -247,8 +247,19 @@ public class SimulationState implements Runnable
       {
          for (int j = i + 1; j < model.getSimulationAirPlanes().size(); j++)
          {
-            if (model.getSimulationAirPlanes().get(i).getPosition()
-                  .equals(model.getSimulationAirPlanes().get(j).getPosition()))
+            Rectangle rectangle1 = new Rectangle(
+                  model.getSimulationAirPlanes().get(i).getPosition()
+                        .getXCoordinate(),
+                  model.getSimulationAirPlanes().get(i).getPosition()
+                        .getYCoordinate(),
+                  10, 10);
+            Rectangle rectangle2 = new Rectangle(
+                  model.getSimulationAirPlanes().get(j).getPosition()
+                        .getXCoordinate(),
+                  model.getSimulationAirPlanes().get(j).getPosition()
+                        .getYCoordinate(),
+                  10, 10);
+            if (rectangle1.intersects(rectangle2.getBoundsInLocal()))
             {
                return true;
             }
@@ -275,9 +286,6 @@ public class SimulationState implements Runnable
          {
             e.printStackTrace();
          }
-
-         if (model.getSimulationGroundPlanes().size() >= 2)
-         {
             try
             {
                if (checkCollision())
@@ -291,7 +299,7 @@ public class SimulationState implements Runnable
             {
                e.printStackTrace();
             }
-         }
+         
          try
          {
             Thread.sleep(0100);
