@@ -41,38 +41,19 @@ public class ServerModel
       {
          if (planes.get(i).getFlightPlan().getEndLocation().equals("Aalborg"))
          {
+            planes.get(i).setState(new InAirState());
             planes.get(i).getPosition()
                   .setPosition(getApproachNodesByDirection(
                         planes.get(i).getFlightPlan().getStartLocation())
                               .getPosition());
-            ArrayList<Node> route = new ArrayList<Node>();
-            if (wind)
-            {
-               Node approachNode = nodes.stream()
-                     .filter(node -> node.getNodeId() == 29).findFirst().get();
-               route.add(
-                     new Node(approachNode.getName(), approachNode.getNodeId(),
-                           new StaticPosition(
-                                 approachNode.getPosition().getXCoordinate(),
-                                 approachNode.getPosition().getYCoordinate())));
 
-            }
-            else
-            {
-               Node approachNode = nodes.stream()
-                     .filter(node -> node.getNodeId() == 25).findFirst().get();
-               route.add(
-                     new Node(approachNode.getName(), approachNode.getNodeId(),
-                           new StaticPosition(
-                                 approachNode.getPosition().getXCoordinate(),
-                                 approachNode.getPosition().getYCoordinate())));
-
-            }
-            route.add(nodes.stream().filter(node -> node.getNodeId() == 22)
-                  .findFirst().get());
-            planes.get(i).approachPlane(route);
-            ;
             airPlanes.add(planes.get(i));
+            setInitialRoute(airPlanes.get(i).getRegistrationNo(),
+                  getApproachNodesByDirection(
+                        planes.get(i).getFlightPlan().getStartLocation())
+                              .getNodeId(),
+                  getAirNodes().stream().filter(node -> node.getNodeId() == 22)
+                        .findFirst().get().getNodeId());
          }
          if (planes.get(i).getFlightPlan().getStartLocation().equals("Aalborg"))
          {
@@ -124,6 +105,32 @@ public class ServerModel
    public void loadEdgesFromDatabase(ArrayList<Edge> edges)
    {
       this.edges = edges;
+   }
+
+   public ArrayList<Edge> getAirEdges()
+   {
+      ArrayList<Edge> airEdges = new ArrayList<Edge>();
+      for (int i = 0; i < edges.size(); i++)
+      {
+         if (!edges.get(i).isGroundEdge())
+         {
+            airEdges.add(edges.get(i));
+         }
+      }
+      return airEdges;
+   }
+
+   public ArrayList<Edge> getGroundEdges()
+   {
+      ArrayList<Edge> groundEdges = new ArrayList<Edge>();
+      for (int i = 0; i < edges.size(); i++)
+      {
+         if (edges.get(i).isGroundEdge())
+         {
+            groundEdges.add(edges.get(i));
+         }
+      }
+      return groundEdges;
    }
 
    public ArrayList<Plane> getGroundPlanes()
@@ -215,11 +222,11 @@ public class ServerModel
             .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
             .findFirst().get().stopPlane();
 
-      airportGraph.generateAirportGraph(getGroundNodes(), edges);
+      airportGraph.generateGraph(nodes, edges);
 
       ArrayList<Node> shortestDistance = airportGraph.calculateShortestDistance(
-            airportGraph.getGroundNodes().get(startNodeId),
-            airportGraph.getGroundNodes().get(endNodeId));
+            airportGraph.getNodes().get(startNodeId),
+            airportGraph.getNodes().get(endNodeId));
 
       simulationGroundPlanes.stream()
             .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
@@ -227,20 +234,60 @@ public class ServerModel
 
    }
 
-   public void changeAirPlaneRoute(String registrationNo, int startNodeId,
+   public void setInitialRoute(String registrationNo, int startNodeId,
          int endNodeId)
    {
       airPlanes.stream()
             .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
             .findFirst().get().stopPlane();
+      
+      if (wind)
+      {
+         edges.get(22).setLength(200);
+      }
+      else
+      {
+         edges.get(23).setLength(200);
+      }
 
-      airportGraph.generateAirportGraph(nodes, edges);
+      airspaceGraph.generateGraph(nodes, edges);
 
-      ArrayList<Node> shortestDistance = airportGraph.calculateShortestDistance(
-            airportGraph.getGroundNodes().get(startNodeId),
-            airportGraph.getGroundNodes().get(endNodeId));
+      ArrayList<Node> shortestDistance = airspaceGraph
+            .calculateShortestDistance(
+                  airspaceGraph.getNodes().get(startNodeId),
+                  airspaceGraph.getNodes().get(endNodeId));
 
       airPlanes.stream()
+            .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
+            .findFirst().get().setRoute(shortestDistance);
+   }
+
+   public void changeAirPlaneRoute(String registrationNo, int startNodeId,
+         int endNodeId)
+   {
+      simulationAirPlanes.stream()
+            .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
+            .findFirst().get().stopPlane();
+      
+      if (wind)
+      {
+         edges.get(22).setLength(200);
+         edges.get(23).setLength(1);
+      }
+      else
+      {
+         edges.get(22).setLength(1);
+         edges.get(23).setLength(200);
+      }
+
+      airspaceGraph.generateGraph(nodes, edges);
+
+      ArrayList<Node> shortestDistance = airspaceGraph
+            .calculateShortestDistance(
+                  airspaceGraph.getNodes().get(startNodeId),
+                  airspaceGraph.getNodes().get(endNodeId));
+
+      simulationAirPlanes.stream()
             .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
             .findFirst().get().setRoute(shortestDistance);
 
@@ -316,7 +363,6 @@ public class ServerModel
 
    public Node getApproachNodesByDirection(String cityName)
    {
-      System.out.println(cityName);
       return this.nodes.stream().filter(
             node -> !node.IsGroundNode() && node.getName().contains(cityName))
             .findFirst().get();

@@ -82,6 +82,11 @@ public class Node
    {
       return ShortestPath;
    }
+   
+   public void setNodeId(int NodeId)
+   {
+      this.NodeId = NodeId;
+   }
 
    public void setShortestPath(ArrayList<Node> shortestPath)
    {

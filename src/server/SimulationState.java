@@ -2,6 +2,7 @@ package server;
 
 import java.rmi.RemoteException;
 
+import javafx.scene.shape.Rectangle;
 import model.BoardingState;
 import model.LandedState;
 import model.StaticPosition;
@@ -223,8 +224,19 @@ public class SimulationState implements Runnable
       {
          for (int j = i + 1; j < model.getSimulationGroundPlanes().size(); j++)
          {
-            if (model.getSimulationGroundPlanes().get(i).getPosition().equals(
-                  model.getSimulationGroundPlanes().get(j).getPosition()))
+            Rectangle rectangle1 = new Rectangle(
+                  model.getSimulationGroundPlanes().get(i).getPosition()
+                        .getXCoordinate(),
+                  model.getSimulationGroundPlanes().get(i).getPosition()
+                        .getYCoordinate(),
+                  10, 10);
+            Rectangle rectangle2 = new Rectangle(
+                  model.getSimulationGroundPlanes().get(j).getPosition()
+                        .getXCoordinate(),
+                  model.getSimulationGroundPlanes().get(j).getPosition()
+                        .getYCoordinate(),
+                  10, 10);
+            if (rectangle1.intersects(rectangle2.getBoundsInLocal()))
             {
                return true;
             }
@@ -254,10 +266,10 @@ public class SimulationState implements Runnable
          try
          {
 
-            movePlanes();
             updateStateOnGroundLocation();
             takeOffPlanes();
             landPlanes();
+            movePlanes();
          }
          catch (RemoteException e)
          {

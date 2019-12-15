@@ -25,7 +25,7 @@ public class Plane implements Serializable
       this.FlightPlan = flightPlan;
       this.PlanePosition = position;
       this.Target = target;
-      this.Route = null;
+      this.Route = new ArrayList<Node>();
       this.PlaneState = new LandedState();
    }
 
@@ -85,11 +85,19 @@ public class Plane implements Serializable
 
    public void setRoute(ArrayList<Node> Route)
    {
-      if (!(PlaneState instanceof InAirState) && !(PlaneState instanceof EmergencyState))
+      if (!(PlaneState instanceof InAirState)
+            && !(PlaneState instanceof EmergencyState))
       {
-      this.Speed = 2;
-      this.PlaneState = new TaxiState();
+         this.Speed = 2;
+         this.PlaneState = new TaxiState();
       }
+      else
+      {
+         this.Speed = 1;
+      }
+
+      System.out.println(Route);
+
       this.Route = Route;
       this.Target = Route.get(0).getPosition();
    }
@@ -136,7 +144,8 @@ public class Plane implements Serializable
       {
          route = "No target";
       }
-      return new PlaneDTO(this.RegistrationNo, this.PlaneState, this.PlanePosition, route);
+      return new PlaneDTO(this.RegistrationNo, this.PlaneState,
+            this.PlanePosition, route);
    }
 
    public FlightPlan getFlightPlan()
@@ -167,18 +176,6 @@ public class Plane implements Serializable
       setSpeed(10);
    }
 
-   public void approachPlane(ArrayList<Node> route)
-   {
-      ArrayList<Node> newRoute = new ArrayList<Node>();
-      for (Node nodes: route)
-      {
-         newRoute.add(nodes);
-      }
-      setRoute(newRoute);
-      setState(new InAirState());
-      setSpeed(1);
-   }
-   
    public void takeOffPlane(Node node)
    {
       ArrayList<Node> route = new ArrayList<Node>();

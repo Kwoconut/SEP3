@@ -12,7 +12,7 @@ public class PathfindingGraph
       this.nodes = nodes;
    }
 
-   public ArrayList<Node> getGroundNodes()
+   public ArrayList<Node> getNodes()
    {
       return nodes;
    }
@@ -86,7 +86,7 @@ public class PathfindingGraph
       }
    }
 
-   public void generateAirportGraph(ArrayList<Node> nodes,
+   public void generateGraph(ArrayList<Node> nodes,
          ArrayList<Edge> edges)
    {
 
@@ -136,6 +136,7 @@ public class PathfindingGraph
                new StaticPosition(node.getPosition().getXCoordinate(),
                      node.getPosition().getYCoordinate())));
       }
+      
       this.edges = new ArrayList<Edge>();
       for (int i = 0; i < sampleEdges.length; i++)
       {
