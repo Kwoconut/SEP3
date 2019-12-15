@@ -38,7 +38,8 @@ public class ATCGroundSimulatorModel implements ATCGroundSimulator, Serializable
       this.client = groundClient;
    }
 
-   public void changePlaneRoute(String registrationNo, int startNodeId, int endNodeId)
+   public void changePlaneRoute(String registrationNo, int startNodeId,
+         int endNodeId)
    {
       try
       {
@@ -94,6 +95,27 @@ public class ATCGroundSimulatorModel implements ATCGroundSimulator, Serializable
    public void removePlane(int index)
    {
       support.firePropertyChange("planeREMOVE", " ", index);
+
+   }
+
+   @Override
+   public void establishConnection()
+   {
+      try
+      {
+         client.establishConnection();
+      }
+      catch (RemoteException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+   }
+
+   @Override
+   public void simulationStart()
+   {
+      support.firePropertyChange("simulationSTART", " ", true);
 
    }
 }

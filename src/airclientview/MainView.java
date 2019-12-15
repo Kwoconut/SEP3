@@ -21,7 +21,7 @@ public class MainView
 
    public void start() throws Exception
    {
-      openView("AirRadar");
+      openView("Start");
    }
 
    public void openView(String viewToOpen) throws IOException
@@ -34,17 +34,24 @@ public class MainView
       {
          loader.setLocation(getClass().getResource("AirRadarView.fxml"));
          root = loader.load();
+         scene = new Scene(root);
          AirRadarView view = loader.getController();
-         view.init(mvViewModel.getAirRadarViewModel(),this);
+         view.init(mvViewModel.getAirRadarViewModel(), this);
+      }
+      else if ("Start".equals(viewToOpen))
+      {
+         loader.setLocation(getClass().getResource("AirRadarStart.fxml"));
+         root = loader.load();
+         scene = new Scene(root);
+         AirRadarStartView view = loader.getController();
+         view.init(mvViewModel.getAirRadarStartViewModel(), this, scene);
       }
       stage.setTitle("AirRadar");
-      
+
       Stage localStage = new Stage();
 
-      scene = new Scene(root);
       localStage.setScene(scene);
       localStage.show();
    }
-
 
 }

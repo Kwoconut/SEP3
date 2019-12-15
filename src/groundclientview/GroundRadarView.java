@@ -58,6 +58,8 @@ public class GroundRadarView
 
    private ObservableList<Circle> groundNodes;
 
+   private ObservableList<Pane> groundPlanes;
+
    private Pane selectedPlane;
 
    private MainView mainView;
@@ -68,6 +70,7 @@ public class GroundRadarView
       this.mainView = mainView;
       this.viewModel = groundRadarViewModel;
       this.groundNodes = FXCollections.observableArrayList();
+      this.groundPlanes = FXCollections.observableArrayList();
       this.failPane.setVisible(false);
       this.timerLabel.textProperty().bind(this.viewModel.getTimerProperty());
       for (int i = 0; i < this.viewModel.getGroundNodes().size() - 2; i++)
@@ -121,6 +124,8 @@ public class GroundRadarView
             {
                public void handle(MouseEvent e)
                {
+
+
                   if (viewModel.getSelectedPlane().get() != null)
                   {
                      try
@@ -155,9 +160,54 @@ public class GroundRadarView
                      }
 
                   }
-                  viewModel.setSelectedPlane(null);
-                  viewModel.setSelectedGroundStartNode(null);
-                  viewModel.setSelectedGroundEndNode(null);
+                  else
+                  {
+                     for (int i = 0; i < groundPlanes.size(); i++)
+                     {
+                        if (groundPlanes.get(i).getBoundsInParent()
+                              .contains(e.getSceneX(), e.getSceneY())
+                              && !viewModel.getPlanes().get(i)
+                                    .getStatusProperty().get().equals("Landing")
+                              && !viewModel.getPlanes().get(i)
+                                    .getStatusProperty().get()
+                                    .startsWith("Boarding"))
+                        {
+                           selectedPlane = groundPlanes.get(i);
+                           int depth = 70;
+                           DropShadow borderGlow = new DropShadow();
+                           borderGlow.setOffsetY(0f);
+                           borderGlow.setOffsetX(0f);
+                           borderGlow.setColor(Color.RED);
+                           borderGlow.setWidth(depth);
+                           borderGlow.setHeight(depth);
+
+                           groundPlanes.get(i).setEffect(borderGlow);
+
+                           Circle circle = findNearestGroundNode(
+                                 mainPane.getChildren(),
+                                 groundPlanes.get(i).getTranslateX(),
+                                 groundPlanes.get(i).getTranslateY());
+                           viewModel.setSelectedGroundStartNode(viewModel
+                                 .getGroundNodes().stream()
+                                 .filter(node -> node.getXProperty()
+                                       .get() == circle.centerXProperty().get()
+                                       && node.getYProperty().get() == circle
+                                             .centerYProperty().get())
+                                 .findFirst().get());
+                           viewModel.setSelectedPlane(
+                                 viewModel.getPlanes().get(i));
+                           System.out.println(viewModel.getSelectedPlane().get().getRegistrationNoProperty().get());
+                           i = groundPlanes.size();
+                        }
+                        else
+                        {
+                        viewModel.setSelectedPlane(null);
+                        viewModel.setSelectedGroundStartNode(null);
+                        viewModel.setSelectedGroundEndNode(null);
+                        }
+                     }
+
+                  }
 
                }
             });
@@ -178,97 +228,33 @@ public class GroundRadarView
                      Text callSignText = new Text();
                      callSignText.textProperty().bind(change.getAddedSubList()
                            .get(0).getRegistrationNoProperty());
-                     callSignText.setFill(Color.GREEN);
+                     callSignText.setFill(Color.web("#002F5F"));
                      callSignText.translateYProperty().setValue(-12);
                      callSignText.translateXProperty().setValue(10);
                      Rectangle square = new Rectangle();
                      square.scaleXProperty().setValue(20);
                      square.scaleYProperty().setValue(20);
-                     square.setStroke(Color.GREEN);
+                     square.setStroke(Color.web("#002F5F"));
                      pane.getChildren().addAll(square, callSignText);
                      pane.translateXProperty().bind(
                            change.getAddedSubList().get(0).getXProperty());
                      pane.translateYProperty().bind(
                            change.getAddedSubList().get(0).getYProperty());
-                     pane.addEventFilter(MouseEvent.MOUSE_PRESSED,
-                           new EventHandler<MouseEvent>()
-                           {
-                              public void handle(MouseEvent e)
-                              {
-                                 if (!change.getAddedSubList().get(0)
-                                       .getStatusProperty().get()
-                                       .equals("Landing")
-                                       && !change.getAddedSubList().get(0)
-                                             .getStatusProperty().get()
-                                             .startsWith("Boarding"))
-                                 {
-                                    selectedPlane = pane;
-                                    int depth = 70; // Setting the uniform
-                                                    // variable
-                                                    // for the glow width and
-                                                    // height
 
-                                    DropShadow borderGlow = new DropShadow();
-                                    borderGlow.setOffsetY(0f);
-                                    borderGlow.setOffsetX(0f);
-                                    borderGlow.setColor(Color.RED);
-                                    borderGlow.setWidth(depth);
-                                    borderGlow.setHeight(depth);
-
-                                    pane.setEffect(borderGlow); // Apply the
-                                                                // borderGlow
-                                                                // effect to the
-                                                                // JavaFX node
-
-                                    Circle circle = findNearestGroundNode(
-                                          mainPane.getChildren(),
-                                          pane.getTranslateX(),
-                                          pane.getTranslateY());
-                                    viewModel.setSelectedGroundStartNode(
-                                          viewModel.getGroundNodes().stream()
-                                                .filter(node -> node
-                                                      .getXProperty()
-                                                      .get() == circle
-                                                            .centerXProperty()
-                                                            .get()
-                                                      && node.getYProperty()
-                                                            .get() == circle
-                                                                  .centerYProperty()
-                                                                  .get())
-                                                .findFirst().get());
-                                    viewModel.setSelectedPlane(viewModel
-                                          .getPlanes().stream()
-                                          .filter(plane -> plane
-                                                .getRegistrationNoProperty()
-                                                .get()
-                                                .equals(callSignText.getText()))
-                                          .findFirst().get());
-                                 }
-                              }
-                           });
-
+                     groundPlanes.add(pane);
                      mainPane.getChildren().add(pane);
                   }
                   else if (change.wasRemoved())
                   {
-                     for (Node node : mainPane.getChildren())
+                     for (int i = 0 ; i < groundPlanes.size();i++)
                      {
-                        if (node instanceof Pane && !node.equals(failPane))
+                        if (change.getRemoved().get(0).getRegistrationNoProperty().get().equals(((Text) groundPlanes.get(i).getChildren().get(1)).getText()))
                         {
-                           if (((Pane) node).getChildren()
-                                 .get(1) instanceof Text)
-                           {
-                              if (((Text) ((Pane) node).getChildren().get(1))
-                                    .textProperty().get()
-                                    .equals(change.getRemoved().get(0)
-                                          .getRegistrationNoProperty().get()))
-                              {
-                                 node.setVisible(false);
-                              }
-                           }
+                           mainPane.getChildren().remove(groundPlanes.get(i));
+                           groundPlanes.remove(i);
+                           i = groundPlanes.size();
                         }
                      }
-
                   }
                }
             });

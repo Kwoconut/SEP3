@@ -23,4 +23,6 @@ public interface AirRIClient extends Remote
    public void getTimerFromServer(Timer timer) throws RemoteException;
    
    public void removeAirPlane(int index) throws RemoteException;
+   
+   public void simulationStart() throws RemoteException;
 }

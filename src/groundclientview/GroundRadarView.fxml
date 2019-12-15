@@ -17,9 +17,9 @@
          </image>
       </ImageView>
       <ImageView fx:id="flagImage" fitHeight="150.0" fitWidth="200.0" layoutX="643.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true" />
-      <Pane fx:id="failPane" layoutX="70.0" layoutY="287.0" opacity="0.76" prefHeight="200.0" prefWidth="1415.0" style="-fx-background-color: grey;">
+      <Pane fx:id="failPane" layoutX="70.0" layoutY="287.0" opacity="0.91" prefHeight="200.0" prefWidth="1415.0" style="-fx-background-color: #002f5f; -fx-background-radius: 20;">
          <children>
-            <Text layoutX="327.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMULATION FAILED" textAlignment="CENTER">
+            <Text fill="WHITE" layoutX="327.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMULATION FAILED" textAlignment="CENTER">
                <font>
                   <Font size="96.0" />
                </font>
@@ -28,15 +28,19 @@
       </Pane>
       <TableView fx:id="planeListTable" layoutX="468.0" layoutY="530.0" prefHeight="200.0" prefWidth="401.0">
         <columns>
-          <TableColumn fx:id="callSignColumn" prefWidth="83.19992065429688" text="Callsign" />
+          <TableColumn fx:id="callSignColumn" prefWidth="83.19992065429688" text="RegNo." />
             <TableColumn fx:id="statusColumn" prefWidth="138.4000244140625" text="Status" />
             <TableColumn fx:id="targetColumn" prefWidth="177.800048828125" text="Target" />
         </columns>
       </TableView>
-      <Label fx:id="timerLabel" layoutX="731.0" layoutY="22.0" text="22:30:59" textFill="#2eb23f">
-         <font>
-            <Font size="31.0" />
-         </font>
-      </Label>
+      <Pane layoutX="678.0" layoutY="14.0" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #002f5f; -fx-background-radius: 50;">
+         <children>
+            <Label fx:id="timerLabel" alignment="CENTER" layoutX="45.5" text="22:30:59" textFill="WHITE">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </Pane>

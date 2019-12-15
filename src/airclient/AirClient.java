@@ -29,14 +29,6 @@ public class AirClient implements AirIClient, AirRIClient
       this.model.setClient(this);
       access = (AirServerAccess) Naming.lookup("rmi://localhost:1099/server");
       UnicastRemoteObject.exportObject(this, 0);
-      AirRIServerWrite server = access.acquireAirWrite();
-      server.addAirClient(this);
-      access.releaseWrite();
-      AirRIServerRead serverRead = access.acquireAirRead();
-      serverRead.sendAirNodesDTO(this);
-      serverRead.sendAirPlanesDTO(this);
-      serverRead.sendAirWind(this);
-      access.releaseRead();
    }
 
    @Override
@@ -103,7 +95,28 @@ public class AirClient implements AirIClient, AirRIClient
    @Override
    public void removeAirPlane(int index) throws RemoteException
    {
-      this.model.removePlane(index); 
+      this.model.removePlane(index);
+   }
+
+   @Override
+   public void simulationStart() throws RemoteException
+   {
+      this.model.simulationStart();
+
+   }
+
+   @Override
+   public void establishConnection() throws RemoteException
+   {
+      AirRIServerWrite server = access.acquireAirWrite();
+      server.addAirClient(this);
+      access.releaseWrite();
+      AirRIServerRead serverRead = access.acquireAirRead();
+      serverRead.sendAirNodesDTO(this);
+      serverRead.sendAirPlanesDTO(this);
+      serverRead.sendAirWind(this);
+      access.releaseRead();
+
    }
 
 }

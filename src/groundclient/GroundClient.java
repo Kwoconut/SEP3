@@ -31,14 +31,6 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
       access = (GroundServerAccess) Naming
             .lookup("rmi://localhost:1099/server");
       UnicastRemoteObject.exportObject(this, 0);
-      GroundRIServerWrite server = access.acquireGroundWrite();
-      server.addGroundClient(this);
-      access.releaseWrite();
-      GroundRIServerRead serverRead = access.acquireGroundRead();
-      serverRead.sendGroundNodesDTO(this);
-      serverRead.sendGroundPlanesDTO(this);
-      serverRead.sendGroundWind(this);
-      access.releaseRead();
    }
 
    @Override
@@ -95,5 +87,23 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
    public void removeGroundPlane(int index) throws RemoteException
    {
       this.model.removePlane(index);
+   }
+   
+   public void establishConnection() throws RemoteException
+   {
+      GroundRIServerWrite server = access.acquireGroundWrite();
+      server.addGroundClient(this);
+      access.releaseWrite();
+      GroundRIServerRead serverRead = access.acquireGroundRead();
+      serverRead.sendGroundNodesDTO(this);
+      serverRead.sendGroundPlanesDTO(this);
+      serverRead.sendGroundWind(this);
+      access.releaseRead();
+   }
+
+   @Override
+   public void simulationStart() throws RemoteException
+   {
+    this.model.simulationStart();  
    }
 }

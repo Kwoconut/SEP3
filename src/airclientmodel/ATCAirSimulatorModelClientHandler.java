@@ -25,5 +25,7 @@ public interface ATCAirSimulatorModelClientHandler {
    void getTimerFromServer(Timer timer);
    
    void removePlane(int index);
+   
+   void simulationStart();
 
 }

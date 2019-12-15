@@ -21,7 +21,7 @@ public class MainView
 
    public void start() throws Exception
    {
-      openView("GroundRadar");
+      openView("Start");
    }
 
    public void openView(String viewToOpen) throws IOException
@@ -34,14 +34,23 @@ public class MainView
       {
          loader.setLocation(getClass().getResource("GroundRadarView.fxml"));
          root = loader.load();
+         scene = new Scene(root);
          GroundRadarView view = loader.getController();
-         view.init(mvViewModel.getGroundRadarViewModel(),this);
+         view.init(mvViewModel.getGroundRadarViewModel(), this);
+      }
+      else if ("Start".equals(viewToOpen))
+      {
+         loader.setLocation(getClass().getResource("GroundRadarStart.fxml"));
+         root = loader.load();
+         scene = new Scene(root);
+         GroundRadarStartView view = loader.getController();
+         view.init(mvViewModel.getGroundRadarStartViewModel(), this, scene);
+
       }
       stage.setTitle("GroundRadar");
-      
+
       Stage localStage = new Stage();
 
-      scene = new Scene(root);
       localStage.setScene(scene);
       localStage.show();
    }

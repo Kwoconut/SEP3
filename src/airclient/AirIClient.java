@@ -4,8 +4,11 @@ import java.rmi.RemoteException;
 
 import model.StaticPosition;
 
-public interface AirIClient 
+public interface AirIClient
 {
-   void reRoutePlane(String registrationNo,StaticPosition position);
-   
+   void reRoutePlane(String registrationNo, StaticPosition position)
+         throws RemoteException;
+
+   void establishConnection() throws RemoteException;
+
 }

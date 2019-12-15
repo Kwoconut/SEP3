@@ -2,6 +2,7 @@ package airclientmodel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import airclient.AirClient;
@@ -11,8 +12,7 @@ import model.PlaneDTO;
 import model.StaticPosition;
 import model.Timer;
 
-public class ATCAirSimulatorModel
-      implements ATCAirSimulator
+public class ATCAirSimulatorModel implements ATCAirSimulator
 {
 
    private AirIClient client;
@@ -76,20 +76,41 @@ public class ATCAirSimulatorModel
    public void addPropertyChangeListener(PropertyChangeListener listener)
    {
       support.addPropertyChangeListener(listener);
-      
+
    }
 
    @Override
    public void reRoutePlane(String registrationNo, StaticPosition position)
    {
-      
-      
+
    }
-   
+
    @Override
    public void removePlane(int index)
    {
       support.firePropertyChange("planeREMOVE", " ", index);
+
+   }
+
+   @Override
+   public void simulationStart()
+   {
+      support.firePropertyChange("simulationSTART", " ", true);
+
+   }
+
+   @Override
+   public void establishConnection()
+   {
+      try
+      {
+         client.establishConnection();
+      }
+      catch (RemoteException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
 
    }
 

@@ -24,5 +24,7 @@ public interface GroundRIClient extends Remote
    public void getTimerFromServer(Timer timer) throws RemoteException;
    
    public void removeGroundPlane(int index) throws RemoteException;
+   
+   public void simulationStart() throws RemoteException;
 
 }

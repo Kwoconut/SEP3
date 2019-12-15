@@ -42,11 +42,18 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
          }
       }
       groundClients.add(client);
-      if (airClients.size() >= 1 && groundClients.size() >= 1 && manager.getAloha()==false)
+      if (airClients.size() >= 1 && groundClients.size() >= 1
+            && manager.getAloha() == false)
       {
+         startSimulation();
          manager.startThreads();
       }
+      else if (manager.getAloha() == true)
+      {
+         client.simulationStart();
+      }
    }
+
 
    public void addAirClient(AirRIClient client) throws RemoteException
    {
@@ -58,9 +65,27 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
          }
       }
       airClients.add(client);
-      if (airClients.size() >= 1 && groundClients.size() >= 1 && manager.getAloha()==false)
+      if (airClients.size() >= 1 && groundClients.size() >= 1
+            && manager.getAloha() == false)
       {
+         startSimulation();
          manager.startThreads();
+      }
+      else if (manager.getAloha() == true)
+      {
+         client.simulationStart();
+      }
+   }
+   
+   public void startSimulation() throws RemoteException
+   {
+      for (int i = 0; i < groundClients.size(); i++)
+      {
+         groundClients.get(i).simulationStart();
+      }
+      for (int i = 0; i < airClients.size(); i++)
+      {
+         airClients.get(i).simulationStart();
       }
    }
 
@@ -160,7 +185,7 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
    {
       System.out.println("Starting socket part");
       System.out.println("Waiting for clients ...");
-      Socket socket = new Socket("10.152.218.15", 6789);
+      Socket socket = new Socket("10.152.217.244", 6789);
       Thread t = new Thread(new ServerSocketHandler(model, socket));
       t.start();
    }

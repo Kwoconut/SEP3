@@ -14,34 +14,38 @@
             <Image url="@../../images/airRadar.png" />
          </image>
       </ImageView>
-      <Pane fx:id="failPane" layoutX="70.0" layoutY="287.0" opacity="0.0" prefHeight="200.0" prefWidth="1415.0" style="-fx-background-color: grey;">
+      <Pane fx:id="failPane" layoutX="70.0" layoutY="287.0" opacity="0.91" prefHeight="200.0" prefWidth="1415.0" style="-fx-background-color: #002f5f; -fx-background-radius: 20;">
          <children>
-            <Text layoutX="327.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMULATION FAILED" textAlignment="CENTER">
+            <Text fill="WHITE" layoutX="327.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMULATION FAILED" textAlignment="CENTER">
                <font>
                   <Font size="96.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <Label fx:id="timerLabel" layoutX="105.0" layoutY="14.0" text="22:30:59" textFill="#2eb23f">
-         <font>
-            <Font size="31.0" />
-         </font>
-      </Label>
-      <Label layoutX="13.0" layoutY="14.0" text="timer:" textFill="#2eb23f">
-         <font>
-            <Font size="31.0" />
-         </font>
-      </Label>
-      <Label layoutX="13.0" layoutY="45.0" text="wind:" textFill="#2eb23f">
-         <font>
-            <Font size="31.0" />
-         </font>
-      </Label>
-      <Label fx:id="windLabel" layoutX="105.0" layoutY="45.0" text="left" textFill="#2eb23f">
-         <font>
-            <Font size="31.0" />
-         </font>
-      </Label>
+      <Pane layoutX="13.0" layoutY="14.0" prefHeight="82.0" prefWidth="228.0" style="-fx-background-color: #002f5f; -fx-background-radius: 20;">
+         <children>
+            <Label fx:id="timerLabel" layoutX="100.0" text="22:30:59" textFill="WHITE">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" text="timer:" textFill="WHITE">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="30.0" text="wind:" textFill="WHITE">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+            <Label fx:id="windLabel" layoutX="100.0" layoutY="30.0" text="left" textFill="WHITE">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </Pane>

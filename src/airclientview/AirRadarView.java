@@ -4,12 +4,14 @@ import java.util.NoSuchElementException;
 
 import airclientviewmodel.AirPlaneViewModel;
 import airclientviewmodel.AirRadarViewModel;
+import groundclientviewmodel.GroundPlaneViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
@@ -37,6 +39,8 @@ public class AirRadarView
    private AirRadarViewModel viewModel;
 
    private ObservableList<Circle> airNodes;
+   
+   private ObservableList<Pane> airPlanes;
 
    private Pane selectedPlane;
 
@@ -47,6 +51,7 @@ public class AirRadarView
       this.viewModel = airRadarViewModel;
       this.mainView = mainView;
       this.airNodes = FXCollections.observableArrayList();
+      this.airPlanes = FXCollections.observableArrayList();
       this.failPane.setVisible(false);
       this.timerLabel.textProperty().bind(this.viewModel.getTimerProperty());
 
@@ -97,32 +102,56 @@ public class AirRadarView
             {
                public void handle(MouseEvent e)
                {
+
                   if (viewModel.getSelectedPlane().get() != null)
                   {
-                     try
-                     {
                         viewModel.reRoutePlane(e.getSceneX(), e.getSceneY());
-                     }
-                     catch (NoSuchElementException error)
-                     {
-                        Circle circle = null;
-                     }
-                     finally
-                     {
                         mainPane.getChildren().stream()
                               .filter(node -> node instanceof Pane
                                     && node.equals(selectedPlane))
                               .findFirst().get().setEffect(null);
                         viewModel.setSelectedPlane(null);
-                        viewModel.setSelectedNode(null);
+                  }
+                  else
+                  {
+                     for (int i = 0; i < airPlanes.size(); i++)
+                     {
+                        if (airPlanes.get(i).getBoundsInParent()
+                              .contains(e.getSceneX(), e.getSceneY())
+                              && !viewModel.getPlanes().get(i)
+                                    .getStatusProperty().get().equals("Landing")
+                              && !viewModel.getPlanes().get(i)
+                                    .getStatusProperty().get()
+                                    .startsWith("Boarding"))
+                        {
+                           selectedPlane = airPlanes.get(i);
+                           int depth = 70;
+                           DropShadow borderGlow = new DropShadow();
+                           borderGlow.setOffsetY(0f);
+                           borderGlow.setOffsetX(0f);
+                           borderGlow.setColor(Color.RED);
+                           borderGlow.setWidth(depth);
+                           borderGlow.setHeight(depth);
+
+                           airPlanes.get(i).setEffect(borderGlow);
+                           viewModel.setSelectedPlane(
+                                 viewModel.getPlanes().get(i));
+                           i = airPlanes.size();
+                        }
+                        else
+                        {
+                           viewModel.setSelectedPlane(null);
+                        }
                      }
 
                   }
-                  viewModel.setSelectedPlane(null);
-                  viewModel.setSelectedNode(null);
 
                }
             });
+
+      // LISTENER FOR ADDING OR REMOVING A PLANE FROM THE MAP
+      // WHEN AN PLANE IS ADDED A NEW PANE IS CREATED WITH THE TEXT HAVING THE
+      // CALLSIGN BOUND AND THE LOCATION BOUND
 
       this.viewModel.getPlanes()
             .addListener((ListChangeListener<AirPlaneViewModel>) change ->
@@ -136,77 +165,34 @@ public class AirRadarView
                      Text callSignText = new Text();
                      callSignText.textProperty().bind(change.getAddedSubList()
                            .get(0).getRegistrationNoProperty());
-                     callSignText.setFill(Color.GREEN);
+                     callSignText.setFill(Color.web("#002F5F"));;
                      callSignText.translateYProperty().setValue(-12);
                      callSignText.translateXProperty().setValue(10);
                      Rectangle square = new Rectangle();
                      square.scaleXProperty().setValue(20);
                      square.scaleYProperty().setValue(20);
-                     square.setStroke(Color.GREEN);
+                     square.setStroke(Color.web("#002F5F"));
                      pane.getChildren().addAll(square, callSignText);
                      pane.translateXProperty().bind(
                            change.getAddedSubList().get(0).getXProperty());
                      pane.translateYProperty().bind(
                            change.getAddedSubList().get(0).getYProperty());
-                     pane.addEventFilter(MouseEvent.MOUSE_PRESSED,
-                           new EventHandler<MouseEvent>()
-                           {
-                              public void handle(MouseEvent e)
-                              {
-                                 if (!change.getAddedSubList().get(0)
-                                       .getStatusProperty().get()
-                                       .equals("Landing")
-                                       && !change.getAddedSubList().get(0)
-                                             .getStatusProperty().get()
-                                             .startsWith("Boarding"))
-                                 {
-                                    selectedPlane = pane;
-                                    int depth = 70; // Setting the uniform
-                                                    // variable
-                                                    // for the glow width and
-                                                    // height
 
-                                    DropShadow borderGlow = new DropShadow();
-                                    borderGlow.setOffsetY(0f);
-                                    borderGlow.setOffsetX(0f);
-                                    borderGlow.setColor(Color.RED);
-                                    borderGlow.setWidth(depth);
-                                    borderGlow.setHeight(depth);
-
-                                    pane.setEffect(borderGlow); // Apply the
-                                                                // borderGlow
-                                                                // effect to the
-                                                                // JavaFX node
-                                    viewModel.setSelectedPlane(viewModel
-                                          .getPlanes().stream()
-                                          .filter(plane -> plane
-                                                .getRegistrationNoProperty()
-                                                .get()
-                                                .equals(callSignText.getText()))
-                                          .findFirst().get());
-                                 }
-                              }
-                           });
-
+                     airPlanes.add(pane);
                      mainPane.getChildren().add(pane);
                   }
                   else if (change.wasRemoved())
                   {
-                     for (Node node : mainPane.getChildren())
+                     for (int i = 0; i < airPlanes.size(); i++)
                      {
-                        if (node instanceof Pane && !node.equals(failPane))
+                        if (change.getRemoved().get(0)
+                              .getRegistrationNoProperty().get()
+                              .equals(((Text) airPlanes.get(i).getChildren()
+                                    .get(1)).getText()))
                         {
-                           if (((Pane) node).getChildren()
-                                 .get(1) instanceof Text)
-                           {
-                              if (((Text) ((Pane) node).getChildren().get(1))
-                                    .textProperty().get()
-                                    .equals(change.getRemoved().get(0)
-                                          .getRegistrationNoProperty().get()))
-                              {
-                                 node.setVisible(false);
-                              }
-                           }
+                           mainPane.getChildren().remove(airPlanes.get(i));
+                           airPlanes.remove(i);
+                           i = airPlanes.size();
                         }
                      }
                   }
