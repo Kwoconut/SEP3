@@ -2,12 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
-public class AirportGraph
+public class PathfindingGraph
 {
    private ArrayList<Node> nodes;
    private ArrayList<Edge> edges;
 
-   public AirportGraph(ArrayList<Node> nodes)
+   public PathfindingGraph(ArrayList<Node> nodes)
    {
       this.nodes = nodes;
    }

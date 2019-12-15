@@ -85,10 +85,13 @@ public class Plane implements Serializable
 
    public void setRoute(ArrayList<Node> Route)
    {
+      if (!(PlaneState instanceof InAirState) && !(PlaneState instanceof EmergencyState))
+      {
       this.Speed = 2;
+      this.PlaneState = new TaxiState();
+      }
       this.Route = Route;
       this.Target = Route.get(0).getPosition();
-      this.PlaneState = new TaxiState();
    }
 
    public void stopPlane()

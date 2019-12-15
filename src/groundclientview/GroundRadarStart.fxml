@@ -36,5 +36,14 @@
          </image>
       </ImageView>
       <Label fx:id="loadingLabel" layoutX="622.0" layoutY="548.0" text="Waiting for an air traffic controller to connect..." textFill="#002f5f" />
+      <Label fx:id="loadingLabel1" layoutX="990.0" layoutY="673.0" prefHeight="17.0" prefWidth="690.0" text="The objective of the ground controller is to direct planes towards gates for" textFill="#002f5f" textOverrun="CLIP" />
+      <Label fx:id="loadingLabel11" layoutX="990.0" layoutY="707.0" text="To move the plane select it with the mouse and point it towards one of the nodes" textFill="#002f5f" />
+      <Label fx:id="loadingLabel111" layoutX="990.0" layoutY="724.0" text="You can stop a plane by pressing BACKSPACE while having it selected" textFill="#002f5f" />
+      <Label fx:id="loadingLabel12" layoutX="990.0" layoutY="690.0" prefHeight="17.0" prefWidth="416.0" text="boarding and back on the runway in order to takeoff" textFill="#002f5f" textOverrun="CLIP" />
+      <Label fx:id="loadingLabel13" layoutX="990.0" layoutY="641.0" prefHeight="17.0" prefWidth="416.0" text="Guidance" textFill="#002f5f" textOverrun="CLIP">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

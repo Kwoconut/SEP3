@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.AirportGraph;
+import model.PathfindingGraph;
 import model.Edge;
 import model.GroundNode;
 import model.StaticPosition;
 
 public class AirportGraphTest
 {
-   private AirportGraph ag;
+   private PathfindingGraph ag;
    private GroundNode gn1;
    private GroundNode gn2;
    private Edge edge1;
@@ -30,7 +30,7 @@ public class AirportGraphTest
       edge2 = new Edge(0, 0, 0);
       gn1 = new GroundNode("GroundNode1", 1, sp1);
       gn2 = new GroundNode(null, 0, sp2);
-      ag = new AirportGraph();
+      ag = new PathfindingGraph();
       ArrayList<Edge> edges = new ArrayList<Edge>();
       ArrayList<GroundNode> nodes = new ArrayList<GroundNode>();
       edges.add(edge1);

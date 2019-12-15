@@ -118,4 +118,19 @@ public class ATCGroundSimulatorModel implements ATCGroundSimulator, Serializable
       support.firePropertyChange("simulationSTART", " ", true);
 
    }
+
+   @Override
+   public void stopPlane(String registrationNo)
+   {
+      try
+      {
+         client.stopPlane(registrationNo);
+      }
+      catch (RemoteException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+      
+   }
 }

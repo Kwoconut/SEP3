@@ -215,4 +215,11 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       this.model.reRoutePlane(callSign, position);
 
    }
+
+   @Override
+   public void stopPlane(String registrationNo)
+   {
+      this.model.stopPlane(registrationNo);
+      
+   }
 }

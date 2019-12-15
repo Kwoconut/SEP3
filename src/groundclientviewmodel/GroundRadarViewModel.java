@@ -123,6 +123,11 @@ public class GroundRadarViewModel implements PropertyChangeListener
       }
       this.selectedPlane.setValue(plane);
    }
+   
+   public void stopPlane()
+   {
+      this.model.stopPlane(selectedPlane.get().getRegistrationNoProperty().get());
+   }
 
    public void changePlaneRoute()
    {

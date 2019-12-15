@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -64,11 +65,14 @@ public class GroundRadarView
 
    private MainView mainView;
 
+   private Scene scene;
+
    public void init(GroundRadarViewModel groundRadarViewModel,
-         MainView mainView)
+         MainView mainView, Scene scene)
    {
       this.mainView = mainView;
       this.viewModel = groundRadarViewModel;
+      this.scene = scene;
       this.groundNodes = FXCollections.observableArrayList();
       this.groundPlanes = FXCollections.observableArrayList();
       this.failPane.setVisible(false);
@@ -124,7 +128,6 @@ public class GroundRadarView
             {
                public void handle(MouseEvent e)
                {
-
 
                   if (viewModel.getSelectedPlane().get() != null)
                   {
@@ -196,14 +199,15 @@ public class GroundRadarView
                                  .findFirst().get());
                            viewModel.setSelectedPlane(
                                  viewModel.getPlanes().get(i));
-                           System.out.println(viewModel.getSelectedPlane().get().getRegistrationNoProperty().get());
+                           System.out.println(viewModel.getSelectedPlane().get()
+                                 .getRegistrationNoProperty().get());
                            i = groundPlanes.size();
                         }
                         else
                         {
-                        viewModel.setSelectedPlane(null);
-                        viewModel.setSelectedGroundStartNode(null);
-                        viewModel.setSelectedGroundEndNode(null);
+                           viewModel.setSelectedPlane(null);
+                           viewModel.setSelectedGroundStartNode(null);
+                           viewModel.setSelectedGroundEndNode(null);
                         }
                      }
 
@@ -211,6 +215,24 @@ public class GroundRadarView
 
                }
             });
+
+      this.scene.setOnKeyPressed(new EventHandler<KeyEvent>()
+      {
+
+         @Override
+         public void handle(KeyEvent event)
+         {
+            if (event.getCode() == KeyCode.BACK_SPACE)
+            {
+               if (viewModel.getSelectedPlane().get() != null)
+               {
+                  stopPlane();
+               }
+            }
+
+         }
+
+      });
 
       // LISTENER FOR ADDING OR REMOVING A PLANE FROM THE MAP
       // WHEN AN PLANE IS ADDED A NEW PANE IS CREATED WITH THE TEXT HAVING THE
@@ -246,9 +268,12 @@ public class GroundRadarView
                   }
                   else if (change.wasRemoved())
                   {
-                     for (int i = 0 ; i < groundPlanes.size();i++)
+                     for (int i = 0; i < groundPlanes.size(); i++)
                      {
-                        if (change.getRemoved().get(0).getRegistrationNoProperty().get().equals(((Text) groundPlanes.get(i).getChildren().get(1)).getText()))
+                        if (change.getRemoved().get(0)
+                              .getRegistrationNoProperty().get()
+                              .equals(((Text) groundPlanes.get(i).getChildren()
+                                    .get(1)).getText()))
                         {
                            mainPane.getChildren().remove(groundPlanes.get(i));
                            groundPlanes.remove(i);
@@ -292,6 +317,11 @@ public class GroundRadarView
       }
 
       return nearestNode;
+   }
+
+   private void stopPlane()
+   {
+      this.viewModel.stopPlane();
    }
 
 }

@@ -106,4 +106,13 @@ public class GroundClient implements GroundRIClient, GroundIClient, Serializable
    {
     this.model.simulationStart();  
    }
+
+   @Override
+   public void stopPlane(String registrationNo) throws RemoteException
+   {
+      GroundRIServerWrite server = access.acquireGroundWrite();
+      server.stopPlane(registrationNo);
+      access.releaseWrite();
+      
+   }
 }

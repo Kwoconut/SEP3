@@ -35,6 +35,6 @@
             <Image url="@../../images/loading2.gif" />
          </image>
       </ImageView>
-      <Label fx:id="loadingLabel" layoutX="597.0" layoutY="548.0" text="Waiting for an ground traffic controller to connect..." textFill="#002f5f" />
+      <Label fx:id="loadingLabel" layoutX="597.0" layoutY="548.0" text="Waiting for a ground traffic controller to connect..." textFill="#002f5f" />
    </children>
 </Pane>

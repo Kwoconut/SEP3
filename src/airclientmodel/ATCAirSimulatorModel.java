@@ -82,7 +82,15 @@ public class ATCAirSimulatorModel implements ATCAirSimulator
    @Override
    public void reRoutePlane(String registrationNo, StaticPosition position)
    {
-
+      try
+      {
+         client.reRoutePlane(registrationNo, position);
+      }
+      catch (RemoteException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
    }
 
    @Override

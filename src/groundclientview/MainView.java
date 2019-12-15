@@ -36,7 +36,7 @@ public class MainView
          root = loader.load();
          scene = new Scene(root);
          GroundRadarView view = loader.getController();
-         view.init(mvViewModel.getGroundRadarViewModel(), this);
+         view.init(mvViewModel.getGroundRadarViewModel(), this, scene);
       }
       else if ("Start".equals(viewToOpen))
       {
