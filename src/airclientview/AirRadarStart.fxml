@@ -10,6 +10,11 @@
 
 <Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1550.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="airclientview.AirRadarStartView">
    <children>
+      <Label layoutX="990.0" layoutY="641.0" prefHeight="17.0" prefWidth="416.0" text="Guidance" textFill="#002f5f">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
       <Button fx:id="startButton" layoutX="702.0" layoutY="615.0" mnemonicParsing="false" onAction="#onStartButtonPressed" prefHeight="51.0" prefWidth="144.0" style="-fx-background-color: #002f5f; -fx-background-radius: 10;" text="Start" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -36,5 +41,8 @@
          </image>
       </ImageView>
       <Label fx:id="loadingLabel" layoutX="597.0" layoutY="548.0" text="Waiting for a ground traffic controller to connect..." textFill="#002f5f" />
+      <Label fx:id="loadingLabel1" layoutX="990.0" layoutY="673.0" text="The objective of the air traffic controller is to make sure that planes are landed" textFill="#002f5f" />
+      <Label fx:id="loadingLabel11" layoutX="990.0" layoutY="690.0" text="safely and they are routed to their destination with success" textFill="#002f5f" />
+      <Label fx:id="loadingLabel111" layoutX="990.0" layoutY="707.0" text="You can reroute a plane by selecting it and pointing a new direction" textFill="#002f5f" />
    </children>
 </Pane>

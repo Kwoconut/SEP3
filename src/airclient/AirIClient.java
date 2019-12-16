@@ -11,4 +11,6 @@ public interface AirIClient
 
    void establishConnection() throws RemoteException;
 
+   void setPlaneOnCourse(String registrationNo, int startNodeId) throws RemoteException;
+
 }

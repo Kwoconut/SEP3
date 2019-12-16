@@ -41,7 +41,7 @@ public class SimulationTimer implements Runnable
    private synchronized void sendAirPlane()
    {
 
-      for (int i = 0; i < model.getAirPlanes().size(); i++)
+      for (int i = 0; i < 1; i++)
       {
          if (model.getAirPlanes().get(i).getFlightPlan().getArrivalTime()
                .timeNow().equals(model.getTimer()))

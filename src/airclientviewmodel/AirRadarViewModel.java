@@ -104,6 +104,11 @@ public class AirRadarViewModel implements PropertyChangeListener
    {
       this.selectedNode.set(node);
    }
+   
+   public void setPlaneOnCourse()
+   {
+      this.model.setPlaneOnCourse(this.selectedPlane.get().getRegistrationNoProperty().get(),this.selectedNode.get().getIDProperty().get());
+   }
 
    public void reRoutePlane(double xCoordinate, double yCoordinate)
    {

@@ -10,4 +10,6 @@ public interface AirRadarModel
 
    void reRoutePlane(String registrationNo, StaticPosition position);
 
+   void setPlaneOnCourse(String registrationNo, int startNodeId);
+
 }

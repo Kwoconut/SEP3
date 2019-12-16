@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 
 import javafx.scene.shape.Rectangle;
 import model.BoardingState;
+import model.InAirState;
 import model.LandedState;
 import model.StaticPosition;
 import model.TakeoffState;
@@ -22,6 +23,15 @@ public class SimulationState implements Runnable
 
    private synchronized void takeOffPlanes() throws RemoteException
    {
+
+      // SETTING THE PLANE FOR TAKEOFF FROM 1 SIDE OF THE RUNWAY DEPENDING ON
+      // THE ENTRY ON THE RUNWAY
+      // CHECKS IF THE PLANE IS READY FOR TAKEOFF
+      // IF (TRUE)
+      // SETS COURSE FOR TAKEOFF
+      // IF (FALSE)
+      // DOESN'T ALLOW THE PLANE TO TAKEOFF
+
       for (int i = 0; i < model.getSimulationGroundPlanes().size(); i++)
       {
          if (model.getSimulationGroundPlanes().get(i).isReadyForTakeOff())
@@ -49,32 +59,45 @@ public class SimulationState implements Runnable
          }
       }
 
+      // SETTING THE COURSE OF THE PLANE AFTER TAKEOFF DEPENDING ON THE
+      // FLIGHTPLAN
+      // DJIKSTRA ALGORITHM WILL FIND THE OPTIMAL PATHWAWY FOR FLYING
+
       for (int i = 0; i < model.getSimulationGroundPlanes().size(); i++)
       {
          if (model.getSimulationGroundPlanes().get(i).getPosition()
                .equals(model.getGroundNodes().get(21).getPosition()))
          {
-            model.getSimulationGroundPlanes().get(i)
-                  .departPlane(model.getAirNodes().stream()
-                        .filter(node -> node.getNodeId() == 25).findFirst()
-                        .get());
-            model.getSimulationGroundPlanes().get(i).getRoute()
-                  .add(model.getApproachNodesByDirection(
-                        model.getSimulationGroundPlanes().get(i).getFlightPlan()
-                              .getStartLocation()));
+            model.getSimulationGroundPlanes().get(i).setState(new InAirState());
+
             model.getSimulationGroundPlanes().get(i).getPosition()
                   .setPosition(model.getAirNodes().stream()
                         .filter(node -> node.getNodeId() == 22).findFirst()
                         .get().getPosition());
+
             model.getSimulationAirPlanes()
                   .add(model.getSimulationGroundPlanes().get(i));
+
+            model.setTakeoffRoute(
+                  model.getSimulationAirPlanes()
+                        .get(model.getSimulationAirPlanes().size() - 1)
+                        .getRegistrationNo(),
+                  22, model
+                        .getApproachNodesByDirection(
+                              model.getSimulationGroundPlanes().get(i)
+                                    .getFlightPlan().getStartLocation())
+                        .getNodeId(),
+                  false);
+
             for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
             {
                manager.getServer().sendAirPlaneDTO(
                      model.getSimulationGroundPlanes().get(i).convertToDTO(),
                      manager.getServer().getAirClients().get(j));
             }
+
             model.getSimulationGroundPlanes().remove(i);
+
             for (int j = 0; j < manager.getServer().getGroundClients()
                   .size(); j++)
             {
@@ -87,20 +110,27 @@ public class SimulationState implements Runnable
                      .filter(node -> node.getNodeId() == 20).findFirst().get()
                      .getPosition()))
          {
-            model.getSimulationGroundPlanes().get(i)
-                  .departPlane(model.getAirNodes().stream()
-                        .filter(node -> node.getNodeId() == 29).findFirst()
-                        .get());
-            model.getSimulationGroundPlanes().get(i).getRoute()
-                  .add(model.getApproachNodesByDirection(
-                        model.getSimulationGroundPlanes().get(i).getFlightPlan()
-                              .getStartLocation()));
+            model.getSimulationGroundPlanes().get(i).setState(new InAirState());
+
             model.getSimulationGroundPlanes().get(i).getPosition()
                   .setPosition(model.getAirNodes().stream()
                         .filter(node -> node.getNodeId() == 22).findFirst()
                         .get().getPosition());
+
             model.getSimulationAirPlanes()
                   .add(model.getSimulationGroundPlanes().get(i));
+
+            model.setTakeoffRoute(
+                  model.getSimulationAirPlanes()
+                        .get(model.getSimulationAirPlanes().size() - 1)
+                        .getRegistrationNo(),
+                  22, model
+                        .getApproachNodesByDirection(
+                              model.getSimulationGroundPlanes().get(i)
+                                    .getFlightPlan().getStartLocation())
+                        .getNodeId(),
+                  true);
+
             for (int j = 0; j < manager.getServer().getAirClients().size(); j++)
             {
                manager.getServer().sendAirPlaneDTO(
@@ -218,6 +248,28 @@ public class SimulationState implements Runnable
       }
    }
 
+   private synchronized void removePlanes() throws RemoteException
+   {
+      for (int i = 0; i < model.getSimulationAirPlanes().size(); i++)
+      {
+         for (int j = 0; j < model.getAirNodes().size(); j++)
+            if (model.getAirNodes().get(j).getNodeId() >= 35
+                  && model.getSimulationAirPlanes().get(i).getPosition()
+                        .equals(model.getAirNodes().get(j).getPosition())
+                  && model.getSimulationAirPlanes().get(i).isReadyForTakeOff())
+            {
+               for (int x = 0; x < manager.getServer().getAirClients()
+                     .size(); x++)
+               {
+                  manager.getServer().getAirClients().get(x).removeAirPlane(i);
+               }
+               model.getSimulationAirPlanes().remove(i);
+               j = model.getAirNodes().size();
+               i = model.getSimulationAirPlanes().size();
+            }
+      }
+   }
+
    private synchronized boolean checkCollision() throws RemoteException
    {
       for (int i = 0; i < model.getSimulationGroundPlanes().size(); i++)
@@ -226,16 +278,16 @@ public class SimulationState implements Runnable
          {
             Rectangle rectangle1 = new Rectangle(
                   model.getSimulationGroundPlanes().get(i).getPosition()
-                        .getXCoordinate(),
+                        .getXCoordinate() + 10,
                   model.getSimulationGroundPlanes().get(i).getPosition()
-                        .getYCoordinate(),
-                  10, 10);
+                        .getYCoordinate() + 10,
+                  20, 20);
             Rectangle rectangle2 = new Rectangle(
                   model.getSimulationGroundPlanes().get(j).getPosition()
-                        .getXCoordinate(),
+                        .getXCoordinate() + 10,
                   model.getSimulationGroundPlanes().get(j).getPosition()
-                        .getYCoordinate(),
-                  10, 10);
+                        .getYCoordinate() + 10,
+                  20, 20);
             if (rectangle1.intersects(rectangle2.getBoundsInLocal()))
             {
                return true;
@@ -277,6 +329,7 @@ public class SimulationState implements Runnable
          try
          {
 
+            removePlanes();
             updateStateOnGroundLocation();
             takeOffPlanes();
             landPlanes();

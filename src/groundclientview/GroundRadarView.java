@@ -27,6 +27,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class GroundRadarView
@@ -251,6 +253,8 @@ public class GroundRadarView
                      callSignText.textProperty().bind(change.getAddedSubList()
                            .get(0).getRegistrationNoProperty());
                      callSignText.setFill(Color.web("#002F5F"));
+                     callSignText
+                           .setFont(Font.font("System", FontWeight.BOLD, 12));
                      callSignText.translateYProperty().setValue(-12);
                      callSignText.translateXProperty().setValue(10);
                      Rectangle square = new Rectangle();

@@ -122,4 +122,18 @@ public class ATCAirSimulatorModel implements ATCAirSimulator
 
    }
 
+   @Override
+   public void setPlaneOnCourse(String registrationNo, int startNodeId)
+   {
+      try
+      {
+         client.setPlaneOnCourse(registrationNo,startNodeId);
+      }
+      catch (RemoteException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+   }
+
 }

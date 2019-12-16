@@ -222,4 +222,12 @@ public class Server implements GroundRIServerWrite, AirRIServerWrite
       this.model.stopPlane(registrationNo);
       
    }
+
+   @Override
+   public void setPlaneOnCourse(String registrationNo, int startNodeId)
+         throws RemoteException
+   {
+      this.model.setPlaneOnCourse(registrationNo, startNodeId);
+      
+   }
 }

@@ -240,14 +240,16 @@ public class ServerModel
       airPlanes.stream()
             .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
             .findFirst().get().stopPlane();
-      
-      if (wind)
+
+      if (!wind)
       {
-         edges.get(22).setLength(200);
+         edges.get(23).setLength(200);
+         edges.get(24).setLength(1);
       }
       else
       {
          edges.get(23).setLength(200);
+         edges.get(24).setLength(1);
       }
 
       airspaceGraph.generateGraph(nodes, edges);
@@ -262,22 +264,22 @@ public class ServerModel
             .findFirst().get().setRoute(shortestDistance);
    }
 
-   public void changeAirPlaneRoute(String registrationNo, int startNodeId,
-         int endNodeId)
+   public void setTakeoffRoute(String registrationNo, int startNodeId,
+         int endNodeId, boolean direction)
    {
       simulationAirPlanes.stream()
             .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
             .findFirst().get().stopPlane();
-      
-      if (wind)
+
+      if (!direction)
       {
-         edges.get(22).setLength(200);
-         edges.get(23).setLength(1);
+         edges.get(23).setLength(200);
+         edges.get(24).setLength(1);
       }
       else
       {
-         edges.get(22).setLength(1);
-         edges.get(23).setLength(200);
+         edges.get(23).setLength(1);
+         edges.get(24).setLength(200);
       }
 
       airspaceGraph.generateGraph(nodes, edges);
@@ -291,6 +293,66 @@ public class ServerModel
             .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
             .findFirst().get().setRoute(shortestDistance);
 
+   }
+
+   public void setPlaneOnCourse(String registrationNo, int startNodeId)
+   {
+      int endNodeId = 0;
+
+      simulationAirPlanes.stream()
+            .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
+            .findFirst().get().stopPlane();
+
+      if (simulationAirPlanes.stream()
+            .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
+            .findFirst().get().isReadyForTakeOff())
+      {
+         if (wind)
+         {
+            edges.get(23).setLength(200);
+            edges.get(24).setLength(1);
+         }
+         else
+         {
+            edges.get(23).setLength(1);
+            edges.get(24).setLength(200);
+         }
+
+         endNodeId = getApproachNodesByDirection(simulationAirPlanes.stream()
+               .filter(
+                     plane -> plane.getRegistrationNo().equals(registrationNo))
+               .findFirst().get().getFlightPlan().getStartLocation())
+                     .getNodeId();
+      }
+      else
+      {
+         if (!wind)
+         {
+            edges.get(23).setLength(200);
+            edges.get(24).setLength(1);
+         }
+         else
+         {
+            edges.get(23).setLength(1);
+            edges.get(24).setLength(200);
+         }
+
+         endNodeId = getApproachNodesByDirection(simulationAirPlanes.stream()
+               .filter(
+                     plane -> plane.getRegistrationNo().equals(registrationNo))
+               .findFirst().get().getFlightPlan().getEndLocation()).getNodeId();
+      }
+
+      airspaceGraph.generateGraph(nodes, edges);
+
+      ArrayList<Node> shortestDistance = airspaceGraph
+            .calculateShortestDistance(
+                  airspaceGraph.getNodes().get(startNodeId),
+                  airspaceGraph.getNodes().get(endNodeId));
+
+      simulationAirPlanes.stream()
+            .filter(plane -> plane.getRegistrationNo().equals(registrationNo))
+            .findFirst().get().setRoute(shortestDistance);
    }
 
    public void addGroundPlane(Plane plane)

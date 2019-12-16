@@ -82,7 +82,7 @@ public class Node
    {
       return ShortestPath;
    }
-   
+
    public void setNodeId(int NodeId)
    {
       this.NodeId = NodeId;
@@ -95,7 +95,7 @@ public class Node
 
    public NodeDTO convertToDTO()
    {
-      return new NodeDTO(this.NodeId, this.Position);
+      return new NodeDTO(this.NodeId, this.Position, this.Name);
    }
 
    public String toString()

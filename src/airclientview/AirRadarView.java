@@ -39,7 +39,7 @@ public class AirRadarView
    private AirRadarViewModel viewModel;
 
    private ObservableList<Circle> airNodes;
-   
+
    private ObservableList<Pane> airPlanes;
 
    private Pane selectedPlane;
@@ -58,12 +58,25 @@ public class AirRadarView
       for (int i = 0; i < this.viewModel.getAirNodes().size(); i++)
       {
          Circle circle = new Circle(10);
+
          circle.centerXProperty()
                .bind(this.viewModel.getAirNodes().get(i).getXProperty());
          circle.centerYProperty()
                .bind(this.viewModel.getAirNodes().get(i).getYProperty());
          circle.setFill(Color.YELLOW);
          circle.setStroke(Color.BLACK);
+
+         if (this.viewModel.getAirNodes().get(i).getIDProperty().get() == 22
+               || this.viewModel.getAirNodes().get(i).getIDProperty()
+                     .get() >= 35)
+         {
+            Label label = new Label(
+                  this.viewModel.getAirNodes().get(i).getName().get());
+            label.setTextFill(Color.web("#002F5F"));
+            label.translateXProperty().set(circle.centerXProperty().get() + 20);
+            label.translateYProperty().set(circle.centerYProperty().get() - 10);
+            mainPane.getChildren().add(label);
+         }
          airNodes.add(circle);
          mainPane.getChildren().add(circle);
       }
@@ -99,12 +112,27 @@ public class AirRadarView
 
                   if (viewModel.getSelectedPlane().get() != null)
                   {
+                     boolean planeOnCourse = false;
+                     for (int i = 0; i < airNodes.size(); i++)
+                     {
+                        if (airNodes.get(i).getBoundsInParent()
+                              .contains(e.getSceneX(), e.getSceneY()))
+                        {
+                           viewModel.setSelectedNode(
+                                 viewModel.getAirNodes().get(i));
+                           viewModel.setPlaneOnCourse();
+                           planeOnCourse = true;
+                        }
+                     }
+                     if (!planeOnCourse)
+                     {
                         viewModel.reRoutePlane(e.getSceneX(), e.getSceneY());
-                        mainPane.getChildren().stream()
-                              .filter(node -> node instanceof Pane
-                                    && node.equals(selectedPlane))
-                              .findFirst().get().setEffect(null);
-                        viewModel.setSelectedPlane(null);
+                     }
+                     mainPane.getChildren().stream()
+                           .filter(node -> node instanceof Pane
+                                 && node.equals(selectedPlane))
+                           .findFirst().get().setEffect(null);
+                     viewModel.setSelectedPlane(null);
                   }
                   else
                   {
@@ -159,7 +187,8 @@ public class AirRadarView
                      Text callSignText = new Text();
                      callSignText.textProperty().bind(change.getAddedSubList()
                            .get(0).getRegistrationNoProperty());
-                     callSignText.setFill(Color.web("#002F5F"));;
+                     callSignText.setFill(Color.web("#002F5F"));
+                     ;
                      callSignText.translateYProperty().setValue(-12);
                      callSignText.translateXProperty().setValue(10);
                      Rectangle square = new Rectangle();

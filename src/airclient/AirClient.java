@@ -119,4 +119,14 @@ public class AirClient implements AirIClient, AirRIClient
 
    }
 
+   @Override
+   public void setPlaneOnCourse(String registrationNo, int startNodeId)
+         throws RemoteException
+   {
+      AirRIServerWrite server = access.acquireAirWrite();
+      server.setPlaneOnCourse(registrationNo,startNodeId);
+      access.releaseWrite();
+      
+   }
+
 }
