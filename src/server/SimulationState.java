@@ -249,16 +249,16 @@ public class SimulationState implements Runnable
          {
             Rectangle rectangle1 = new Rectangle(
                   model.getSimulationAirPlanes().get(i).getPosition()
-                        .getXCoordinate(),
+                        .getXCoordinate() + 10,
                   model.getSimulationAirPlanes().get(i).getPosition()
-                        .getYCoordinate(),
-                  10, 10);
+                        .getYCoordinate() + 10,
+                  20, 20);
             Rectangle rectangle2 = new Rectangle(
                   model.getSimulationAirPlanes().get(j).getPosition()
-                        .getXCoordinate(),
+                        .getXCoordinate() + 10,
                   model.getSimulationAirPlanes().get(j).getPosition()
-                        .getYCoordinate(),
-                  10, 10);
+                        .getYCoordinate() + 10,
+                  20, 20);
             if (rectangle1.intersects(rectangle2.getBoundsInLocal()))
             {
                return true;
@@ -286,20 +286,20 @@ public class SimulationState implements Runnable
          {
             e.printStackTrace();
          }
-            try
+         try
+         {
+            if (checkCollision())
             {
-               if (checkCollision())
-               {
-                  manager.exitSimulationTimer();
-                  System.out.println("Simulation State Thread Stopped");
-                  break;
-               }
+               manager.exitSimulationTimer();
+               System.out.println("Simulation State Thread Stopped");
+               break;
             }
-            catch (RemoteException e)
-            {
-               e.printStackTrace();
-            }
-         
+         }
+         catch (RemoteException e)
+         {
+            e.printStackTrace();
+         }
+
          try
          {
             Thread.sleep(0100);
